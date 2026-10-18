@@ -104,17 +104,17 @@ export function ProductPage({
 
           <dl className="mt-6 grid grid-cols-3 divide-x divide-carton-soft/25 border-y border-carton-soft/25 text-carton-soft md:max-w-md">
             <div className="py-2.5 pr-3">
-              <dt className="type-spec text-[0.66rem] text-carton-soft/80">Entrega</dt>
+              <dt className="type-spec text-[0.66rem] text-carton-soft">Entrega</dt>
               <dd className="mt-0.5 text-[0.8rem] leading-snug">{settings.delivery_estimate}</dd>
             </div>
             <div className="px-3 py-2.5">
-              <dt className="type-spec text-[0.66rem] text-carton-soft/80">Pago</dt>
+              <dt className="type-spec text-[0.66rem] text-carton-soft">Pago</dt>
               <dd className="mt-0.5 text-[0.8rem] leading-snug">
                 {settings.cod_enabled ? "En efectivo al recibir" : "Pago protegido"}
               </dd>
             </div>
             <div className="py-2.5 pl-3">
-              <dt className="type-spec text-[0.66rem] text-carton-soft/80">Garantía</dt>
+              <dt className="type-spec text-[0.66rem] text-carton-soft">Garantía</dt>
               <dd className="mt-0.5 text-[0.8rem] leading-snug">Por defectos de fábrica</dd>
             </div>
           </dl>

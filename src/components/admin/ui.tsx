@@ -57,7 +57,7 @@ export function Checkbox({ label, hint, ...props }: React.InputHTMLAttributes<HT
 const STATUS_STYLE: Record<OrderStatus, string> = {
   nuevo: "bg-flash text-ink",
   confirmado: "bg-carton/12 text-carton-deep",
-  enviado: "bg-sky-100 text-sky-900",
+  enviado: "bg-paper text-carton-deep ring-1 ring-carton/40",
   entregado: "bg-carton text-paper",
   cancelado: "bg-ink/8 text-ink-soft",
   devuelto: "bg-alert/10 text-alert",

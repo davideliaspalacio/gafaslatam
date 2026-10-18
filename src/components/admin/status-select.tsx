@@ -7,7 +7,7 @@ import { ORDER_STATUS_LABEL, type OrderStatus } from "@/lib/types";
 const TONE: Record<OrderStatus, string> = {
   nuevo: "bg-flash border-flash-deep",
   confirmado: "bg-carton/10 border-carton/30 text-carton-deep",
-  enviado: "bg-sky-50 border-sky-300 text-sky-900",
+  enviado: "bg-paper border-carton/40 text-carton-deep",
   entregado: "bg-carton border-carton text-paper",
   cancelado: "bg-ink/5 border-ink/15 text-ink-soft",
   devuelto: "bg-alert/10 border-alert/30 text-alert",

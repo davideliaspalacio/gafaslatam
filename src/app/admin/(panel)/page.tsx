@@ -1,3 +1,4 @@
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import { DateStamp } from "@/components/store/date-stamp";
@@ -54,7 +55,7 @@ async function Dashboard() {
             {s.pending_confirmation} {s.pending_confirmation === 1 ? "pedido espera" : "pedidos esperan"} confirmación por
             WhatsApp
           </span>
-          <span aria-hidden>→</span>
+          <ArrowRight className="size-5 shrink-0" aria-hidden />
         </Link>
       ) : null}
 

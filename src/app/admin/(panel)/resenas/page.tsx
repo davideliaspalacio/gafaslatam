@@ -1,3 +1,4 @@
+import { Star } from "lucide-react";
 import { Suspense } from "react";
 import { ReviewForm, ReviewRowActions } from "@/components/admin/review-form";
 import { Loading, PageHeader, Panel } from "@/components/admin/ui";
@@ -39,9 +40,16 @@ async function Reviews() {
             {reviews.map((r) => (
               <li key={r.id} className="flex gap-4 px-4 py-4">
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm">
-                    <span className="text-flash-deep">{"★".repeat(r.rating)}</span>
-                    <span className="text-ink/20">{"★".repeat(5 - r.rating)}</span>{" "}
+                  <p className="flex flex-wrap items-center gap-x-1.5 text-sm">
+                    <span role="img" aria-label={`${r.rating} de 5 estrellas`} className="flex gap-0.5">
+                      {[1, 2, 3, 4, 5].map((n) => (
+                        <Star
+                          key={n}
+                          className={`size-3.5 ${n <= r.rating ? "fill-flash-deep text-flash-deep" : "text-ink/20"}`}
+                          aria-hidden
+                        />
+                      ))}
+                    </span>
                     <span className="font-semibold">{r.author}</span>
                     {r.city ? <span className="text-ink-soft"> · {r.city}</span> : null}
                   </p>
