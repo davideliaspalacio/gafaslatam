@@ -1,4 +1,4 @@
-import { Check, MessageCircle, PackageCheck, ShieldCheck, Truck } from "lucide-react";
+import { Check, MessageCircle, Star } from "lucide-react";
 import { OrderEnvelope } from "@/components/store/order-envelope";
 import { Print } from "@/components/store/print";
 import { ProductJsonLd } from "@/components/store/json-ld";
@@ -23,6 +23,8 @@ export function ProductPage({
   const shippingLabel = settings.free_shipping ? "Envío gratis" : `Envío ${formatCOP(settings.shipping_cost)}`;
   const onlineAvailable = settings.online_payment_enabled && wompiConfigured();
   const sampleMoments = product.moments.some((m) => m.sample);
+  // La ficha técnica solo sale cuando el equipo la confirmó con el proveedor (panel → producto).
+  const showSpecs = product.specs_confirmed && product.specs.length > 0;
   const [headlineA, headlineB] = splitHeadline(product.headline ?? product.name);
 
   return (
@@ -40,6 +42,7 @@ export function ProductPage({
               ratio="landscape"
               tilt={6}
               objectPosition="center 58%"
+              reference={second.sample}
               sizes="(min-width: 768px) 40vw, 70vw"
               className="absolute -top-3 left-[16%] w-[84%] md:-top-10"
             />
@@ -52,6 +55,7 @@ export function ProductPage({
               ratio="landscape"
               tilt={-3}
               preload
+              reference={cover.sample}
               sizes="(min-width: 768px) 45vw, 86vw"
               className="relative mt-12 w-[94%] md:mt-20"
             />
@@ -96,20 +100,22 @@ export function ProductPage({
             Pedir ahora · {settings.cod_enabled ? "pagas al recibir" : "pago seguro"}
           </a>
 
-          <ul className="mt-6 grid grid-cols-3 gap-3 text-[0.78rem] leading-tight text-carton-soft md:max-w-md">
-            <li className="flex flex-col gap-1.5">
-              <Truck className="size-5 text-flash" strokeWidth={1.75} aria-hidden />
-              {settings.delivery_estimate}
-            </li>
-            <li className="flex flex-col gap-1.5">
-              <PackageCheck className="size-5 text-flash" strokeWidth={1.75} aria-hidden />
-              {settings.cod_enabled ? "Pagas en efectivo al recibir" : "Pago protegido"}
-            </li>
-            <li className="flex flex-col gap-1.5">
-              <ShieldCheck className="size-5 text-flash" strokeWidth={1.75} aria-hidden />
-              Garantía por defectos de fábrica
-            </li>
-          </ul>
+          <dl className="mt-6 grid grid-cols-3 divide-x divide-carton-soft/25 border-y border-carton-soft/25 text-carton-soft md:max-w-md">
+            <div className="py-2.5 pr-3">
+              <dt className="type-spec text-[0.66rem] text-flash">Entrega</dt>
+              <dd className="mt-0.5 text-[0.8rem] leading-snug">{settings.delivery_estimate}</dd>
+            </div>
+            <div className="px-3 py-2.5">
+              <dt className="type-spec text-[0.66rem] text-flash">Pago</dt>
+              <dd className="mt-0.5 text-[0.8rem] leading-snug">
+                {settings.cod_enabled ? "En efectivo al recibir" : "Pago protegido"}
+              </dd>
+            </div>
+            <div className="py-2.5 pl-3">
+              <dt className="type-spec text-[0.66rem] text-flash">Garantía</dt>
+              <dd className="mt-0.5 text-[0.8rem] leading-snug">Por defectos de fábrica</dd>
+            </div>
+          </dl>
         </div>
       </section>
 
@@ -124,6 +130,9 @@ export function ProductPage({
               La cámara va en la montura, a la altura de tus ojos. Lo que queda grabado es exactamente lo que estabas
               mirando, con las manos libres.
             </p>
+            {sampleMoments ? (
+              <p className="type-spec mt-3 text-[0.7rem] text-flash">Fotos de referencia · pronto, tomas hechas con las gafas</p>
+            ) : null}
           </div>
           <ul className="no-scrollbar mt-9 flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-6 sm:px-6 md:mx-auto md:grid md:max-w-6xl md:grid-cols-3 md:gap-8 md:overflow-visible">
             {product.moments.map((m, i) => (
@@ -134,14 +143,12 @@ export function ProductPage({
                   stamp={m.stamp}
                   tilt={TILTS[i % TILTS.length]}
                   sizes="(min-width: 768px) 30vw, 72vw"
+                  reference={m.sample}
                 />
                 <p className="mt-4 px-1 text-[0.95rem] text-carton-soft">{m.caption}</p>
               </li>
             ))}
           </ul>
-          {sampleMoments ? (
-            <p className="mx-auto max-w-6xl px-4 text-xs text-carton-soft/80 sm:px-6">Imágenes de referencia.</p>
-          ) : null}
         </section>
       ) : null}
 
@@ -167,7 +174,13 @@ export function ProductPage({
               {third || fourth ? (
                 <div className="relative mx-auto w-[82%] md:sticky md:top-10 md:w-full md:self-start">
                   {fourth ? (
-                    <Print src={fourth.url} alt={fourth.alt} tilt={3} sizes="(min-width: 768px) 32vw, 80vw" />
+                    <Print
+                      src={fourth.url}
+                      alt={fourth.alt}
+                      tilt={3}
+                      sizes="(min-width: 768px) 32vw, 80vw"
+                      reference={fourth.sample}
+                    />
                   ) : null}
                   {third ? (
                     <Print
@@ -175,8 +188,10 @@ export function ProductPage({
                       alt={third.alt}
                       ratio="landscape"
                       tilt={-4}
+                      objectPosition="center 25%"
                       sizes="(min-width: 768px) 26vw, 64vw"
-                      className={fourth ? "absolute -bottom-10 -left-[14%] w-[72%]" : ""}
+                      reference={third.sample}
+                      className={fourth ? "absolute -bottom-10 -left-[4%] w-[72%] md:-left-[14%]" : ""}
                     />
                   ) : null}
                 </div>
@@ -186,41 +201,28 @@ export function ProductPage({
         </section>
       ) : null}
 
-      {/* Especificaciones: la franja amarilla del cartón */}
-      {product.specs.length ? (
-        <section className="bg-flash text-ink" aria-label="Especificaciones">
-          <dl className="mx-auto grid max-w-6xl grid-cols-2 gap-y-8 px-4 py-12 sm:grid-cols-3 sm:px-6 lg:grid-cols-6">
-            {product.specs.map((s) => (
-              <div key={s.label} className="flex flex-col gap-1 pr-3">
-                <dd className="type-carton tabular order-1 text-[2.6rem] leading-none sm:text-5xl">
-                  {s.unit === "IPX" || s.unit === "BT" ? (
-                    <>
-                      <span className="mr-1 align-top text-[0.42em]">{s.unit}</span>
-                      {s.value}
-                    </>
-                  ) : (
-                    <>
-                      {s.value}
-                      <span className="ml-1 text-[0.42em]">{s.unit}</span>
-                    </>
-                  )}
-                </dd>
-                <dt className="type-spec order-2 text-[0.75rem] text-carton-deep">{s.label}</dt>
-              </div>
-            ))}
-          </dl>
-        </section>
-      ) : null}
-
-      {/* Qué llega y cómo compras */}
-      <section className="on-paper bg-paper text-ink">
-        <div className="mx-auto grid max-w-6xl gap-14 px-4 py-16 sm:px-6 md:grid-cols-2 md:py-24">
+      {/* Ficha técnica, caja y compra: el costado impreso de la caja */}
+      <section className="on-paper border-t border-rule bg-paper text-ink">
+        <div className="mx-auto grid max-w-6xl gap-14 px-4 py-16 sm:px-6 md:grid-cols-2 md:py-24 lg:grid-cols-3">
+          {showSpecs ? (
+            <div>
+              <h2 className="type-carton text-[1.8rem] text-carton sm:text-4xl">Ficha técnica</h2>
+              <dl className="tabular mt-6 border-y-2 border-ink">
+                {product.specs.map((s) => (
+                  <div key={s.label} className="flex items-baseline justify-between gap-4 border-b border-rule py-2.5 last:border-b-0">
+                    <dt className="type-spec text-[0.78rem] text-ink-soft">{s.label}</dt>
+                    <dd className="text-[1.05rem] font-bold whitespace-nowrap">{specValue(s)}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          ) : null}
           {product.in_the_box.length ? (
             <div>
               <h2 className="type-carton text-[1.8rem] text-carton sm:text-4xl">En la caja</h2>
               <ul className="mt-6 divide-y divide-rule border-y border-rule">
                 {product.in_the_box.map((item) => (
-                  <li key={item} className="flex items-center gap-3 py-3.5">
+                  <li key={item} className="flex items-center gap-3 py-3">
                     <Check className="size-5 shrink-0 text-carton" strokeWidth={2.25} aria-hidden />
                     {item}
                   </li>
@@ -306,6 +308,13 @@ export function ProductPage({
 
 const TILTS = [-2, 1.5, -1, 2, -1.5, 1];
 
+function specValue(s: { value: string; unit: string }) {
+  if (s.unit === "IPX") return `IPX${s.value}`;
+  if (s.unit === "BT") return `Bluetooth ${s.value}`;
+  if (s.unit === "p") return `${s.value}p`;
+  return `${s.value} ${s.unit}`;
+}
+
 function splitHeadline(text: string): [string, string | null] {
   const parts = text.split(/(?<=\.)\s+/);
   return parts.length > 1 ? [parts[0], parts.slice(1).join(" ")] : [text, null];
@@ -353,9 +362,15 @@ function Reviews({ reviews }: { reviews: ReviewRow[] }) {
         <ul className="mt-10 grid gap-x-10 gap-y-10 md:grid-cols-3">
           {reviews.map((r) => (
             <li key={r.id} className="border-t border-carton-soft/30 pt-5">
-              <p aria-label={`${r.rating} de 5 estrellas`} className="text-flash tracking-[0.2em]">
-                {"★★★★★".slice(0, r.rating)}
-                <span className="text-carton-soft/40">{"★★★★★".slice(r.rating)}</span>
+              <p role="img" aria-label={`${r.rating} de 5 estrellas`} className="flex gap-0.5">
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <Star
+                    key={n}
+                    className={`size-4 ${n <= r.rating ? "fill-flash text-flash" : "text-carton-soft/40"}`}
+                    strokeWidth={1.5}
+                    aria-hidden
+                  />
+                ))}
               </p>
               <p className="mt-3 leading-relaxed text-paper">“{r.body}”</p>
               <p className="type-spec mt-4 text-xs text-carton-soft">

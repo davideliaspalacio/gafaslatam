@@ -113,7 +113,11 @@ export function OrderEnvelope({ product, shipping, codEnabled, onlineEnabled, de
           noValidate
           className="on-paper relative mt-8 bg-paper text-ink shadow-[var(--shadow-print)]"
         >
-          <div className="flex items-baseline justify-between gap-4 bg-flash px-5 py-3">
+          {/* Solapa del sobre */}
+          <div aria-hidden className="relative h-7 bg-flash">
+            <div className="absolute inset-0 bg-paper-shade [clip-path:polygon(0_0,100%_0,50%_100%)]" />
+          </div>
+          <div className="flex items-baseline justify-between gap-4 bg-flash px-5 pt-1 pb-3">
             <p className="type-carton text-xl">{storeName}</p>
             <p className="type-spec text-[0.72rem] text-carton-deep">Sobre de pedido</p>
           </div>
@@ -128,10 +132,15 @@ export function OrderEnvelope({ product, shipping, codEnabled, onlineEnabled, de
                   return (
                     <label
                       key={b.qty}
-                      className={`flex cursor-pointer items-center gap-3 border-2 px-4 py-3.5 transition-colors ${
+                      className={`relative flex cursor-pointer items-center gap-3 border-2 px-4 py-3.5 transition-colors ${
                         checked ? "border-carton bg-carton/[0.06]" : "border-rule hover:border-ink-soft"
                       }`}
                     >
+                      {saving > 0 ? (
+                        <span className="type-spec absolute -top-3 right-3 -rotate-2 bg-flash px-2 py-0.5 text-[0.72rem] font-bold text-ink shadow-[var(--shadow-lift)]">
+                          Ahorras {formatCOP(saving)}
+                        </span>
+                      ) : null}
                       <input
                         type="radio"
                         name="qty"
@@ -145,11 +154,7 @@ export function OrderEnvelope({ product, shipping, codEnabled, onlineEnabled, de
                       />
                       <span className="flex-1">
                         <span className="block font-bold">{b.label}</span>
-                        {b.badge || saving > 0 ? (
-                          <span className="block text-sm text-ink-soft">
-                            {[b.badge, saving > 0 ? `ahorras ${formatCOP(saving)}` : null].filter(Boolean).join(" · ")}
-                          </span>
-                        ) : null}
+                        {b.badge ? <span className="block text-sm text-ink-soft">{b.badge}</span> : null}
                       </span>
                       <span className="tabular text-lg font-bold">{formatCOP(b.price)}</span>
                     </label>
@@ -185,7 +190,7 @@ export function OrderEnvelope({ product, shipping, codEnabled, onlineEnabled, de
               </fieldset>
             ) : null}
 
-            <div className="grid gap-5">
+            <div className="grid gap-3">
               <Field id="name" label="Nombre y apellido" error={errors.name} autoComplete="name" />
               <Field
                 id="phone"
@@ -195,7 +200,7 @@ export function OrderEnvelope({ product, shipping, codEnabled, onlineEnabled, de
                 inputMode="tel"
                 placeholder="300 123 4567"
               />
-              <div className="grid gap-5 sm:grid-cols-2">
+              <div className="grid gap-3 sm:grid-cols-2">
                 <SelectField id="department" label="Departamento" error={errors.department} />
                 <Field id="city" label="Ciudad o municipio" error={errors.city} autoComplete="address-level2" />
               </div>
@@ -241,6 +246,10 @@ export function OrderEnvelope({ product, shipping, codEnabled, onlineEnabled, de
           {/* Desprendible: el resumen que te quedas */}
           <div className="relative border-t-2 border-dashed border-rule px-5 pt-6 pb-6 sm:px-7">
             <Scissors className="absolute -top-[11px] left-4 size-5 bg-paper px-0.5 text-ink-soft" aria-hidden />
+            <p className="type-spec mb-3 flex justify-between text-[0.68rem] text-ink-soft">
+              <span>Talón del pedido</span>
+              <span>N.º de sobre al confirmar</span>
+            </p>
             <dl className="tabular space-y-2 text-[0.95rem]">
               <div className="flex justify-between gap-4">
                 <dt className="text-ink-soft">
@@ -300,6 +309,10 @@ export function OrderEnvelope({ product, shipping, codEnabled, onlineEnabled, de
   );
 }
 
+// Casilla impresa del sobre: el rótulo va dentro del recuadro, como en los formularios de laboratorio.
+const BOX =
+  "border bg-paper px-3 pt-2 transition-[border-color,box-shadow] focus-within:border-carton focus-within:ring-2 focus-within:ring-carton/15";
+
 function Field({
   id,
   label,
@@ -315,21 +328,21 @@ function Field({
   const hintId = useId();
   return (
     <div>
-      <label htmlFor={`f-${id}`} className="type-spec block text-[0.75rem] text-ink-soft">
-        {label}
-        {optional ? <span className="ml-1 normal-case tracking-normal text-ink-soft">(opcional)</span> : null}
-      </label>
-      <input
-        id={`f-${id}`}
-        name={id}
-        required={!optional}
-        aria-invalid={error ? true : undefined}
-        aria-describedby={error ? hintId : undefined}
-        className={`mt-1 block w-full border-0 border-b-2 bg-transparent px-0 py-2.5 text-[1.06rem] text-ink placeholder:text-ink-soft/85 focus:border-carton focus:ring-0 focus:outline-none ${
-          error ? "border-alert" : "border-ink/25"
-        }`}
-        {...input}
-      />
+      <div className={`${BOX} ${error ? "border-alert" : "border-ink/30"}`}>
+        <label htmlFor={`f-${id}`} className="type-spec block text-[0.68rem] text-ink-soft">
+          {label}
+          {optional ? <span className="ml-1 normal-case tracking-normal text-ink-soft">(opcional)</span> : null}
+        </label>
+        <input
+          id={`f-${id}`}
+          name={id}
+          required={!optional}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? hintId : undefined}
+          className="block w-full border-0 bg-transparent p-0 pt-0.5 pb-1 text-[1.06rem] text-ink placeholder:text-ink-soft/85 focus:ring-0 focus:outline-none"
+          {...input}
+        />
+      </div>
       {error ? (
         <p id={hintId} className="mt-1.5 text-sm text-alert">
           {error}
@@ -343,7 +356,8 @@ function SelectField({ id, label, error }: { id: string; label: string; error?: 
   const hintId = useId();
   return (
     <div>
-      <label htmlFor={`f-${id}`} className="type-spec block text-[0.75rem] text-ink-soft">
+      <div className={`${BOX} ${error ? "border-alert" : "border-ink/30"}`}>
+      <label htmlFor={`f-${id}`} className="type-spec block text-[0.68rem] text-ink-soft">
         {label}
       </label>
       <select
@@ -353,9 +367,7 @@ function SelectField({ id, label, error }: { id: string; label: string; error?: 
         defaultValue=""
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? hintId : undefined}
-        className={`mt-1 block w-full appearance-none border-0 border-b-2 bg-transparent bg-[length:12px] bg-[right_2px_center] bg-no-repeat px-0 py-2.5 text-[1.06rem] text-ink focus:border-carton focus:outline-none ${
-          error ? "border-alert" : "border-ink/25"
-        }`}
+        className="block w-full appearance-none border-0 bg-transparent bg-[length:12px] bg-[right_2px_center] bg-no-repeat p-0 pt-0.5 pb-1 text-[1.06rem] text-ink focus:outline-none"
         style={{
           backgroundImage:
             "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%234a5a4f' stroke-width='1.8'/%3E%3C/svg%3E\")",
@@ -370,6 +382,7 @@ function SelectField({ id, label, error }: { id: string; label: string; error?: 
           </option>
         ))}
       </select>
+      </div>
       {error ? (
         <p id={hintId} className="mt-1.5 text-sm text-alert">
           {error}

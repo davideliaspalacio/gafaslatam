@@ -8,7 +8,7 @@ export type OrderStatus = Database["public"]["Enums"]["order_status"];
 export type PaymentMethod = Database["public"]["Enums"]["payment_method"];
 export type PaymentStatus = Database["public"]["Enums"]["payment_status"];
 
-export type ProductImage = { url: string; alt: string };
+export type ProductImage = { url: string; alt: string; sample?: boolean };
 export type Moment = { url: string; caption: string; stamp: string | null; sample: boolean };
 export type Variant = { id: string; name: string; swatch: string };
 export type Bundle = { qty: number; price: number; label: string; badge: string | null };

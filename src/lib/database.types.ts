@@ -192,6 +192,7 @@ export type Database = {
           slug: string
           sort: number
           specs: Json
+          specs_confirmed: boolean
           stock: number | null
           updated_at: string
           variants: Json
@@ -218,6 +219,7 @@ export type Database = {
           slug: string
           sort?: number
           specs?: Json
+          specs_confirmed?: boolean
           stock?: number | null
           updated_at?: string
           variants?: Json
@@ -244,6 +246,7 @@ export type Database = {
           slug?: string
           sort?: number
           specs?: Json
+          specs_confirmed?: boolean
           stock?: number | null
           updated_at?: string
           variants?: Json

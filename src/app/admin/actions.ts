@@ -103,7 +103,10 @@ const ProductUpdate = z.object({
   active: z.string().optional().transform((v) => v === "on"),
   seo_title: z.string().trim().max(160),
   seo_description: z.string().trim().max(320),
-  images: json<ProductImage[]>(z.array(z.object({ url: z.url(), alt: z.string().max(200) }))),
+  images: json<ProductImage[]>(
+    z.array(z.object({ url: z.url(), alt: z.string().max(200), sample: z.boolean().optional() })),
+  ),
+  specs_confirmed: z.string().optional().transform((v) => v === "on"),
   moments: json<Moment[]>(
     z.array(
       z.object({

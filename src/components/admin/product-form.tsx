@@ -128,8 +128,11 @@ export function ProductForm({ product }: { product: Product }) {
             items={images}
             onChange={setImages}
             folder="producto"
-            newItem={(url) => ({ url, alt: product.name })}
-            extras={[{ key: "alt", label: "Descripción de la foto (para Google y lectores de pantalla)" }]}
+            newItem={(url) => ({ url, alt: product.name, sample: false })}
+            extras={[
+              { key: "alt", label: "Descripción de la foto (para Google y lectores de pantalla)" },
+              { key: "sample", label: "Es foto de referencia (no del producto real)", type: "checkbox" },
+            ]}
           />
         </div>
       </Panel>
@@ -169,9 +172,16 @@ export function ProductForm({ product }: { product: Product }) {
         </div>
       </Panel>
 
-      <Panel title="Especificaciones (franja amarilla)">
+      <Panel title="Ficha técnica">
         <div className="px-4 py-4">
-          <p className="mb-3 text-xs text-ink-soft">Confírmalas con el proveedor antes de anunciar.</p>
+          <div className="mb-4">
+            <Checkbox
+              name="specs_confirmed"
+              defaultChecked={product.specs_confirmed}
+              label="Confirmadas con el proveedor"
+              hint="La ficha técnica solo aparece en la tienda cuando marques esta casilla."
+            />
+          </div>
           <ListEditor
             items={specs}
             onChange={setSpecs}

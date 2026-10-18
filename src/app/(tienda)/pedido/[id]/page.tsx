@@ -86,8 +86,9 @@ async function OrderPrint({ params }: { params: Promise<{ id: string }> }) {
       {/* La copia del pedido, fechada hoy */}
       <article className="print on-paper mt-9 -rotate-1 text-ink">
         <div className="relative bg-carton-night px-5 pt-6 pb-10 text-paper">
-          <p className="type-spec text-[0.72rem] text-carton-soft">Pedido</p>
-          <p className="type-carton tabular mt-1 text-6xl">#{order.number}</p>
+          <p className="type-carton tabular text-5xl">
+            <span className="text-carton-soft">Pedido</span> #{order.number}
+          </p>
           <DateStamp value={stampOf(order.created_at)} className="absolute right-5 bottom-4 h-5" />
         </div>
         <div className="space-y-5 px-4 pt-5 pb-4">
@@ -163,8 +164,9 @@ function DemoConfirmation() {
       </p>
       <article className="print on-paper mt-9 -rotate-1 text-ink">
         <div className="relative bg-carton-night px-5 pt-6 pb-10 text-paper">
-          <p className="type-spec text-[0.72rem] text-carton-soft">Pedido</p>
-          <p className="type-carton tabular mt-1 text-6xl">#DEMO</p>
+          <p className="type-carton tabular text-5xl">
+            <span className="text-carton-soft">Pedido</span> #DEMO
+          </p>
           <DateStamp value={stampOf(new Date().toISOString())} className="absolute right-5 bottom-4 h-5" />
         </div>
         <p className="px-4 py-5 text-[0.95rem] leading-relaxed text-ink-soft">

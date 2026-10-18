@@ -37,10 +37,10 @@ export const DEMO_PRODUCT: Product = {
   price: 189900,
   compare_at_price: null,
   images: [
-    { url: `${U}1728405034490-0d55d9b59af1${Q}`, alt: "Gafas negras de montura gruesa sobre una sábana blanca" },
-    { url: `${U}1624372462825-73d8bda469e1${Q}`, alt: "Hombre con gafas negras de montura gruesa bajo el cielo azul" },
-    { url: `${U}1653038282411-7e9b41753018${Q}`, alt: "Gafas negras sobre un muro blanco con plantas detrás" },
-    { url: `${U}1734416044304-37d2c57c5c9d${Q}`, alt: "Mujer con gafas oscuras en una calle con una casa amarilla" },
+    { url: `${U}1728405034490-0d55d9b59af1${Q}`, alt: "Gafas negras de montura gruesa sobre una sábana blanca", sample: true },
+    { url: `${U}1624372462825-73d8bda469e1${Q}`, alt: "Hombre con gafas negras de montura gruesa bajo el cielo azul", sample: true },
+    { url: `${U}1653038282411-7e9b41753018${Q}`, alt: "Gafas negras sobre un muro blanco con plantas detrás", sample: true },
+    { url: `${U}1734416044304-37d2c57c5c9d${Q}`, alt: "Mujer con gafas oscuras en una calle con una casa amarilla", sample: true },
   ],
   moments: [
     { url: `${U}1602699191434-4d6358b26afe${Q}`, caption: "En la moto, sin soltar el manubrio", stamp: "'26 9 14", sample: true },
@@ -56,7 +56,7 @@ export const DEMO_PRODUCT: Product = {
   ],
   bundles: [
     { qty: 1, price: 189900, label: "1 par", badge: null },
-    { qty: 2, price: 339900, label: "2 pares", badge: "Para ti y alguien más" },
+    { qty: 2, price: 339900, label: "Doble copia · 2 pares", badge: "Para ti y alguien más" },
   ],
   features: [
     {
@@ -99,6 +99,7 @@ export const DEMO_PRODUCT: Product = {
     },
   ],
   in_the_box: ["Gafas VISTO Uno", "Estuche", "Cable de carga USB", "Paño de limpieza", "Manual en español"],
+  specs_confirmed: false,
   stock: null,
   active: true,
   featured: true,
