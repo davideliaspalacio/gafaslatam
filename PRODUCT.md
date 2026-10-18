@@ -42,7 +42,9 @@ Las mismas funciones que la gente ya vio en las gafas con cámara de las marcas 
 
 ## Brand Commitments
 
-Ninguno todavía. El nombre de la tienda es provisional (elegido por el desarrollo) y se cambia desde el panel.
+- Nombre de la tienda: **gafasLatam** (así, con la L mayúscula). Confirmado por el equipo.
+- Sin logo todavía; el nombre se compone en la rotulación de la tienda.
+- El nombre del producto ("gafasLatam Uno") es provisional hasta conocer el modelo real.
 
 ## Evidence on Hand
 

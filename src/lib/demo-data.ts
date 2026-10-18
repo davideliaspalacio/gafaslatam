@@ -8,7 +8,7 @@ const Q = "?w=1600&q=80&auto=format&fit=crop";
 
 export const DEMO_SETTINGS: SettingsRow = {
   id: 1,
-  store_name: "VISTO",
+  store_name: "gafasLatam",
   whatsapp_number: null,
   support_email: null,
   announcement: "Envío gratis a toda Colombia · Pagas al recibir",
@@ -27,13 +27,13 @@ export const DEMO_SETTINGS: SettingsRow = {
 
 export const DEMO_PRODUCT: Product = {
   id: "00000000-0000-4000-8000-000000000001",
-  slug: "gafas-inteligentes-visto-uno",
-  name: "VISTO Uno",
+  slug: "gafas-inteligentes-con-camara",
+  name: "gafasLatam Uno",
   headline: "Graba lo que ves. Escucha sin audífonos.",
   short_description:
     "Gafas inteligentes con cámara, parlantes abiertos y micrófono. Foto y video en primera persona, música y llamadas, sin sacar el celular.",
   description:
-    "Las VISTO Uno parecen unas gafas de sol normales, pero en la montura llevan una cámara, dos parlantes que apuntan al oído y micrófonos para hablar. Tocas la patilla y graban lo que tienes al frente; las fotos y videos pasan a tu celular por la app. Mientras tanto escuchas música o contestas llamadas sin nada en los oídos, así que sigues oyendo la calle.",
+    "Las gafasLatam Uno parecen unas gafas de sol normales, pero en la montura llevan una cámara, dos parlantes que apuntan al oído y micrófonos para hablar. Tocas la patilla y graban lo que tienes al frente; las fotos y videos pasan a tu celular por la app. Mientras tanto escuchas música o contestas llamadas sin nada en los oídos, así que sigues oyendo la calle.",
   price: 189900,
   compare_at_price: null,
   images: [
@@ -98,13 +98,13 @@ export const DEMO_PRODUCT: Product = {
       a: "Sí. Si llegan con un defecto de fábrica te las cambiamos. Escríbenos por WhatsApp con tu número de pedido.",
     },
   ],
-  in_the_box: ["Gafas VISTO Uno", "Estuche", "Cable de carga USB", "Paño de limpieza", "Manual en español"],
+  in_the_box: ["Gafas gafasLatam Uno", "Estuche", "Cable de carga USB", "Paño de limpieza", "Manual en español"],
   specs_confirmed: false,
   stock: null,
   active: true,
   featured: true,
   sort: 0,
-  seo_title: "VISTO Uno · Gafas inteligentes con cámara | Pago contraentrega en Colombia",
+  seo_title: "gafasLatam Uno · Gafas inteligentes con cámara | Pago contraentrega en Colombia",
   seo_description:
     "Gafas inteligentes con cámara, parlantes abiertos y micrófono. Graba en primera persona, escucha música y contesta llamadas. Envío a toda Colombia y pago contraentrega.",
   created_at: "2026-10-18T19:00:00.000Z",

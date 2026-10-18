@@ -1,4 +1,4 @@
-# Tienda de gafas inteligentes (VISTO, nombre provisional)
+# gafasLatam — tienda de gafas inteligentes
 
 Tienda de un solo producto pensada para tráfico de TikTok en Colombia: pago contraentrega por defecto, pago online opcional con Wompi y un panel simple para gestionar pedidos.
 

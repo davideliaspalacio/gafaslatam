@@ -42,6 +42,7 @@ export function ProductPage({
               ratio="landscape"
               tilt={6}
               objectPosition="center 58%"
+              preload
               reference={second.sample}
               sizes="(min-width: 768px) 40vw, 70vw"
               className="absolute -top-3 left-[16%] w-[84%] md:-top-10"
