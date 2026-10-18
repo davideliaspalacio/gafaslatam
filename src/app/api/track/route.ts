@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { serviceClient } from "@/lib/supabase/clients";
+import { hasSupabase } from "@/lib/supabase/env";
 
 const str = (max: number) => z.string().trim().max(max).nullish();
 
@@ -17,6 +18,7 @@ const Visit = z.object({
 
 // Una fila por sesión de navegador: sirve para medir conversión por campaña en el panel.
 export async function POST(request: Request) {
+  if (!hasSupabase()) return new NextResponse(null, { status: 204 });
   let body: unknown;
   try {
     body = JSON.parse(await request.text());

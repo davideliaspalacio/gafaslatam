@@ -6,6 +6,7 @@ import { z } from "zod";
 import { requireAdmin } from "@/lib/admin-auth";
 import { CATALOG_TAG, REVIEWS_TAG, SETTINGS_TAG } from "@/lib/catalog";
 import { sessionClient } from "@/lib/supabase/clients";
+import { hasSupabase } from "@/lib/supabase/env";
 import type { Bundle, Faq, Feature, Moment, ProductImage, Spec, Variant } from "@/lib/types";
 
 export type ActionState = { ok: boolean; message: string } | null;
@@ -17,6 +18,7 @@ export async function signIn(_: ActionState, formData: FormData): Promise<Action
   const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
   if (!email || !password) return { ok: false, message: "Escribe tu correo y contraseña." };
+  if (!hasSupabase()) return { ok: false, message: "El panel se activa cuando conectes Supabase." };
 
   const supabase = await sessionClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password });

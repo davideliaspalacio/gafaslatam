@@ -74,6 +74,10 @@ pnpm dev
 - [ ] No usar las marcas Meta ni Ray-Ban en textos, anuncios ni SEO.
 - [ ] Píxel de TikTok + token de la API de eventos.
 
+## Modo demo (sin Supabase)
+
+Si el despliegue no tiene las variables de Supabase, la tienda corre en **modo demo**: muestra el producto de ejemplo (`src/lib/demo-data.ts`), el formulario funciona pero **el pedido no se guarda** (la página de gracias lo avisa) y el panel muestra cómo activarlo. Sirve para ver la web publicada; **no pautes en este modo**. Al agregar las variables y volver a desplegar, todo pasa a real.
+
 ## Publicar
 
 - **Base de datos:** crea un proyecto en supabase.com y corre `supabase link` + `supabase db push`. Crea el admin con `pnpm admin:create` apuntando a las llaves de producción. Desactiva el registro público en Auth (ya viene así en `supabase/config.toml` para local).

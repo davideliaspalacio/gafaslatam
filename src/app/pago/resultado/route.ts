@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { applyWompiTransaction } from "@/lib/payments";
+import { hasSupabase } from "@/lib/supabase/env";
 import { fetchTransaction } from "@/lib/wompi";
 
 // Wompi devuelve al cliente aquí con ?id=<transacción>. Confirmamos el estado
@@ -7,7 +8,7 @@ import { fetchTransaction } from "@/lib/wompi";
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const id = url.searchParams.get("id");
-  if (!id) return NextResponse.redirect(new URL("/", url));
+  if (!id || !hasSupabase()) return NextResponse.redirect(new URL("/", url));
 
   const tx = await fetchTransaction(id);
   const result = tx ? await applyWompiTransaction(tx) : null;

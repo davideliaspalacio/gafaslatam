@@ -1,6 +1,8 @@
 import "server-only";
 import { cacheLife, cacheTag } from "next/cache";
+import { DEMO_PRODUCT, DEMO_SETTINGS } from "@/lib/demo-data";
 import { publicClient } from "@/lib/supabase/clients";
+import { hasSupabase } from "@/lib/supabase/env";
 import { toProduct, type Product, type ReviewRow, type SettingsRow } from "@/lib/types";
 
 export const CATALOG_TAG = "catalog";
@@ -30,6 +32,7 @@ export async function getSettings(): Promise<SettingsRow> {
   "use cache";
   cacheLife("hours");
   cacheTag(SETTINGS_TAG);
+  if (!hasSupabase()) return DEMO_SETTINGS;
   const { data } = await publicClient().from("store_settings").select("*").eq("id", 1).maybeSingle();
   return data ?? FALLBACK_SETTINGS;
 }
@@ -38,6 +41,7 @@ export async function getFeaturedProduct(): Promise<Product | null> {
   "use cache";
   cacheLife("hours");
   cacheTag(CATALOG_TAG);
+  if (!hasSupabase()) return DEMO_PRODUCT;
   const { data } = await publicClient()
     .from("products")
     .select("*")
@@ -53,6 +57,7 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
   "use cache";
   cacheLife("hours");
   cacheTag(CATALOG_TAG);
+  if (!hasSupabase()) return slug === DEMO_PRODUCT.slug ? DEMO_PRODUCT : null;
   const { data } = await publicClient().from("products").select("*").eq("slug", slug).eq("active", true).maybeSingle();
   return data ? toProduct(data) : null;
 }
@@ -61,6 +66,7 @@ export async function getActiveProducts(): Promise<Product[]> {
   "use cache";
   cacheLife("hours");
   cacheTag(CATALOG_TAG);
+  if (!hasSupabase()) return [DEMO_PRODUCT];
   const { data } = await publicClient().from("products").select("*").eq("active", true).order("sort");
   return (data ?? []).map(toProduct);
 }
@@ -69,6 +75,7 @@ export async function getPublishedReviews(productId: string): Promise<ReviewRow[
   "use cache";
   cacheLife("hours");
   cacheTag(REVIEWS_TAG);
+  if (!hasSupabase()) return [];
   const { data } = await publicClient()
     .from("reviews")
     .select("*")

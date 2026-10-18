@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { sessionClient } from "@/lib/supabase/clients";
+import { hasSupabase } from "@/lib/supabase/env";
 import type { OrderItem } from "@/lib/types";
 
 const COLUMNS = [
@@ -36,6 +37,7 @@ const cell = (value: unknown) => {
 
 // CSV para subir a la transportadora o al proveedor. Respeta filtros ?estado=
 export async function GET(request: Request) {
+  if (!hasSupabase()) return new NextResponse("El panel necesita Supabase", { status: 503 });
   const supabase = await sessionClient();
   const { data: auth } = await supabase.auth.getUser();
   if (!auth.user) return new NextResponse("No autorizado", { status: 401 });

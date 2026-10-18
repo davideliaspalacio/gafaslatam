@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { hasSupabase } from "@/lib/supabase/env";
 import { LoginForm } from "./login-form";
 
 export const metadata = { title: "Entrar" };
@@ -23,5 +24,16 @@ export default function LoginPage({ searchParams }: PageProps<"/admin/login">) {
 
 async function LoginNotice({ searchParams }: { searchParams: PageProps<"/admin/login">["searchParams"] }) {
   const { e } = await searchParams;
+  if (!hasSupabase()) {
+    return (
+      <div className="space-y-3 px-5 py-6 text-[0.95rem] leading-relaxed text-ink-soft">
+        <p className="font-semibold text-ink">La tienda está en modo demostración.</p>
+        <p>
+          El panel necesita la base de datos. Agrega en Vercel las variables NEXT_PUBLIC_SUPABASE_URL,
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY y SUPABASE_SECRET_KEY de tu proyecto de Supabase y vuelve a desplegar.
+        </p>
+      </div>
+    );
+  }
   return <LoginForm notice={e === "noadmin" ? "Esta cuenta no tiene acceso al panel." : null} />;
 }

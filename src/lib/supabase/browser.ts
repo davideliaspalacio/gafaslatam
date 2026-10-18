@@ -2,11 +2,10 @@
 
 import { createBrowserClient } from "@supabase/ssr";
 import type { Database } from "@/lib/database.types";
+import { supabaseEnv } from "@/lib/supabase/env";
 
 /** Cliente del navegador para el panel (subida de imágenes con la sesión del admin). */
 export function browserClient() {
-  return createBrowserClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
-  );
+  const { url, publishableKey } = supabaseEnv();
+  return createBrowserClient<Database>(url, publishableKey);
 }

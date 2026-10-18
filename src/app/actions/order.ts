@@ -3,10 +3,11 @@
 import { headers } from "next/headers";
 import { after } from "next/server";
 import { z } from "zod";
-import { getSettings } from "@/lib/catalog";
+import { getFeaturedProduct, getSettings } from "@/lib/catalog";
 import { DEPARTMENTS } from "@/lib/colombia";
 import { normalizeColombianMobile } from "@/lib/format";
 import { serviceClient } from "@/lib/supabase/clients";
+import { hasSupabase } from "@/lib/supabase/env";
 import { PURCHASE_EVENT, sendTikTokEvent } from "@/lib/tiktok";
 import { bundlesOf, toProduct, type OrderItem } from "@/lib/types";
 import { checkoutUrl, wompiConfigured } from "@/lib/wompi";
@@ -56,7 +57,7 @@ const OrderInput = z.object({
 export type OrderFormInput = z.input<typeof OrderInput>;
 
 export type OrderResult =
-  | { ok: true; orderId: string; orderNumber: number; total: number; redirectUrl: string | null }
+  | { ok: true; orderId: string; orderNumber: number; total: number; redirectUrl: string | null; demo?: boolean }
   | { ok: false; message: string; fieldErrors?: Record<string, string> };
 
 export async function placeOrder(input: OrderFormInput): Promise<OrderResult> {
@@ -79,6 +80,15 @@ export async function placeOrder(input: OrderFormInput): Promise<OrderResult> {
       message: "Revisa los datos marcados.",
       fieldErrors: { phone: "Escribe un celular colombiano de 10 dígitos (empieza por 3)" },
     };
+  }
+
+  // Modo demo (sin Supabase): se valida todo igual pero el pedido no se guarda.
+  if (!hasSupabase()) {
+    const [demoProduct, demoSettings] = await Promise.all([getFeaturedProduct(), getSettings()]);
+    const demoBundle = demoProduct ? bundlesOf(demoProduct).find((b) => b.qty === data.qty) : null;
+    if (!demoBundle) return { ok: false, message: "Esa cantidad no está disponible. Recarga la página." };
+    const shipping = demoSettings.free_shipping ? 0 : demoSettings.shipping_cost;
+    return { ok: true, orderId: "demo", orderNumber: 0, total: demoBundle.price + shipping, redirectUrl: null, demo: true };
   }
 
   const db = serviceClient();

@@ -5,11 +5,11 @@ import { cookies } from "next/headers";
 import { connection } from "next/server";
 import type { Database } from "@/lib/database.types";
 
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const publishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!;
+import { supabaseEnv } from "@/lib/supabase/env";
 
 /** Lecturas públicas sin cookies: se puede usar dentro de "use cache". */
 export function publicClient() {
+  const { url, publishableKey } = supabaseEnv();
   return createClient<Database>(url, publishableKey, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
@@ -17,9 +17,9 @@ export function publicClient() {
 
 /** Clave secreta: salta RLS. Solo para pedidos, visitas y webhooks en el servidor. */
 export function serviceClient() {
-  const secret = process.env.SUPABASE_SECRET_KEY;
-  if (!secret) throw new Error("Falta SUPABASE_SECRET_KEY");
-  return createClient<Database>(url, secret, {
+  const secret = process.env.SUPABASE_SECRET_KEY ?? process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!secret) throw new Error("Falta SUPABASE_SECRET_KEY (o SUPABASE_SERVICE_ROLE_KEY) en las variables de entorno.");
+  return createClient<Database>(supabaseEnv().url, secret, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 }
@@ -29,6 +29,7 @@ export async function sessionClient() {
   // El cliente de auth lee la hora al crearse: marcamos la ruta como dinámica antes.
   await connection();
   const cookieStore = await cookies();
+  const { url, publishableKey } = supabaseEnv();
   return createServerClient<Database>(url, publishableKey, {
     cookies: {
       getAll: () => cookieStore.getAll(),

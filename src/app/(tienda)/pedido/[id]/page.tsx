@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { connection } from "next/server";
 import { Suspense } from "react";
 import { z } from "zod";
 import { DateStamp } from "@/components/store/date-stamp";
@@ -8,6 +9,7 @@ import { PurchasePixel } from "@/components/store/purchase-pixel";
 import { getSettings } from "@/lib/catalog";
 import { formatCOP, formatPhone, whatsappLink } from "@/lib/format";
 import { serviceClient } from "@/lib/supabase/clients";
+import { hasSupabase } from "@/lib/supabase/env";
 import type { OrderItem } from "@/lib/types";
 
 export const metadata: Metadata = {
@@ -27,6 +29,10 @@ export default function OrderPage({ params }: PageProps<"/pedido/[id]">) {
 
 async function OrderPrint({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  if (id === "demo" && !hasSupabase()) {
+    await connection(); // la fecha de la copia es la de hoy
+    return <DemoConfirmation />;
+  }
   if (!z.uuid().safeParse(id).success) notFound();
 
   const [{ data: order }, settings] = await Promise.all([
@@ -142,6 +148,30 @@ async function OrderPrint({ params }: { params: Promise<{ id: string }> }) {
           {online ? "." : ", y le pagas a la transportadora."}
         </li>
       </ol>
+    </>
+  );
+}
+
+/** Modo demo: la tienda aún no tiene base de datos, así que el pedido no se guardó. */
+function DemoConfirmation() {
+  return (
+    <>
+      <h1 className="type-carton text-[2.4rem] text-paper sm:text-5xl">Pedido de prueba</h1>
+      <p className="mt-4 leading-relaxed text-carton-soft">
+        La tienda está en modo demostración: todavía no está conectada a la base de datos, así que este pedido no se
+        guardó. Al conectar Supabase, los pedidos llegan al panel.
+      </p>
+      <article className="print on-paper mt-9 -rotate-1 text-ink">
+        <div className="relative bg-carton-night px-5 pt-6 pb-10 text-paper">
+          <p className="type-spec text-[0.72rem] text-carton-soft">Pedido</p>
+          <p className="type-carton tabular mt-1 text-6xl">#DEMO</p>
+          <DateStamp value={stampOf(new Date().toISOString())} className="absolute right-5 bottom-4 h-5" />
+        </div>
+        <p className="px-4 py-5 text-[0.95rem] leading-relaxed text-ink-soft">
+          Así verá el cliente su confirmación: número de pedido, productos, total, dirección de entrega y el botón para
+          confirmar por WhatsApp.
+        </p>
+      </article>
     </>
   );
 }
