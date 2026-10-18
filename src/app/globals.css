@@ -1,0 +1,190 @@
+@import "tailwindcss";
+
+/*
+  Mundo: laboratorio de revelado / cámara desechable.
+  Cartón verde de suelo, amarillo flash para la acción, copias en papel blanco,
+  fecha estampada naranja solo para fechas.
+*/
+:root {
+  --carton: #146b3a;
+  --carton-deep: #0d4f2a;
+  --carton-night: #08311a;
+  --carton-soft: #cfe6d6;
+  --flash: #f5c518;
+  --flash-deep: #e2b100;
+  --stamp: #ff6b1a;
+  --paper: #fbfbf7;
+  --paper-shade: #eef1ec;
+  --ink: #111611;
+  --ink-soft: #4a5a4f;
+  --rule: #d6ded8;
+  --alert: #c8261d;
+  --ok: #146b3a;
+}
+
+@theme inline {
+  --color-carton: var(--carton);
+  --color-carton-deep: var(--carton-deep);
+  --color-carton-night: var(--carton-night);
+  --color-carton-soft: var(--carton-soft);
+  --color-flash: var(--flash);
+  --color-flash-deep: var(--flash-deep);
+  --color-stamp: var(--stamp);
+  --color-paper: var(--paper);
+  --color-paper-shade: var(--paper-shade);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-rule: var(--rule);
+  --color-alert: var(--alert);
+  --color-ok: var(--ok);
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --shadow-print: 0 1px 1px rgb(8 49 26 / 0.18), 0 10px 24px -6px rgb(8 49 26 / 0.45),
+    0 28px 48px -18px rgb(8 49 26 / 0.5);
+  --shadow-lift: 0 2px 2px rgb(8 49 26 / 0.12), 0 14px 30px -12px rgb(8 49 26 / 0.35);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 4.5rem;
+}
+
+body {
+  background: var(--carton);
+  color: var(--paper);
+  font-family: var(--font-sans);
+  font-variant-numeric: lining-nums;
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: var(--flash);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 3px solid var(--flash);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.on-paper :focus-visible {
+  outline-color: var(--carton);
+}
+
+input,
+select,
+textarea {
+  caret-color: var(--carton);
+  accent-color: var(--carton);
+}
+
+a {
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+}
+
+/* Rotulación de cartón: grotesca ancha e itálica */
+.type-carton {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 850;
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+}
+
+/* Rótulo condensado de especificaciones (como el texto pequeño del cartón) */
+.type-spec {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-stretch: 75%;
+  font-variation-settings: "wdth" 75;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Copias fotográficas: papel blanco con borde, sombra de copia sobre el cartón */
+.print {
+  background: var(--paper);
+  padding: 0.55rem 0.55rem 0.55rem;
+  box-shadow: var(--shadow-print);
+}
+
+/* Revelado: la copia aparece subexpuesta y llega a su color al entrar en pantalla */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .develop img {
+      animation: develop linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 35%;
+    }
+  }
+}
+
+@keyframes develop {
+  from {
+    filter: brightness(0.55) saturate(0.2) sepia(0.35) contrast(0.9);
+  }
+  to {
+    filter: none;
+  }
+}
+
+/* Destello de flash al confirmar el pedido */
+.flash-burst {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 40%, #fff 0%, #fffbe6 45%, rgb(255 251 230 / 0.85) 100%);
+  animation: flash-burst 700ms var(--ease-out-expo) forwards;
+}
+
+@keyframes flash-burst {
+  0% {
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .flash-burst {
+    animation-duration: 1ms;
+  }
+}
+
+/* Barras de desplazamiento con el color del cartón */
+* {
+  scrollbar-color: var(--carton-soft) transparent;
+  scrollbar-width: thin;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
