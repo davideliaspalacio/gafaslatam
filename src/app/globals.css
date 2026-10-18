@@ -6,9 +6,9 @@
   fecha estampada naranja solo para fechas.
 */
 :root {
-  --carton: #146b3a;
-  --carton-deep: #0d4f2a;
-  --carton-night: #08311a;
+  --carton: #0c7038;
+  --carton-deep: #08532a;
+  --carton-night: #05321a;
   --carton-soft: #cfe6d6;
   --flash: #f5c518;
   --flash-deep: #e2b100;
@@ -19,7 +19,7 @@
   --ink-soft: #4a5a4f;
   --rule: #d6ded8;
   --alert: #c8261d;
-  --ok: #146b3a;
+  --ok: #0c7038;
 }
 
 @theme inline {

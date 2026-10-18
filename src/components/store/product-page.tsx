@@ -17,7 +17,7 @@ export function ProductPage({
   settings: SettingsRow;
   reviews: ReviewRow[];
 }) {
-  const [cover, second] = product.images;
+  const [cover, second, third, fourth] = product.images;
   const bundles = bundlesOf(product);
   const single = bundles[0];
   const shippingLabel = settings.free_shipping ? "Envío gratis" : `Envío ${formatCOP(settings.shipping_cost)}`;
@@ -31,16 +31,17 @@ export function ProductPage({
       <ViewContent product={product} />
 
       {/* Primera pantalla: la copia del producto sobre el cartón */}
-      <section className="mx-auto grid max-w-6xl gap-x-12 gap-y-7 px-4 pt-3 pb-14 sm:px-6 md:grid-cols-[1.1fr_1fr] md:items-center md:pt-10 md:pb-24">
-        <div className="relative mx-auto w-[86%] max-w-[34rem] md:w-full">
+      <section className="mx-auto grid max-w-6xl gap-x-12 gap-y-5 px-4 pt-1 pb-14 sm:px-6 md:grid-cols-[1.1fr_1fr] md:items-center md:pt-10 md:pb-24">
+        <div className="relative mx-auto mt-4 w-[80%] max-w-[34rem] md:mt-0 md:w-full">
           {second ? (
             <Print
               src={second.url}
               alt={second.alt}
               ratio="landscape"
-              tilt={5}
+              tilt={6}
+              objectPosition="center 22%"
               sizes="(min-width: 768px) 40vw, 70vw"
-              className="absolute -top-2 left-[14%] w-[86%] opacity-95"
+              className="absolute -top-3 left-[16%] w-[84%]"
             />
           ) : null}
           {cover ? (
@@ -52,7 +53,7 @@ export function ProductPage({
               tilt={-3}
               preload
               sizes="(min-width: 768px) 45vw, 86vw"
-              className="relative mt-5 w-[94%]"
+              className="relative mt-12 w-[94%] md:mt-16"
             />
           ) : (
             <MissingPhoto />
@@ -60,7 +61,7 @@ export function ProductPage({
         </div>
 
         <div>
-          <h1 className="type-carton text-[2.5rem] text-paper sm:text-6xl md:text-[4.1rem]">
+          <h1 className="type-carton text-[2.15rem] text-paper sm:text-6xl md:text-[4.1rem]">
             <span className="block text-balance">{headlineA}</span>
             {headlineB ? <span className="mt-1 block text-balance text-flash">{headlineB}</span> : null}
           </h1>
@@ -68,13 +69,13 @@ export function ProductPage({
             {product.name} · Gafas inteligentes con cámara
           </p>
           {product.short_description ? (
-            <p className="mt-3 max-w-[34rem] text-[1.02rem] leading-relaxed text-carton-soft">
+            <p className="mt-3 hidden max-w-[34rem] text-[1.02rem] leading-relaxed text-carton-soft md:block">
               {product.short_description}
             </p>
           ) : null}
 
-          <div className="mt-6 flex flex-wrap items-end gap-x-4 gap-y-1">
-            <p className="type-carton tabular text-[2.6rem] text-paper not-italic" style={{ fontStyle: "normal" }}>
+          <div className="mt-4 flex flex-wrap items-end gap-x-4 gap-y-1 md:mt-6">
+            <p className="type-carton tabular text-[2.4rem] text-paper" style={{ fontStyle: "normal" }}>
               {formatCOP(single.price)}
             </p>
             {product.compare_at_price && product.compare_at_price > single.price ? (
@@ -90,7 +91,7 @@ export function ProductPage({
           <a
             id="hero-cta"
             href="#pedido"
-            className="type-spec mt-5 flex min-h-14 items-center justify-center gap-3 rounded-[3px] bg-flash px-6 text-[1.05rem] text-ink shadow-[var(--shadow-lift)] transition-[background-color,translate] duration-200 hover:bg-flash-deep active:translate-y-px md:max-w-md"
+            className="type-spec mt-4 flex min-h-14 items-center justify-center gap-3 rounded-[3px] bg-flash px-6 text-[1.05rem] text-ink shadow-[var(--shadow-lift)] transition-[background-color,translate] duration-200 hover:bg-flash-deep active:translate-y-px md:max-w-md"
           >
             Pedir ahora · {settings.cod_enabled ? "pagas al recibir" : "pago seguro"}
           </a>
@@ -154,14 +155,33 @@ export function ProductPage({
             {product.description ? (
               <p className="mt-5 max-w-2xl text-[1.05rem] leading-relaxed text-ink-soft">{product.description}</p>
             ) : null}
-            <dl className="mt-12 grid gap-x-14 md:grid-cols-2">
-              {product.features.map((f) => (
-                <div key={f.title} className="border-t border-rule py-7">
-                  <dt className="text-xl font-bold tracking-tight text-ink sm:text-2xl">{f.title}</dt>
-                  <dd className="mt-2 max-w-prose leading-relaxed text-ink-soft">{f.body}</dd>
+            <div className="mt-12 grid gap-12 md:grid-cols-[1fr_0.8fr] md:gap-16">
+              <dl>
+                {product.features.map((f) => (
+                  <div key={f.title} className="border-t border-rule py-7">
+                    <dt className="text-xl font-bold tracking-tight text-ink sm:text-2xl">{f.title}</dt>
+                    <dd className="mt-2 max-w-prose leading-relaxed text-ink-soft">{f.body}</dd>
+                  </div>
+                ))}
+              </dl>
+              {third || fourth ? (
+                <div className="relative mx-auto w-[82%] md:sticky md:top-10 md:w-full md:self-start">
+                  {fourth ? (
+                    <Print src={fourth.url} alt={fourth.alt} tilt={3} sizes="(min-width: 768px) 32vw, 80vw" />
+                  ) : null}
+                  {third ? (
+                    <Print
+                      src={third.url}
+                      alt={third.alt}
+                      ratio="landscape"
+                      tilt={-4}
+                      sizes="(min-width: 768px) 26vw, 64vw"
+                      className={fourth ? "absolute -bottom-10 -left-[14%] w-[72%]" : ""}
+                    />
+                  ) : null}
                 </div>
-              ))}
-            </dl>
+              ) : null}
+            </div>
           </div>
         </section>
       ) : null}

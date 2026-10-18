@@ -9,6 +9,7 @@ type PrintProps = {
   tilt?: number;
   sizes: string;
   preload?: boolean;
+  objectPosition?: string;
   className?: string;
 };
 
@@ -19,7 +20,7 @@ const RATIO = {
 } as const;
 
 /** Copia fotográfica: papel blanco con borde y, si la hay, la fecha estampada. */
-export function Print({ src, alt, stamp, ratio = "portrait", tilt = 0, sizes, preload, className = "" }: PrintProps) {
+export function Print({ src, alt, stamp, ratio = "portrait", tilt = 0, sizes, preload, objectPosition, className = "" }: PrintProps) {
   return (
     <figure className={`print develop ${className}`} style={tilt ? { rotate: `${tilt}deg` } : undefined}>
       <div className={`relative overflow-hidden bg-carton-night ${RATIO[ratio]}`}>
@@ -31,6 +32,7 @@ export function Print({ src, alt, stamp, ratio = "portrait", tilt = 0, sizes, pr
           quality={75}
           preload={preload}
           className="object-cover"
+          style={objectPosition ? { objectPosition } : undefined}
         />
         {stamp ? <DateStamp value={stamp} className="absolute bottom-[6%] right-[6%] h-[7%] min-h-3" /> : null}
       </div>
