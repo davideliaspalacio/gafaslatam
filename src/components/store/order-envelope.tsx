@@ -1,6 +1,7 @@
 "use client";
 
 import { Loader2, Scissors } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useId, useRef, useState, useTransition } from "react";
 import { placeOrder } from "@/app/actions/order";
@@ -283,13 +284,13 @@ export function OrderEnvelope({ product, shipping, codEnabled, onlineEnabled, de
             </button>
             <p className="mt-4 text-center text-xs leading-relaxed text-ink-soft">
               Al confirmar aceptas los{" "}
-              <a href="/politicas/terminos" className="underline">
+              <Link href="/politicas/terminos" className="underline">
                 términos
-              </a>{" "}
+              </Link>{" "}
               y la{" "}
-              <a href="/politicas/privacidad" className="underline">
+              <Link href="/politicas/privacidad" className="underline">
                 política de datos
-              </a>
+              </Link>
               . Solo usamos tu número para coordinar la entrega.
             </p>
           </div>
@@ -316,7 +317,7 @@ function Field({
     <div>
       <label htmlFor={`f-${id}`} className="type-spec block text-[0.75rem] text-ink-soft">
         {label}
-        {optional ? <span className="ml-1 normal-case tracking-normal text-ink-soft/80">(opcional)</span> : null}
+        {optional ? <span className="ml-1 normal-case tracking-normal text-ink-soft">(opcional)</span> : null}
       </label>
       <input
         id={`f-${id}`}
@@ -324,7 +325,7 @@ function Field({
         required={!optional}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? hintId : undefined}
-        className={`mt-1 block w-full border-0 border-b-2 bg-transparent px-0 py-2.5 text-[1.06rem] text-ink placeholder:text-ink-soft/55 focus:border-carton focus:ring-0 focus:outline-none ${
+        className={`mt-1 block w-full border-0 border-b-2 bg-transparent px-0 py-2.5 text-[1.06rem] text-ink placeholder:text-ink-soft/85 focus:border-carton focus:ring-0 focus:outline-none ${
           error ? "border-alert" : "border-ink/25"
         }`}
         {...input}

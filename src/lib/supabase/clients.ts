@@ -2,6 +2,7 @@ import "server-only";
 import { createClient } from "@supabase/supabase-js";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { connection } from "next/server";
 import type { Database } from "@/lib/database.types";
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -25,6 +26,8 @@ export function serviceClient() {
 
 /** Sesión del panel (cookies). Respeta RLS como el usuario conectado. */
 export async function sessionClient() {
+  // El cliente de auth lee la hora al crearse: marcamos la ruta como dinámica antes.
+  await connection();
   const cookieStore = await cookies();
   return createServerClient<Database>(url, publishableKey, {
     cookies: {

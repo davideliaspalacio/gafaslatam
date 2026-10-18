@@ -398,6 +398,29 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_campaign_stats: {
+        Args: { p_days?: number }
+        Returns: {
+          campaign: string
+          orders: number
+          revenue: number
+          source: string
+          visits: number
+        }[]
+      }
+      admin_summary: {
+        Args: { p_days?: number }
+        Returns: {
+          delivered_period: number
+          orders_period: number
+          orders_today: number
+          pending_confirmation: number
+          returned_period: number
+          revenue_period: number
+          revenue_today: number
+          visits_period: number
+        }[]
+      }
       decrement_stock: {
         Args: { p_product_id: string; p_qty: number }
         Returns: boolean

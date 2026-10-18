@@ -39,9 +39,9 @@ export function ProductPage({
               alt={second.alt}
               ratio="landscape"
               tilt={6}
-              objectPosition="center 22%"
+              objectPosition="center 58%"
               sizes="(min-width: 768px) 40vw, 70vw"
-              className="absolute -top-3 left-[16%] w-[84%]"
+              className="absolute -top-3 left-[16%] w-[84%] md:-top-10"
             />
           ) : null}
           {cover ? (
@@ -53,7 +53,7 @@ export function ProductPage({
               tilt={-3}
               preload
               sizes="(min-width: 768px) 45vw, 86vw"
-              className="relative mt-12 w-[94%] md:mt-16"
+              className="relative mt-12 w-[94%] md:mt-20"
             />
           ) : (
             <MissingPhoto />
@@ -153,7 +153,7 @@ export function ProductPage({
               Parecen gafas de sol. Hacen mucho más.
             </h2>
             {product.description ? (
-              <p className="mt-5 max-w-2xl text-[1.05rem] leading-relaxed text-ink-soft">{product.description}</p>
+              <p className="mt-5 max-w-[65ch] text-[1.05rem] leading-relaxed text-ink-soft">{product.description}</p>
             ) : null}
             <div className="mt-12 grid gap-12 md:grid-cols-[1fr_0.8fr] md:gap-16">
               <dl>

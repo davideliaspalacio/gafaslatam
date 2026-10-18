@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Skills y artefactos de diseño (código de terceros)
+    ".claude/**",
+    ".impeccable/**",
   ]),
 ]);
 

@@ -55,11 +55,11 @@ export function toProduct(row: ProductRow): Product {
   };
 }
 
-/** Si el producto no tiene ofertas configuradas, la unidad suelta es la única. */
-export function bundlesOf(product: Product): Bundle[] {
-  return product.bundles.length
-    ? product.bundles
-    : [{ qty: 1, price: product.price, label: "1 unidad", badge: null }];
+/** Ofertas por cantidad. La unidad suelta siempre usa el precio principal del producto. */
+export function bundlesOf(product: Pick<Product, "bundles" | "price">): Bundle[] {
+  const rest = product.bundles.filter((b) => b.qty > 1);
+  const single = product.bundles.find((b) => b.qty === 1);
+  return [{ qty: 1, label: single?.label || "1 unidad", badge: single?.badge ?? null, price: product.price }, ...rest];
 }
 
 export const ORDER_STATUS_LABEL: Record<OrderStatus, string> = {

@@ -141,7 +141,9 @@ export async function updateProduct(_: ActionState, formData: FormData): Promise
     return { ok: false, message: `Revisa "${String(issue?.path[0] ?? "")}": ${issue?.message ?? "dato inválido"}` };
   }
   const { id, ...rest } = parsed.data;
-  const bundles = [...rest.bundles].sort((a, b) => a.qty - b.qty);
+  const bundles = [...rest.bundles]
+    .sort((a, b) => a.qty - b.qty)
+    .map((b) => (b.qty === 1 ? { ...b, price: rest.price } : b));
   const { error } = await supabase
     .from("products")
     .update({
