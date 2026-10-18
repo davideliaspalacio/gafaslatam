@@ -68,7 +68,7 @@ export const DEMO_PRODUCT: Product = {
       body: "Dos parlantes abiertos dirigen el sonido a tu oído. Escuchas tu música y sigues oyendo lo que pasa alrededor.",
     },
     { title: "Contesta con la voz", body: "Micrófonos en la montura para hablar por teléfono o activar el asistente de tu celular." },
-    { title: "Protegen del sol", body: "Lentes con filtro UV400. Por fuera, son unas gafas de sol que te pondrías igual." },
+    { title: "Protegen del sol", body: "Lentes oscuros para el día a día. Por fuera, son unas gafas de sol que te pondrías igual." },
   ],
   specs: [
     { value: "8", unit: "MP", label: "Cámara de fotos" },
@@ -91,8 +91,8 @@ export const DEMO_PRODUCT: Product = {
       q: "¿Funcionan con iPhone y Android?",
       a: "Sí. Se conectan por Bluetooth a cualquier celular y la app para pasar fotos y videos está para iPhone y Android.",
     },
-    { q: "¿Se pueden mojar?", a: "Aguantan sudor y salpicaduras de lluvia. No son para nadar ni para meterlas al agua." },
-    { q: "¿Cómo se cargan?", a: "Con el cable USB que viene en la caja. Una carga completa toma alrededor de una hora." },
+    { q: "¿Se pueden mojar?", a: "Trátalas como unas gafas con electrónica adentro: no son para nadar ni para meterlas al agua." },
+    { q: "¿Cómo se cargan?", a: "Con el cable USB que viene en la caja, conectado a cualquier cargador de celular." },
     {
       q: "¿Tienen garantía?",
       a: "Sí. Si llegan con un defecto de fábrica te las cambiamos. Escríbenos por WhatsApp con tu número de pedido.",

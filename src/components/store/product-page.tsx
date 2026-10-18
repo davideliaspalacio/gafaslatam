@@ -44,6 +44,7 @@ export function ProductPage({
               objectPosition="center 58%"
               preload
               reference={second.sample}
+              captionAt="top"
               sizes="(min-width: 768px) 40vw, 70vw"
               className="absolute -top-3 left-[16%] w-[84%] md:-top-10"
             />
@@ -103,17 +104,17 @@ export function ProductPage({
 
           <dl className="mt-6 grid grid-cols-3 divide-x divide-carton-soft/25 border-y border-carton-soft/25 text-carton-soft md:max-w-md">
             <div className="py-2.5 pr-3">
-              <dt className="type-spec text-[0.66rem] text-flash">Entrega</dt>
+              <dt className="type-spec text-[0.66rem] text-carton-soft/80">Entrega</dt>
               <dd className="mt-0.5 text-[0.8rem] leading-snug">{settings.delivery_estimate}</dd>
             </div>
             <div className="px-3 py-2.5">
-              <dt className="type-spec text-[0.66rem] text-flash">Pago</dt>
+              <dt className="type-spec text-[0.66rem] text-carton-soft/80">Pago</dt>
               <dd className="mt-0.5 text-[0.8rem] leading-snug">
                 {settings.cod_enabled ? "En efectivo al recibir" : "Pago protegido"}
               </dd>
             </div>
             <div className="py-2.5 pl-3">
-              <dt className="type-spec text-[0.66rem] text-flash">Garantía</dt>
+              <dt className="type-spec text-[0.66rem] text-carton-soft/80">Garantía</dt>
               <dd className="mt-0.5 text-[0.8rem] leading-snug">Por defectos de fábrica</dd>
             </div>
           </dl>
@@ -132,7 +133,7 @@ export function ProductPage({
               mirando, con las manos libres.
             </p>
             {sampleMoments ? (
-              <p className="type-spec mt-3 text-[0.7rem] text-flash">Fotos de referencia · pronto, tomas hechas con las gafas</p>
+              <p className="type-spec mt-3 text-[0.7rem] text-carton-soft">Fotos de referencia · pronto, tomas hechas con las gafas</p>
             ) : null}
           </div>
           <ul className="no-scrollbar mt-9 flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-6 sm:px-6 md:mx-auto md:grid md:max-w-6xl md:grid-cols-3 md:gap-8 md:overflow-visible">
@@ -181,6 +182,7 @@ export function ProductPage({
                       tilt={3}
                       sizes="(min-width: 768px) 32vw, 80vw"
                       reference={fourth.sample}
+                      captionAt={third ? "top" : "bottom"}
                     />
                   ) : null}
                   {third ? (
@@ -204,7 +206,9 @@ export function ProductPage({
 
       {/* Ficha técnica, caja y compra: el costado impreso de la caja */}
       <section className="on-paper border-t border-rule bg-paper text-ink">
-        <div className="mx-auto grid max-w-6xl gap-14 px-4 py-16 sm:px-6 md:grid-cols-2 md:py-24 lg:grid-cols-3">
+        <div
+          className={`mx-auto grid max-w-6xl gap-14 px-4 py-16 sm:px-6 md:grid-cols-2 md:py-24 ${showSpecs ? "lg:grid-cols-3" : ""}`}
+        >
           {showSpecs ? (
             <div>
               <h2 className="type-carton text-[1.8rem] text-carton sm:text-4xl">Ficha técnica</h2>

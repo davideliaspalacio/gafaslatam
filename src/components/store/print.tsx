@@ -12,6 +12,8 @@ type PrintProps = {
   objectPosition?: string;
   /** Imagen de muestra (no del producto real): se rotula en el margen de la copia. */
   reference?: boolean;
+  /** Arriba cuando la copia va detrás de otra y su margen inferior queda tapado. */
+  captionAt?: "top" | "bottom";
   className?: string;
 };
 
@@ -32,10 +34,19 @@ export function Print({
   preload,
   objectPosition,
   reference,
+  captionAt = "bottom",
   className = "",
 }: PrintProps) {
+  const caption = reference ? (
+    <figcaption
+      className={`type-spec text-[0.62rem] leading-none text-ink-soft ${captionAt === "top" ? "-mt-1 pb-1.5 text-right" : "-mb-1 pt-1.5"}`}
+    >
+      Foto de referencia
+    </figcaption>
+  ) : null;
   return (
     <figure className={`print develop ${className}`} style={tilt ? { rotate: `${tilt}deg` } : undefined}>
+      {captionAt === "top" ? caption : null}
       <div className={`relative overflow-hidden bg-carton-night ${RATIO[ratio]}`}>
         <Image
           src={src}
@@ -49,11 +60,7 @@ export function Print({
         />
         {stamp ? <DateStamp value={stamp} className="absolute bottom-[6%] right-[6%] h-[7%] min-h-3" /> : null}
       </div>
-      {reference ? (
-        <figcaption className="type-spec -mb-1 pt-1.5 text-[0.62rem] leading-none text-ink-soft">
-          Foto de referencia
-        </figcaption>
-      ) : null}
+      {captionAt === "bottom" ? caption : null}
     </figure>
   );
 }

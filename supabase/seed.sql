@@ -34,7 +34,7 @@ insert into public.products (
     {"title":"Foto y video en primera persona","body":"Un toque en la patilla y graba exactamente lo que estás viendo. Tus manos quedan libres: en la moto, en el concierto, con tu perro, en la cocina."},
     {"title":"Música y llamadas sin audífonos","body":"Dos parlantes abiertos dirigen el sonido a tu oído. Escuchas tu música y sigues oyendo lo que pasa alrededor."},
     {"title":"Contesta con la voz","body":"Micrófonos en la montura para hablar por teléfono o activar el asistente de tu celular."},
-    {"title":"Protegen del sol","body":"Lentes con filtro UV400. Por fuera, son unas gafas de sol que te pondrías igual."}
+    {"title":"Protegen del sol","body":"Lentes oscuros para el día a día. Por fuera, son unas gafas de sol que te pondrías igual."}
   ]'::jsonb,
   '[
     {"value":"8","unit":"MP","label":"Cámara de fotos"},
@@ -48,8 +48,8 @@ insert into public.products (
     {"q":"¿Cómo funciona el pago contraentrega?","a":"Haces el pedido aquí sin pagar nada. Te escribimos por WhatsApp para confirmar la dirección y cuando la transportadora te entrega, pagas en efectivo."},
     {"q":"¿Cuánto se demora el envío?","a":"Entre 2 y 5 días hábiles según tu ciudad. Te enviamos el número de guía para que sigas el paquete."},
     {"q":"¿Funcionan con iPhone y Android?","a":"Sí. Se conectan por Bluetooth a cualquier celular y la app para pasar fotos y videos está para iPhone y Android."},
-    {"q":"¿Se pueden mojar?","a":"Aguantan sudor y salpicaduras de lluvia. No son para nadar ni para meterlas al agua."},
-    {"q":"¿Cómo se cargan?","a":"Con el cable USB que viene en la caja. Una carga completa toma alrededor de una hora."},
+    {"q":"¿Se pueden mojar?","a":"Trátalas como unas gafas con electrónica adentro: no son para nadar ni para meterlas al agua."},
+    {"q":"¿Cómo se cargan?","a":"Con el cable USB que viene en la caja, conectado a cualquier cargador de celular."},
     {"q":"¿Tienen garantía?","a":"Sí. Si llegan con un defecto de fábrica te las cambiamos. Escríbenos por WhatsApp con tu número de pedido."}
   ]'::jsonb,
   '["Gafas gafasLatam Uno","Estuche","Cable de carga USB","Paño de limpieza","Manual en español"]'::jsonb,
