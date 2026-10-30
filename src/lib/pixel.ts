@@ -4,7 +4,16 @@
 // Brief: ver producto, tocar "Pedir", enviar pedido y tocar WhatsApp.
 // Los pedidos usan el mismo event_id que el servidor para no contar doble.
 
-type Contents = { content_id: string; content_name: string; quantity: number; price: number }[];
+import {
+  ATTR_COOKIE,
+  ATTR_MAX_AGE,
+  CAMPAIGN_FIELDS,
+  cleanAttribution,
+  parseAttributionCookie,
+  type Attribution,
+} from "@/lib/atribucion";
+
+export type Contents = { content_id: string; content_name: string; quantity: number; price: number }[];
 
 type Ttq = { track: (event: string, props?: Record<string, unknown>, opts?: { event_id?: string }) => void };
 type Fbq = (...args: unknown[]) => void;
@@ -58,43 +67,51 @@ export function trackContact() {
   } catch {}
 }
 
-const ATTR_KEY = "gl_attr";
-const ATTR_FIELDS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "ttclid", "fbclid"] as const;
+export type { Attribution };
 
-export type Attribution = Partial<Record<(typeof ATTR_FIELDS)[number] | "landing_page" | "referrer", string>>;
-
-/** Guarda la atribución de la visita: la última campaña con parámetros gana. */
-export function captureAttribution(): Attribution {
-  let stored: Attribution = {};
+function readCookie(): Attribution {
   try {
-    stored = JSON.parse(localStorage.getItem(ATTR_KEY) || "{}");
-  } catch {}
-  const params = new URLSearchParams(window.location.search);
-  const fresh: Attribution = {};
-  for (const f of ATTR_FIELDS) {
-    const value = params.get(f);
-    if (value) fresh[f] = value.slice(0, 300);
+    const raw = document.cookie
+      .split("; ")
+      .find((c) => c.startsWith(`${ATTR_COOKIE}=`))
+      ?.slice(ATTR_COOKIE.length + 1);
+    return parseAttributionCookie(raw);
+  } catch {
+    return {};
   }
-  if (Object.keys(fresh).length || !stored.landing_page) {
-    const next: Attribution = {
-      ...(Object.keys(fresh).length ? fresh : stored),
-      landing_page: window.location.href.slice(0, 500),
-      referrer: document.referrer.slice(0, 500) || undefined,
-    };
-    try {
-      localStorage.setItem(ATTR_KEY, JSON.stringify(next));
-    } catch {}
+}
+
+function writeCookie(a: Attribution) {
+  try {
+    const secure = window.location.protocol === "https:" ? "; Secure" : "";
+    document.cookie = `${ATTR_COOKIE}=${encodeURIComponent(JSON.stringify(a))}; Max-Age=${ATTR_MAX_AGE}; Path=/; SameSite=Lax${secure}`;
+  } catch {}
+}
+
+/** Guarda la atribución de la visita en una cookie: la última campaña con parámetros gana. */
+export function captureAttribution(): Attribution {
+  const stored = readCookie();
+  const params = new URLSearchParams(window.location.search);
+  const fresh: Record<string, string> = {};
+  for (const f of CAMPAIGN_FIELDS) {
+    const value = params.get(f);
+    if (value) fresh[f] = value;
+  }
+  const hasFresh = Object.keys(fresh).length > 0;
+  if (hasFresh || !stored.landing_page) {
+    const next = cleanAttribution({
+      ...(hasFresh ? fresh : stored),
+      landing_page: window.location.origin + window.location.pathname + window.location.search,
+      referrer: document.referrer || undefined,
+    });
+    writeCookie(next);
     return next;
   }
   return stored;
 }
 
 export function readAttribution(): Attribution {
-  try {
-    return JSON.parse(localStorage.getItem(ATTR_KEY) || "{}");
-  } catch {
-    return {};
-  }
+  return readCookie();
 }
 
 export function newEventId() {

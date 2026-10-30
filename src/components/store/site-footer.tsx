@@ -16,7 +16,7 @@ export function SiteFooter({ settings }: { settings: SettingsRow }) {
         <div>
           <Logo variant="lema-crema" height={110} />
           <p className="mt-6 max-w-xs text-[0.95rem] leading-relaxed">
-            Gafas con cámara y audio para Colombia. Pagas cuando te llegan y te escribimos antes de despachar.
+            Gafas con cámara para Colombia. Pagas cuando te llegan y te escribimos antes de despachar.
           </p>
         </div>
 

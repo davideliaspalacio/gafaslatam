@@ -1,13 +1,16 @@
 import "server-only";
 import { cacheLife, cacheTag } from "next/cache";
-import { DEMO_PRODUCT, DEMO_SETTINGS } from "@/lib/demo-data";
+import { DEMO_SETTINGS } from "@/lib/demo-data";
+import { MODELOS, type Modelo } from "@/lib/productos";
+import { hasShopify, productosShopify, type ShopifyProducto } from "@/lib/shopify";
 import { publicClient } from "@/lib/supabase/clients";
 import { hasSupabase } from "@/lib/supabase/env";
-import { toProduct, type Product, type ReviewRow, type SettingsRow } from "@/lib/types";
+import type { ReviewRow, SettingsRow } from "@/lib/types";
 
 export const CATALOG_TAG = "catalog";
 export const SETTINGS_TAG = "settings";
 export const REVIEWS_TAG = "reviews";
+export const SHOPIFY_TAG = "shopify";
 
 const FALLBACK_SETTINGS: SettingsRow = {
   id: 1,
@@ -42,41 +45,8 @@ export async function getSettings(): Promise<SettingsRow> {
   return data ?? FALLBACK_SETTINGS;
 }
 
-export async function getFeaturedProduct(): Promise<Product | null> {
-  "use cache";
-  cacheLife("hours");
-  cacheTag(CATALOG_TAG);
-  if (!hasSupabase()) return DEMO_PRODUCT;
-  const { data } = await publicClient()
-    .from("products")
-    .select("*")
-    .eq("active", true)
-    .order("featured", { ascending: false })
-    .order("sort")
-    .limit(1)
-    .maybeSingle();
-  return data ? toProduct(data) : null;
-}
-
-export async function getProductBySlug(slug: string): Promise<Product | null> {
-  "use cache";
-  cacheLife("hours");
-  cacheTag(CATALOG_TAG);
-  if (!hasSupabase()) return slug === DEMO_PRODUCT.slug ? DEMO_PRODUCT : null;
-  const { data } = await publicClient().from("products").select("*").eq("slug", slug).eq("active", true).maybeSingle();
-  return data ? toProduct(data) : null;
-}
-
-export async function getActiveProducts(): Promise<Product[]> {
-  "use cache";
-  cacheLife("hours");
-  cacheTag(CATALOG_TAG);
-  if (!hasSupabase()) return [DEMO_PRODUCT];
-  const { data } = await publicClient().from("products").select("*").eq("active", true).order("sort");
-  return (data ?? []).map(toProduct);
-}
-
-export async function getPublishedReviews(productId: string): Promise<ReviewRow[]> {
+/** Reseñas publicadas desde /admin (de la tienda en general). */
+export async function getPublishedReviews(): Promise<ReviewRow[]> {
   "use cache";
   cacheLife("hours");
   cacheTag(REVIEWS_TAG);
@@ -85,8 +55,45 @@ export async function getPublishedReviews(productId: string): Promise<ReviewRow[
     .from("reviews")
     .select("*")
     .eq("published", true)
-    .or(`product_id.eq.${productId},product_id.is.null`)
     .order("created_at", { ascending: false })
     .limit(12);
   return data ?? [];
+}
+
+// ---------- Modelos: textos de src/lib/productos.ts + precio y fotos de Shopify ----------
+
+export type ModeloTienda = Modelo & {
+  precio: number;
+  imagenes: { url: string; alt: string }[];
+  varianteId: string | null;
+  disponible: boolean;
+};
+
+/** Precio y fotos salen de Shopify (se refrescan cada pocos minutos). Si Shopify falla, se usa el precio de respaldo. */
+export async function getModelos(): Promise<ModeloTienda[]> {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag(SHOPIFY_TAG);
+  let shop = new Map<string, ShopifyProducto>();
+  if (hasShopify()) {
+    try {
+      shop = await productosShopify(MODELOS.map((m) => m.shopifyProductId));
+    } catch (error) {
+      console.error("Catálogo de Shopify", error);
+    }
+  }
+  return MODELOS.map((m) => {
+    const s = shop.get(m.shopifyProductId);
+    return {
+      ...m,
+      precio: s?.precio ?? m.precioRespaldo,
+      imagenes: (s?.imagenes ?? []).map((i) => ({ url: i.url, alt: i.alt })),
+      varianteId: s?.varianteId ?? null,
+      disponible: s ? s.activo : true,
+    };
+  });
+}
+
+export async function getModelo(slug: string): Promise<ModeloTienda | null> {
+  return (await getModelos()).find((m) => m.slug === slug) ?? null;
 }

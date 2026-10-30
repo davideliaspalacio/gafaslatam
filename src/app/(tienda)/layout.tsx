@@ -8,7 +8,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSettings();
   return {
     title: { default: `${settings.store_name} · Graba lo que vives`, template: `%s · ${settings.store_name}` },
-    description: "Gafas con cámara y audio. Graba lo que vives sin sacar el celular. Envío gratis a toda Colombia y pagas al recibir.",
+    description: "Gafas con cámara para el deporte y para el día a día. Graba lo que vives sin sacar el celular. Envío gratis a toda Colombia y pagas al recibir.",
     openGraph: {
       siteName: settings.store_name,
       locale: "es_CO",

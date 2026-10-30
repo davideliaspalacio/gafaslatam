@@ -3,13 +3,14 @@ import Link from "next/link";
 import { buttonOnDark, buttonPrimary } from "@/components/store/buttons";
 import { WhatsAppIcon } from "@/components/store/icons";
 import { OrganizationJsonLd } from "@/components/store/json-ld";
-import { ProductCard, ProductFeature } from "@/components/store/product-card";
+import { CualEsParaTi } from "@/components/store/cual-es-para-ti";
+import { ModeloCard } from "@/components/store/product-card";
 import { RecFrame } from "@/components/store/rec-frame";
 import { Faq, HowToBuy, TrustStrip } from "@/components/store/sections";
 import { WhatsAppFloat } from "@/components/store/whatsapp-float";
 import { WhatsAppLink } from "@/components/store/whatsapp-link";
 import { Reviews } from "@/components/store/reviews";
-import { getActiveProducts, getFeaturedProduct, getPublishedReviews, getSettings } from "@/lib/catalog";
+import { getModelos, getPublishedReviews, getSettings } from "@/lib/catalog";
 import { DEFAULT_HERO_POSTER, whatsappText } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -17,10 +18,28 @@ export const metadata: Metadata = {
   openGraph: { url: "/" },
 };
 
+// Preguntas generales de la tienda (las de cada modelo están en su página).
+const PREGUNTAS = [
+  {
+    q: "¿Cuál me sirve?",
+    a: "Si las quieres para grabar mientras haces ejercicio (bici, moto o trote), las Biker. Si las quieres para el día a día y también te interesan la música, las llamadas y el asistente de voz con IA, las gafas con cámara e IA.",
+  },
+  {
+    q: "¿Cómo funciona eso de pagar al recibir?",
+    a: "Haces el pedido aquí sin pagar nada. Te escribimos por WhatsApp para confirmar tus datos y, cuando la transportadora te entrega, le pagas en efectivo.",
+  },
+  {
+    q: "¿Cuánto se demoran en llegar?",
+    a: "Entre 2 y 5 días hábiles después de confirmar el pedido, según tu ciudad. Te mandamos el número de guía para que sigas el paquete.",
+  },
+  {
+    q: "¿Y si llegan con un problema?",
+    a: "Si tienen un defecto de fábrica, te las cambiamos. Escríbenos por WhatsApp con tu número de pedido.",
+  },
+];
+
 export default async function Home() {
-  const [settings, products, featured] = await Promise.all([getSettings(), getActiveProducts(), getFeaturedProduct()]);
-  const reviews = featured ? await getPublishedReviews(featured.id) : [];
-  const primaryHref = products.length === 1 ? `/gafas/${products[0].slug}` : "/tienda";
+  const [settings, modelos, reviews] = await Promise.all([getSettings(), getModelos(), getPublishedReviews()]);
   const wa = settings.whatsapp_number;
 
   return (
@@ -40,11 +59,10 @@ export default async function Home() {
               Graba lo que <span className="underline-amber">vives.</span>
             </h1>
             <p className="mt-4 max-w-md text-[1.0625rem] text-mist">
-              Gafas con cámara y audio. Grabas sin sacar el celular, escuchas música y contestas llamadas con las manos
-              libres.
+              Gafas con cámara para grabar sin sacar el celular. Unas para el deporte y otras, con IA, para el día a día.
             </p>
             <div className="mt-7 grid gap-3 sm:flex">
-              <Link href={primaryHref} className={buttonPrimary}>
+              <Link href="/tienda" className={buttonPrimary}>
                 Ver las gafas
               </Link>
               {wa ? (
@@ -61,30 +79,24 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Los modelos */}
-      {products.length ? (
-        <section className="mx-auto max-w-6xl px-5 py-16 md:py-24">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <h2 className="type-display text-[1.75rem] sm:text-4xl">{products.length === 1 ? "Las gafas" : "Escoge las tuyas"}</h2>
-            <Link href="/tienda" className="font-semibold underline">
-              Ver toda la tienda
-            </Link>
-          </div>
-          {products.length === 1 ? (
-            <div className="mt-8">
-              <ProductFeature product={products[0]} headline={products[0].headline} />
-            </div>
-          ) : (
-            <ul className="mt-8 grid gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-              {products.slice(0, 3).map((p) => (
-                <li key={p.id}>
-                  <ProductCard product={p} />
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
-      ) : null}
+      {/* Los dos modelos */}
+      <section className="mx-auto max-w-6xl px-5 py-16 md:py-24">
+        <h2 className="type-display text-[1.75rem] sm:text-4xl">Escoge las tuyas</h2>
+        <ul className="mt-8 grid gap-x-8 gap-y-12 sm:grid-cols-2">
+          {modelos.map((m) => (
+            <li key={m.slug}>
+              <ModeloCard modelo={m} />
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* ¿Cuál es para ti? */}
+      <section className="on-dark bg-night text-cream">
+        <div className="mx-auto max-w-4xl px-5 py-16 md:py-20">
+          <CualEsParaTi modelos={modelos} tone="dark" />
+        </div>
+      </section>
 
       {/* Así se compra */}
       <section className="border-y border-line bg-cream-2/60">
@@ -101,14 +113,12 @@ export default async function Home() {
 
       {reviews.length ? <Reviews reviews={reviews} /> : null}
 
-      {featured?.faq.length ? (
-        <section className="mx-auto max-w-3xl px-5 py-16 md:py-24">
-          <h2 className="type-display text-[1.75rem] sm:text-4xl">Lo que más nos preguntan</h2>
-          <div className="mt-8">
-            <Faq items={featured.faq} />
-          </div>
-        </section>
-      ) : null}
+      <section className="mx-auto max-w-3xl px-5 py-16 md:py-24">
+        <h2 className="type-display text-[1.75rem] sm:text-4xl">Lo que más nos preguntan</h2>
+        <div className="mt-8">
+          <Faq items={PREGUNTAS} />
+        </div>
+      </section>
 
       {/* Cierre */}
       {wa ? (

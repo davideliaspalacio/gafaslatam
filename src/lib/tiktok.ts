@@ -2,7 +2,8 @@ import "server-only";
 import { createHash } from "node:crypto";
 
 // Evento de pedido para TikTok (en Meta equivale a Purchase).
-// Se envía al crear un pedido contraentrega y al aprobarse un pago online.
+// Se envía desde /api/pedido al crear el pedido, con el mismo event_id que el píxel del navegador.
+// Variable: TIKTOK_EVENTS_ACCESS_TOKEN (TikTok Ads > Eventos > Configuración del píxel).
 export const PURCHASE_EVENT = "PlaceAnOrder";
 
 const sha256 = (value: string) => createHash("sha256").update(value.trim().toLowerCase()).digest("hex");
@@ -16,6 +17,7 @@ type ServerEvent = {
   ip?: string | null;
   userAgent?: string | null;
   ttclid?: string | null;
+  ttp?: string | null;
   phone?: string | null; // 10 dígitos colombianos
   email?: string | null;
   externalId?: string | null;
@@ -30,6 +32,7 @@ export async function sendTikTokEvent(e: ServerEvent) {
 
   const user: Record<string, string> = {};
   if (e.ttclid) user.ttclid = e.ttclid;
+  if (e.ttp) user.ttp = e.ttp;
   if (e.phone) user.phone = sha256(`+57${e.phone}`);
   if (e.email) user.email = sha256(e.email);
   if (e.externalId) user.external_id = sha256(e.externalId);

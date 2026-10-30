@@ -2,20 +2,15 @@
 
 import { useEffect } from "react";
 import { track } from "@/lib/pixel";
-import type { Product } from "@/lib/types";
 
-export function ViewContent({ product }: { product: Pick<Product, "id" | "name" | "price"> }) {
+export function ViewContent({ sku, name, price }: { sku: string; name: string; price: number }) {
   useEffect(() => {
     // Espera a que el píxel cargue (afterInteractive) antes de enviar.
     const t = window.setTimeout(
-      () =>
-        track("ViewContent", {
-          value: product.price,
-          contents: [{ content_id: product.id, content_name: product.name, quantity: 1, price: product.price }],
-        }),
+      () => track("ViewContent", { value: price, contents: [{ content_id: sku, content_name: name, quantity: 1, price }] }),
       600,
     );
     return () => window.clearTimeout(t);
-  }, [product.id, product.name, product.price]);
+  }, [sku, name, price]);
   return null;
 }

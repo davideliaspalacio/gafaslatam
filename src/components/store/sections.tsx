@@ -27,7 +27,7 @@ export function TrustStrip({ settings, tone = "dark" }: { settings: SettingsRow;
 export function HowToBuy({ settings }: { settings: SettingsRow }) {
   const steps = [
     { t: "Haces el pedido", d: "Escoges el modelo y llenas tus datos. No pagas nada todavía y no tienes que crear cuenta." },
-    { t: "Te escribimos", d: "Por WhatsApp confirmamos contigo la dirección y el color antes de despachar." },
+    { t: "Lo confirmas por WhatsApp", d: "Nos respondes \"SÍ CONFIRMO\" y revisamos tus datos antes de despachar. Sin tu confirmación no sale nada." },
     {
       t: settings.cod_enabled ? "Pagas cuando te llegan" : "Te llegan a la puerta",
       d: settings.cod_enabled

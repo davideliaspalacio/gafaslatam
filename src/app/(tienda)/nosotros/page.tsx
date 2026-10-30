@@ -8,7 +8,7 @@ import { DEFAULT_HERO_POSTER, socialLinks, whatsappText } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Nosotros",
-  description: "Gafas Latam: gafas con cámara y audio para grabar lo que vives. Vendemos en toda Colombia con pago al recibir.",
+  description: "Gafas Latam: gafas con cámara para grabar lo que vives. Vendemos en toda Colombia con pago al recibir.",
   alternates: { canonical: "/nosotros" },
 };
 
@@ -29,7 +29,7 @@ export default async function AboutPage() {
           <h1 className="type-display mt-10 text-[2.25rem] sm:text-5xl">Para no perderte el momento buscando el celular.</h1>
           {/* Aquí va la historia del equipo cuando la quieran contar, con fotos reales. */}
           <p className="mt-5 max-w-xl text-[1.0625rem] text-mist">
-            Somos Gafas Latam. Traemos gafas con cámara y audio para que grabes el paseo, el concierto o la rodada con
+            Somos Gafas Latam. Traemos gafas con cámara para que grabes el paseo, el concierto o la rodada con
             las manos libres.
           </p>
         </div>
