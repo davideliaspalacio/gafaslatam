@@ -152,14 +152,27 @@ export type PedidoCreado = { id: string; nombre: string; numero: string; total: 
 
 type UserError = { field: string[] | null; message: string };
 
-async function clientePorCelular(e164: string): Promise<string | null> {
+/**
+ * Busca el cliente por celular o lo crea. Shopify no deja crearlo dentro del pedido sin correo,
+ * por eso va aparte. Si algo falla, el pedido igual se crea sin cliente.
+ */
+async function clienteId(e164: string, nombre: string, apellido: string): Promise<string | null> {
   try {
-    const data = await adminGraphql<{ customers: { nodes: { id: string }[] } }>(
+    const found = await adminGraphql<{ customers: { nodes: { id: string }[] } }>(
       `query Cliente($q: String!) { customers(first: 1, query: $q) { nodes { id } } }`,
       { q: `phone:${e164}` },
     );
-    return data.customers.nodes[0]?.id ?? null;
-  } catch {
+    if (found.customers.nodes[0]) return found.customers.nodes[0].id;
+    const created = await adminGraphql<{ customerCreate: { customer: { id: string } | null; userErrors: UserError[] } }>(
+      `mutation NuevoCliente($input: CustomerInput!) {
+        customerCreate(input: $input) { customer { id } userErrors { field message } }
+      }`,
+      { input: { phone: e164, firstName: nombre, lastName: apellido, tags: ["web"] } },
+    );
+    if (!created.customerCreate.customer) console.warn("customerCreate", created.customerCreate.userErrors);
+    return created.customerCreate.customer?.id ?? null;
+  } catch (error) {
+    console.warn("Cliente de Shopify", error);
     return null;
   }
 }
@@ -184,8 +197,8 @@ export async function crearPedido(p: NuevoPedido): Promise<PedidoCreado> {
     phone: e164,
   };
 
-  const existente = await clientePorCelular(e164);
-  const base = {
+  const cliente = await clienteId(e164, p.nombre, p.apellido);
+  const order = {
     currency: "COP",
     lineItems: [{ variantId: p.varianteId, quantity: p.cantidad, priceSet: money(p.precioUnitario), requiresShipping: true }],
     financialStatus: "PENDING",
@@ -196,12 +209,7 @@ export async function crearPedido(p: NuevoPedido): Promise<PedidoCreado> {
     tags: ["web", "por-confirmar"],
     note: p.nota,
     customAttributes: p.atributos,
-  };
-  const conCliente = {
-    ...base,
-    customer: existente
-      ? { toAssociate: { id: existente } }
-      : { toUpsert: { phone: e164, firstName: p.nombre, lastName: p.apellido, tags: ["web"] } },
+    ...(cliente ? { customer: { toAssociate: { id: cliente } } } : {}),
   };
 
   const mutation = `mutation Pedido($order: OrderCreateOrderInput!, $options: OrderCreateOptionsInput) {
@@ -213,20 +221,13 @@ export async function crearPedido(p: NuevoPedido): Promise<PedidoCreado> {
   const options = { inventoryBehaviour: "BYPASS", sendReceipt: false, sendFulfillmentReceipt: false };
 
   type Res = { orderCreate: { userErrors: UserError[]; order: { id: string; name: string; totalPriceSet: { shopMoney: { amount: string } } } | null } };
-  let res = await adminGraphql<Res>(mutation, { order: conCliente, options });
-
-  // Si el cliente choca (ej. celular repetido en otro cliente), el pedido igual se crea sin él.
-  if (!res.orderCreate.order && res.orderCreate.userErrors.some((u) => u.field?.some((f) => /customer|phone/i.test(f)))) {
-    console.warn("orderCreate cliente", res.orderCreate.userErrors);
-    res = await adminGraphql<Res>(mutation, { order: base, options });
-  }
-
-  const order = res.orderCreate.order;
-  if (!order) throw new ShopifyError(`orderCreate: ${JSON.stringify(res.orderCreate.userErrors).slice(0, 500)}`);
+  const res = await adminGraphql<Res>(mutation, { order, options });
+  const creado = res.orderCreate.order;
+  if (!creado) throw new ShopifyError(`orderCreate: ${JSON.stringify(res.orderCreate.userErrors).slice(0, 500)}`);
   return {
-    id: order.id,
-    nombre: order.name,
-    numero: order.name.replace(/^#/, ""),
-    total: Math.round(Number(order.totalPriceSet.shopMoney.amount)),
+    id: creado.id,
+    nombre: creado.name,
+    numero: creado.name.replace(/^#/, ""),
+    total: Math.round(Number(creado.totalPriceSet.shopMoney.amount)),
   };
 }

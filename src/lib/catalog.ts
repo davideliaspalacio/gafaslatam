@@ -87,7 +87,7 @@ export async function getModelos(): Promise<ModeloTienda[]> {
     return {
       ...m,
       precio: s?.precio ?? m.precioRespaldo,
-      imagenes: (s?.imagenes ?? []).map((i) => ({ url: i.url, alt: i.alt })),
+      imagenes: m.fotosDeShopify ? (s?.imagenes ?? []).map((i) => ({ url: i.url, alt: i.alt })) : [],
       varianteId: s?.varianteId ?? null,
       disponible: s ? s.activo : true,
     };

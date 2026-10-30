@@ -19,6 +19,12 @@ export type Modelo = {
   coleccion: Coleccion;
   /** Referencia propia (también es el content_id de los píxeles). */
   sku: string;
+  /**
+   * Mostrar en la web las fotos que tiene el producto en Shopify. Apagado hasta revisarlas:
+   * las del proveedor muestran cosas sin confirmar (una microSD de 32 GB en la Biker, que no viene
+   * incluida; textos de la caja en las de IA). Al subir fotos propias a Shopify, se prende.
+   */
+  fotosDeShopify: boolean;
   /** Producto en Shopify (vinculado en Dropify con el producto de Dropi). */
   shopifyProductId: string;
   dropiId: number;
@@ -71,6 +77,7 @@ export const MODELOS: Modelo[] = [
       "Son unas gafas deportivas con una cámara en la montura. Empiezas a grabar desde las mismas gafas y queda lo que tienes al frente mientras pedaleas, manejas o trotas. Después pasas los videos al celular por Wi-Fi con la app. No tienen audio: son para grabar.",
     coleccion: COLECCIONES.deporte,
     sku: "GL-BIKER",
+    fotosDeShopify: false,
     shopifyProductId: "gid://shopify/Product/15459905929367",
     dropiId: 1875412,
     precioRespaldo: 149900,
@@ -136,6 +143,7 @@ export const MODELOS: Modelo[] = [
       "Son para usarlas todos los días. Graban lo que tienes al frente, suenan cerca del oído para tu música y tus llamadas, y le hablas al asistente de voz sin sacar el celular. Sirven para caminar la ciudad, viajar o trabajar con las manos libres.",
     coleccion: COLECCIONES.diario,
     sku: "GL-PRO",
+    fotosDeShopify: false,
     shopifyProductId: "gid://shopify/Product/15459906617495",
     dropiId: 2172927,
     precioRespaldo: 449900,
