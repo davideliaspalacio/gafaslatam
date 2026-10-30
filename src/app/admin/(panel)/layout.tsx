@@ -7,20 +7,20 @@ import { requireAdmin } from "@/lib/admin-auth";
 export default function PanelLayout({ children }: LayoutProps<"/admin">) {
   return (
     <>
-      <header className="bg-carton text-paper">
+      <header className="bg-night text-paper">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 pt-3 sm:px-6">
-          <Link href="/admin" className="type-carton text-2xl">
+          <Link href="/admin" className="type-display text-2xl">
             Panel
           </Link>
           <div className="flex items-center gap-3 text-sm">
             <Suspense fallback={null}>
               <CurrentUser />
             </Suspense>
-            <Link href="/" target="_blank" className="text-carton-soft hover:text-paper">
+            <Link href="/" target="_blank" className="text-mist hover:text-paper">
               Ver tienda
             </Link>
             <form action={signOut}>
-              <button className="text-carton-soft hover:text-paper">Salir</button>
+              <button className="text-mist hover:text-paper">Salir</button>
             </form>
           </div>
         </div>
@@ -37,5 +37,5 @@ export default function PanelLayout({ children }: LayoutProps<"/admin">) {
 
 async function CurrentUser() {
   const { user } = await requireAdmin();
-  return <span className="hidden text-carton-soft sm:inline">{user.email}</span>;
+  return <span className="hidden text-mist sm:inline">{user.email}</span>;
 }

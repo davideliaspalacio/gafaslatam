@@ -18,12 +18,12 @@ export function PurchasePixel({
   contents: Contents;
 }) {
   useEffect(() => {
-    const key = `vst_purchase_${orderId}`;
+    const key = `gl_purchase_${orderId}`;
     try {
       if (localStorage.getItem(key)) return;
     } catch {}
     const t = window.setTimeout(() => {
-      track("CompletePayment", { value, contents }, eventId);
+      track("PlaceAnOrder", { value, contents }, eventId);
       try {
         localStorage.setItem(key, "1");
       } catch {}

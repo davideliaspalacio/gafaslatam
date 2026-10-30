@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 const LINKS = [
   { href: "/admin", label: "Resumen" },
   { href: "/admin/pedidos", label: "Pedidos" },
-  { href: "/admin/productos", label: "Producto" },
+  { href: "/admin/productos", label: "Modelos" },
   { href: "/admin/resenas", label: "Reseñas" },
   { href: "/admin/ajustes", label: "Ajustes" },
 ];
@@ -31,7 +31,7 @@ function NavLinks({ pathname }: { pathname: string }) {
             href={l.href}
             aria-current={active ? "page" : undefined}
             className={`border-b-[3px] px-3 py-3 text-sm font-semibold whitespace-nowrap transition-colors ${
-              active ? "border-flash text-paper" : "border-transparent text-carton-soft hover:text-paper"
+              active ? "border-amber text-paper" : "border-transparent text-mist hover:text-paper"
             }`}
           >
             {l.label}

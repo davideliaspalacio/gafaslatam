@@ -29,29 +29,33 @@ pnpm dev
 
 | Ruta | Para qué |
 | --- | --- |
-| `/` | Landing del producto destacado con el "sobre de pedido" (formulario de compra) |
-| `/producto/[slug]` | Misma página para cada producto activo |
-| `/pedido/[id]` | Confirmación del pedido + botón para confirmar por WhatsApp |
-| `/pago/resultado` | Regreso desde Wompi (verifica la transacción con Wompi) |
-| `/api/webhooks/wompi` | Webhook de Wompi (firma verificada) |
-| `/politicas/*` | Envíos, cambios/retracto/garantía, datos personales, términos |
+| `/` | Portada: toma en primera persona con REC, modelos, cómo comprar, preguntas |
+| `/tienda` | Catálogo con filtros (con cámara, con audio, de sol) |
+| `/gafas/[modelo]` | Página de cada modelo: fotos, video de lo que graba, color y botón "Pedir" |
+| `/pedido` | Formulario contraentrega (llega con el modelo y el color elegidos) |
+| `/pedido/[id]` | Confirmación + botón para confirmar por WhatsApp |
+| `/envios-y-garantia`, `/nosotros` | Información de la tienda |
+| `/politicas/terminos`, `/privacidad`, `/retracto` | Textos legales (revisarlos con un abogado) |
+| `/pago/resultado`, `/api/webhooks/wompi` | Regreso y webhook de Wompi |
 | `/admin` | Resumen: pedidos, ventas, visitas y conversión por campaña |
 | `/admin/pedidos` | Lista, filtros, cambio rápido de estado, WhatsApp, exportar CSV |
-| `/admin/productos` | Precio, ofertas por cantidad, colores, fotos (sube a Storage), textos, SEO |
+| `/admin/productos` | Modelos: crear, precio, ofertas, colores, fotos, video, filtros, textos, SEO |
 | `/admin/resenas` | Reseñas reales (solo aparecen en la tienda cuando publicas alguna) |
-| `/admin/ajustes` | Nombre, WhatsApp, envío, formas de pago, píxeles, datos legales |
+| `/admin/ajustes` | Nombre, WhatsApp, redes, video de portada, envío, pagos, píxeles, datos legales |
+
+Marca: logos aprobados en `public/brand/`, toma de portada en `public/media/pov.jpg`, reglas de diseño en `DESIGN.md` y `PRODUCT.md`.
 
 ### Cómo se vende
 
 1. El cliente llega de TikTok; guardamos `utm_*` y `ttclid` de la visita.
-2. Llena el sobre: cantidad (1 o 2 pares), color, nombre, celular, departamento, ciudad, dirección.
+2. Abre el modelo, escoge color y toca "Pedir"; en `/pedido` pone cantidad (1 o 2 pares), nombre, celular, departamento, ciudad y dirección.
 3. El servidor recalcula el precio desde la base de datos (nunca confía en el navegador), frena abusos por celular/IP y guarda el pedido con su campaña.
 4. Contraentrega: va a la página de gracias. Online: va a Wompi y vuelve.
 5. En el panel confirmas por WhatsApp con un clic (mensaje ya escrito), pones la guía y cambias el estado.
 
 ## Seguimiento de TikTok
 
-- Pon el **ID del píxel** en `/admin/ajustes`. Eventos: `ViewContent`, `AddToCart`, `InitiateCheckout`, `AddPaymentInfo`, `CompletePayment`.
+- Pon los **IDs de los píxeles** de TikTok y Meta en `/admin/ajustes`. Eventos: ver producto (`ViewContent`), tocar "Pedir" (`InitiateCheckout`), enviar pedido (`PlaceAnOrder` en TikTok, `Purchase` en Meta) y tocar WhatsApp (`Contact`). Los mensajes de WhatsApp llevan la campaña de origen al final.
 - Para la **API de eventos** (servidor, más precisa con iOS y bloqueadores) agrega `TIKTOK_EVENTS_ACCESS_TOKEN` en `.env.local`. Navegador y servidor comparten `event_id`, así TikTok no cuenta doble.
 - En los anuncios usa enlaces con UTM, por ejemplo:
   `https://tudominio.com/?utm_source=tiktok&utm_campaign=lanzamiento&utm_content=video-moto`
@@ -66,8 +70,7 @@ pnpm dev
 
 ## Antes de pautar (lista de pendientes)
 
-- [ ] **Nombre de marca y logo** reales (ajustes + producto).
-- [ ] **Fotos reales** del producto y **capturas reales grabadas con las gafas** (reemplazan las de Unsplash; desmarca "imagen de referencia").
+- [ ] **Fotos de estudio** de cada modelo y **videos reales** grabados con las gafas (portada y cada modelo; se suben desde el panel).
 - [ ] **Precio, especificaciones y contenido de la caja** confirmados con el proveedor (las de ejemplo son provisionales).
 - [ ] **WhatsApp** de la tienda, **tiempo de envío** y **costo de envío** reales.
 - [ ] **Datos legales** (razón social, NIT, dirección) y revisión de `/politicas/*` con tu contador o abogado.

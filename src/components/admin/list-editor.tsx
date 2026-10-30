@@ -40,7 +40,7 @@ export function ListEditor<T extends Record<string, unknown>>({
   return (
     <div className="space-y-3">
       {items.map((item, i) => (
-        <div key={i} className="flex gap-3 border border-ink/10 bg-paper-shade/50 p-3">
+        <div key={i} className="flex gap-3 border border-ink/10 bg-cream/50 p-3">
           <div className="flex flex-1 flex-wrap gap-3">
             {fields.map((f) => {
               const value = item[f.key];
@@ -111,7 +111,7 @@ export function ListEditor<T extends Record<string, unknown>>({
         <button
           type="button"
           onClick={() => onChange([...items, newItem()])}
-          className="inline-flex items-center gap-1.5 text-sm font-semibold text-carton hover:underline"
+          className="inline-flex items-center gap-1.5 text-sm font-semibold text-night hover:underline"
         >
           <Plus className="size-4" /> {addLabel}
         </button>

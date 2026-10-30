@@ -54,7 +54,7 @@ async function OrderDetail({ params }: { params: PageProps<"/admin/pedidos/[id]"
 
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="type-carton text-4xl text-carton">Pedido #{o.number}</h1>
+          <h1 className="type-display text-4xl text-night">Pedido #{o.number}</h1>
           <p className="mt-1 text-sm text-ink-soft">{formatDateTime(o.created_at)}</p>
         </div>
         <div className="flex items-center gap-3">
@@ -82,7 +82,7 @@ async function OrderDetail({ params }: { params: PageProps<"/admin/pedidos/[id]"
                   href={`https://wa.me/57${o.phone}?text=${encodeURIComponent(m.text)}`}
                   target="_blank"
                   rel="noopener"
-                  className="inline-flex min-h-10 items-center gap-2 rounded-[3px] bg-carton px-4 text-sm font-semibold text-paper hover:bg-carton-deep"
+                  className="inline-flex min-h-10 items-center gap-2 rounded-[3px] bg-night px-4 text-sm font-semibold text-paper hover:bg-deep"
                 >
                   <WhatsAppIcon className="size-4" /> {m.label}
                 </a>

@@ -1,48 +1,43 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
-import { connection } from "next/server";
 import { Suspense } from "react";
 import { z } from "zod";
-import { DateStamp } from "@/components/store/date-stamp";
 import { WhatsAppIcon } from "@/components/store/icons";
 import { PurchasePixel } from "@/components/store/purchase-pixel";
+import { WhatsAppLink } from "@/components/store/whatsapp-link";
 import { getSettings } from "@/lib/catalog";
-import { formatCOP, formatPhone, whatsappLink } from "@/lib/format";
+import { formatCOP, formatPhone } from "@/lib/format";
 import { serviceClient } from "@/lib/supabase/clients";
 import { hasSupabase } from "@/lib/supabase/env";
-import type { OrderItem } from "@/lib/types";
+import type { OrderItem, SettingsRow } from "@/lib/types";
 
 export const metadata: Metadata = {
-  title: "Tu pedido",
+  title: "Pedido recibido",
   robots: { index: false, follow: false },
 };
 
-export default function OrderPage({ params }: PageProps<"/pedido/[id]">) {
+export default function ThanksPage({ params }: PageProps<"/pedido/[id]">) {
   return (
-    <main className="mx-auto max-w-xl px-4 pt-6 pb-20">
-      <Suspense fallback={<p className="py-24 text-center text-carton-soft">Revelando tu pedido…</p>}>
-        <OrderPrint params={params} />
+    <main className="mx-auto max-w-2xl px-5 pt-10 pb-24 md:pt-14">
+      <Suspense fallback={<p className="py-24 text-center text-ink-soft">Cargando tu pedido…</p>}>
+        <Thanks params={params} />
       </Suspense>
     </main>
   );
 }
 
-async function OrderPrint({ params }: { params: Promise<{ id: string }> }) {
+async function Thanks({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  if (id === "demo" && !hasSupabase()) {
-    await connection(); // la fecha de la copia es la de hoy
-    return <DemoConfirmation />;
-  }
+  const settings = await getSettings();
+  if (id === "demo" && !hasSupabase()) return <DemoThanks settings={settings} />;
   if (!z.uuid().safeParse(id).success) notFound();
 
-  const [{ data: order }, settings] = await Promise.all([
-    serviceClient()
-      .from("orders")
-      .select("id, number, created_at, customer_name, phone, department, city, address, address_details, items, total, shipping, payment_method, payment_status, event_id")
-      .eq("id", id)
-      .maybeSingle(),
-    getSettings(),
-  ]);
+  const { data: order } = await serviceClient()
+    .from("orders")
+    .select("id, number, customer_name, phone, department, city, address, address_details, items, total, shipping, payment_method, payment_status, event_id")
+    .eq("id", id)
+    .maybeSingle();
   if (!order) notFound();
 
   const items = (order.items as OrderItem[]) ?? [];
@@ -50,19 +45,16 @@ async function OrderPrint({ params }: { params: Promise<{ id: string }> }) {
   const online = order.payment_method === "online";
   const paid = order.payment_status === "pagado";
   const failed = order.payment_status === "fallido";
-  const wa = whatsappLink(
-    settings.whatsapp_number,
-    `Hola, soy ${order.customer_name}. Acabo de hacer el pedido #${order.number} y quiero confirmarlo.`,
-  );
+  const wa = settings.whatsapp_number;
 
-  const heading = failed ? "El pago no se completó" : online && !paid ? "Estamos esperando el pago" : `¡Listo, ${firstName}!`;
+  const heading = failed ? "El pago no pasó" : online && !paid ? "Estamos esperando el pago" : `¡Listo, ${firstName}!`;
   const lead = failed
-    ? "Tu pedido quedó guardado pero Wompi no aprobó el pago. Escríbenos por WhatsApp y lo cambiamos a pago contraentrega."
+    ? "Tu pedido quedó guardado pero Wompi no aprobó el pago. Escríbenos y lo pasamos a pago contraentrega."
     : online && !paid
-      ? "Wompi todavía está procesando tu pago. Apenas se apruebe te escribimos por WhatsApp."
+      ? "Wompi todavía está procesando tu pago. Apenas se apruebe te escribimos."
       : online
-        ? `Recibimos tu pago. Te escribimos por WhatsApp al ${formatPhone(order.phone)} con el número de guía.`
-        : `Te vamos a escribir por WhatsApp al ${formatPhone(order.phone)} para confirmar la dirección. Pagas cuando te llegue.`;
+        ? `Recibimos tu pago. Te escribimos al ${formatPhone(order.phone)} con el número de guía.`
+        : `Te vamos a escribir al WhatsApp ${formatPhone(order.phone)} para confirmar la dirección. Pagas cuando te lleguen.`;
 
   return (
     <>
@@ -71,120 +63,101 @@ async function OrderPrint({ params }: { params: Promise<{ id: string }> }) {
           orderId={order.id}
           eventId={order.event_id ?? order.id}
           value={order.total}
-          contents={items.map((i) => ({
-            content_id: i.product_id,
-            content_name: i.name,
-            quantity: i.qty,
-            price: i.unit_price,
-          }))}
+          contents={items.map((i) => ({ content_id: i.product_id, content_name: i.name, quantity: i.qty, price: i.unit_price }))}
         />
       ) : null}
 
-      <h1 className="type-carton text-[2.4rem] text-paper sm:text-5xl">{heading}</h1>
-      <p className="mt-4 leading-relaxed text-carton-soft">{lead}</p>
-
-      {/* La copia del pedido, fechada hoy */}
-      <article className="print on-paper mt-9 -rotate-1 text-ink">
-        <div className="relative bg-carton-night px-5 pt-6 pb-10 text-paper">
-          <p className="type-carton tabular text-5xl">
-            <span className="text-carton-soft">Pedido</span> #{order.number}
-          </p>
-          <DateStamp value={stampOf(order.created_at)} className="absolute right-5 bottom-4 h-5" />
-        </div>
-        <div className="space-y-5 px-4 pt-5 pb-4">
-          <dl className="tabular space-y-2 text-[0.95rem]">
-            {items.map((i) => (
-              <div key={i.product_id + (i.variant ?? "")} className="flex justify-between gap-4">
-                <dt className="text-ink-soft">
-                  {i.name}
-                  {i.variant ? ` · ${i.variant}` : ""} × {i.qty}
-                </dt>
-                <dd>{formatCOP(i.line_total)}</dd>
-              </div>
-            ))}
-            <div className="flex justify-between gap-4">
-              <dt className="text-ink-soft">Envío</dt>
-              <dd>{order.shipping ? formatCOP(order.shipping) : "Gratis"}</dd>
-            </div>
-            <div className="flex justify-between gap-4 border-t border-rule pt-3 font-bold">
-              <dt>{online ? (paid ? "Pagado" : "Total") : "Pagas al recibir"}</dt>
-              <dd>{formatCOP(order.total)}</dd>
-            </div>
-          </dl>
-          <div className="border-t border-rule pt-4 text-[0.95rem] leading-relaxed">
-            <p className="type-spec mb-1 text-[0.7rem] text-ink-soft">Entrega</p>
-            <p>{order.customer_name}</p>
-            <p className="text-ink-soft">
-              {order.address}
-              {order.address_details ? `, ${order.address_details}` : ""}
-              <br />
-              {order.city}, {order.department}
-            </p>
-          </div>
-        </div>
-      </article>
+      <h1 className="type-display text-[2.5rem] sm:text-5xl">{heading}</h1>
+      <p className="mt-4 text-[1.0625rem] text-ink-soft">{lead}</p>
 
       {wa ? (
-        <a
-          href={wa}
-          target="_blank"
-          rel="noopener"
-          className="type-spec mt-10 flex min-h-14 items-center justify-center gap-3 rounded-[3px] bg-flash px-6 text-[1.02rem] text-ink shadow-[var(--shadow-lift)] hover:bg-flash-deep"
+        <WhatsAppLink
+          number={wa}
+          text={`Hola, soy ${order.customer_name}. Acabo de hacer el pedido #${order.number} y quiero confirmarlo.`}
+          className="mt-8 inline-flex min-h-[52px] w-full items-center justify-center gap-2.5 rounded-full bg-[#25D366] px-7 text-[1.0625rem] font-semibold text-[#062b16] transition-[filter] hover:brightness-95 sm:w-auto"
         >
           <WhatsAppIcon className="size-5" />
           {failed ? "Escribir por WhatsApp" : "Confirmar ya por WhatsApp"}
-        </a>
+        </WhatsAppLink>
       ) : null}
 
-      <ol className="mt-10 space-y-4 text-carton-soft">
-        <li className="border-t border-carton-soft/25 pt-4">
-          <span className="font-semibold text-paper">Confirmamos.</span> Revisamos tu dirección y color contigo.
-        </li>
-        <li className="border-t border-carton-soft/25 pt-4">
-          <span className="font-semibold text-paper">Despachamos.</span> Te enviamos el número de guía para seguir el
-          paquete.
-        </li>
-        <li className="border-t border-carton-soft/25 pt-4">
-          <span className="font-semibold text-paper">Te llega.</span> En {settings.delivery_estimate.toLowerCase()}
-          {online ? "." : ", y le pagas a la transportadora."}
-        </li>
-      </ol>
+      <section className="mt-10 rounded-[14px] border border-line bg-paper">
+        <div className="flex items-baseline justify-between gap-4 border-b border-line px-5 py-4">
+          <h2 className="font-semibold">Pedido #{order.number}</h2>
+          <p className="text-sm text-ink-soft">{online ? (paid ? "Pagado" : "Pago en línea") : "Pagas al recibir"}</p>
+        </div>
+        <dl className="tabular space-y-2 px-5 py-4 text-[0.95rem]">
+          {items.map((i) => (
+            <div key={i.product_id + (i.variant ?? "")} className="flex justify-between gap-4">
+              <dt className="text-ink-soft">
+                {i.name}
+                {i.variant ? ` · ${i.variant}` : ""} × {i.qty}
+              </dt>
+              <dd>{formatCOP(i.line_total)}</dd>
+            </div>
+          ))}
+          <div className="flex justify-between gap-4">
+            <dt className="text-ink-soft">Envío</dt>
+            <dd>{order.shipping ? formatCOP(order.shipping) : "Gratis"}</dd>
+          </div>
+          <div className="flex justify-between gap-4 border-t border-line pt-3 font-semibold">
+            <dt>Total</dt>
+            <dd>{formatCOP(order.total)}</dd>
+          </div>
+        </dl>
+        <div className="border-t border-line px-5 py-4 text-[0.95rem]">
+          <p className="font-semibold">Entrega</p>
+          <p className="mt-1 text-ink-soft">
+            {order.customer_name}
+            <br />
+            {order.address}
+            {order.address_details ? `, ${order.address_details}` : ""}
+            <br />
+            {order.city}, {order.department}
+          </p>
+        </div>
+      </section>
+
+      <NextSteps settings={settings} online={online} />
     </>
+  );
+}
+
+function NextSteps({ settings, online }: { settings: SettingsRow; online: boolean }) {
+  const steps = [
+    "Te escribimos para confirmar la dirección y el color.",
+    "Despachamos y te mandamos el número de guía.",
+    `Te llegan en ${settings.delivery_estimate.toLowerCase()}${online ? "." : " y ahí le pagas a la transportadora."}`,
+  ];
+  return (
+    <section className="mt-10">
+      <h2 className="text-[1.15rem] font-semibold">Lo que sigue</h2>
+      <ol className="mt-4 space-y-3">
+        {steps.map((s, i) => (
+          <li key={s} className="flex gap-3 text-ink-soft">
+            <span className="type-display tabular w-5 shrink-0 text-night">{i + 1}</span>
+            {s}
+          </li>
+        ))}
+      </ol>
+      <p className="type-hand mt-8 -rotate-1 text-[1.6rem] text-night/80">¡gracias por confiar en nosotros!</p>
+      <Link href="/tienda" className="mt-6 inline-block font-semibold underline">
+        Volver a la tienda
+      </Link>
+    </section>
   );
 }
 
 /** Modo demo: la tienda aún no tiene base de datos, así que el pedido no se guardó. */
-function DemoConfirmation() {
+function DemoThanks({ settings }: { settings: SettingsRow }) {
   return (
     <>
-      <h1 className="type-carton text-[2.4rem] text-paper sm:text-5xl">Pedido de prueba</h1>
-      <p className="mt-4 leading-relaxed text-carton-soft">
+      <h1 className="type-display text-[2.5rem] sm:text-5xl">Pedido de prueba</h1>
+      <p className="mt-4 text-ink-soft">
         La tienda está en modo demostración: todavía no está conectada a la base de datos, así que este pedido no se
         guardó. Al conectar Supabase, los pedidos llegan al panel.
       </p>
-      <article className="print on-paper mt-9 -rotate-1 text-ink">
-        <div className="relative bg-carton-night px-5 pt-6 pb-10 text-paper">
-          <p className="type-carton tabular text-5xl">
-            <span className="text-carton-soft">Pedido</span> #DEMO
-          </p>
-          <DateStamp value={stampOf(new Date().toISOString())} className="absolute right-5 bottom-4 h-5" />
-        </div>
-        <p className="px-4 py-5 text-[0.95rem] leading-relaxed text-ink-soft">
-          Así verá el cliente su confirmación: número de pedido, productos, total, dirección de entrega y el botón para
-          confirmar por WhatsApp.
-        </p>
-      </article>
+      <NextSteps settings={settings} online={false} />
     </>
   );
-}
-
-function stampOf(iso: string) {
-  const parts = new Intl.DateTimeFormat("en-CA", {
-    timeZone: "America/Bogota",
-    year: "2-digit",
-    month: "numeric",
-    day: "numeric",
-  }).formatToParts(new Date(iso));
-  const get = (t: string) => parts.find((p) => p.type === t)?.value ?? "";
-  return `'${get("year")} ${get("month")} ${get("day")}`;
 }

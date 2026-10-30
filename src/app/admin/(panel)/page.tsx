@@ -1,7 +1,6 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Glasses } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
-import { DateStamp } from "@/components/store/date-stamp";
 import { Loading, PageHeader, Panel, PaymentBadge, StatusBadge } from "@/components/admin/ui";
 import { requireAdmin } from "@/lib/admin-auth";
 import { formatCOP, formatDateTime } from "@/lib/format";
@@ -49,7 +48,7 @@ async function Dashboard() {
       {s.pending_confirmation > 0 ? (
         <Link
           href="/admin/pedidos?estado=nuevo"
-          className="flex items-center justify-between gap-4 bg-flash px-4 py-3 font-semibold text-ink hover:bg-flash-deep"
+          className="flex items-center justify-between gap-4 bg-amber px-4 py-3 font-semibold text-ink hover:bg-amber-deep"
         >
           <span>
             {s.pending_confirmation} {s.pending_confirmation === 1 ? "pedido espera" : "pedidos esperan"} confirmación por
@@ -77,7 +76,7 @@ async function Dashboard() {
               {latest.map((o) => (
                 <li key={o.id}>
                   <Link href={`/admin/pedidos/${o.id}`} className="flex items-center gap-4 px-4 py-3 hover:bg-ink/[0.03]">
-                    <span className="type-carton tabular w-16 text-lg text-carton">#{o.number}</span>
+                    <span className="type-display tabular w-16 text-lg text-night">#{o.number}</span>
                     <span className="min-w-0 flex-1">
                       <span className="block truncate font-medium">{o.customer_name}</span>
                       <span className="block text-xs text-ink-soft">
@@ -156,9 +155,9 @@ function Stat({ label, value }: { label: string; value: string }) {
 function EmptyOrders() {
   return (
     <div className="flex flex-col items-center gap-3 px-6 py-12 text-center">
-      <DateStamp value="'00 00 00" className="h-5 opacity-60" />
+      <Glasses className="size-8 text-ink-soft" strokeWidth={1.25} aria-hidden />
       <p className="font-semibold">Todavía no hay pedidos</p>
-      <p className="max-w-xs text-sm text-ink-soft">Cuando alguien llene el sobre de pedido en la tienda, aparece aquí.</p>
+      <p className="max-w-xs text-sm text-ink-soft">Cuando alguien haga un pedido en la tienda, aparece aquí.</p>
     </div>
   );
 }

@@ -12,7 +12,7 @@ export function Button({
     <button
       className={cx(
         "inline-flex min-h-10 items-center justify-center gap-2 rounded-[3px] px-4 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-60",
-        variant === "primary" && "bg-carton text-paper hover:bg-carton-deep",
+        variant === "primary" && "bg-night text-paper hover:bg-deep",
         variant === "secondary" && "border border-ink/20 bg-paper text-ink hover:border-ink/40",
         variant === "ghost" && "text-ink-soft hover:bg-ink/5 hover:text-ink",
         variant === "danger" && "border border-alert/40 text-alert hover:bg-alert/5",
@@ -28,7 +28,7 @@ export function Label({ className, ...props }: React.LabelHTMLAttributes<HTMLLab
 }
 
 const field =
-  "block w-full rounded-[3px] border border-ink/20 bg-paper px-3 py-2 text-[0.95rem] text-ink placeholder:text-ink-soft/85 focus:border-carton focus:outline-none focus:ring-2 focus:ring-carton/20";
+  "block w-full rounded-[3px] border border-ink/20 bg-paper px-3 py-2 text-[0.95rem] text-ink placeholder:text-ink-soft/85 focus:border-night focus:outline-none focus:ring-2 focus:ring-night/20";
 
 export function Input({ className, ...props }: React.InputHTMLAttributes<HTMLInputElement>) {
   return <input className={cx(field, className)} {...props} />;
@@ -55,10 +55,10 @@ export function Checkbox({ label, hint, ...props }: React.InputHTMLAttributes<HT
 }
 
 const STATUS_STYLE: Record<OrderStatus, string> = {
-  nuevo: "bg-flash text-ink",
-  confirmado: "bg-carton/12 text-carton-deep",
-  enviado: "bg-paper text-carton-deep ring-1 ring-carton/40",
-  entregado: "bg-carton text-paper",
+  nuevo: "bg-amber text-ink",
+  confirmado: "bg-night/12 text-deep",
+  enviado: "bg-paper text-deep ring-1 ring-night/40",
+  entregado: "bg-night text-paper",
   cancelado: "bg-ink/8 text-ink-soft",
   devuelto: "bg-alert/10 text-alert",
 };
@@ -79,7 +79,7 @@ export function PaymentBadge({ method, status }: { method: string; status: Payme
     <span
       className={cx(
         "text-xs font-semibold whitespace-nowrap",
-        status === "pagado" ? "text-carton" : status === "fallido" ? "text-alert" : "text-ink-soft",
+        status === "pagado" ? "text-night" : status === "fallido" ? "text-alert" : "text-ink-soft",
       )}
     >
       Online · {PAYMENT_STATUS_LABEL[status]}
@@ -90,7 +90,7 @@ export function PaymentBadge({ method, status }: { method: string; status: Payme
 export function PageHeader({ title, children }: { title: string; children?: React.ReactNode }) {
   return (
     <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
-      <h1 className="type-carton text-3xl text-carton sm:text-4xl">{title}</h1>
+      <h1 className="type-display text-3xl text-night sm:text-4xl">{title}</h1>
       {children ? <div className="flex flex-wrap items-center gap-2">{children}</div> : null}
     </div>
   );
@@ -108,7 +108,7 @@ export function Panel({ title, children, className }: { title?: string; children
 export function FormMessage({ state }: { state: { ok: boolean; message: string } | null }) {
   if (!state) return null;
   return (
-    <p role="status" className={cx("text-sm", state.ok ? "text-carton" : "text-alert")}>
+    <p role="status" className={cx("text-sm", state.ok ? "text-night" : "text-alert")}>
       {state.message}
     </p>
   );

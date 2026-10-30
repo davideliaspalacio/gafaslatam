@@ -87,7 +87,7 @@ async function Orders({ searchParams }: { searchParams: PageProps<"/admin/pedido
             defaultValue={q}
             placeholder="Nombre, celular, ciudad o #"
             aria-label="Buscar pedidos"
-            className="w-full rounded-[3px] border border-ink/20 bg-paper py-2 pr-3 pl-9 text-sm focus:border-carton focus:outline-none focus:ring-2 focus:ring-carton/20"
+            className="w-full rounded-[3px] border border-ink/20 bg-paper py-2 pr-3 pl-9 text-sm focus:border-night focus:outline-none focus:ring-2 focus:ring-night/20"
           />
         </form>
       </div>
@@ -112,7 +112,7 @@ async function Orders({ searchParams }: { searchParams: PageProps<"/admin/pedido
                   return (
                     <tr key={o.id} className="align-top hover:bg-ink/[0.02]">
                       <td className="px-4 py-3">
-                        <Link href={`/admin/pedidos/${o.id}`} className="type-carton text-lg text-carton hover:underline">
+                        <Link href={`/admin/pedidos/${o.id}`} className="type-display text-lg text-night hover:underline">
                           #{o.number}
                         </Link>
                         <span className="block text-xs text-ink-soft">{formatDateTime(o.created_at)}</span>
@@ -145,7 +145,7 @@ async function Orders({ searchParams }: { searchParams: PageProps<"/admin/pedido
                           )}`}
                           target="_blank"
                           rel="noopener"
-                          className="inline-grid size-9 place-items-center rounded-full text-carton hover:bg-carton/10"
+                          className="inline-grid size-9 place-items-center rounded-full text-night hover:bg-night/10"
                           aria-label={`WhatsApp a ${o.customer_name}`}
                         >
                           <WhatsAppIcon className="size-5" />
@@ -176,7 +176,7 @@ function FilterLink({ href, active, label }: { href: string; active: boolean; la
       href={href}
       aria-current={active ? "page" : undefined}
       className={`rounded-[3px] px-3 py-1.5 text-sm font-medium whitespace-nowrap ${
-        active ? "bg-carton text-paper" : "text-ink-soft hover:bg-ink/5 hover:text-ink"
+        active ? "bg-night text-paper" : "text-ink-soft hover:bg-ink/5 hover:text-ink"
       }`}
     >
       {label}

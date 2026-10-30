@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { updateSettings } from "@/app/admin/actions";
+import { MediaField } from "@/components/admin/media-field";
 import { Button, Checkbox, FormMessage, Input, Label, Panel } from "@/components/admin/ui";
 import type { SettingsRow } from "@/lib/types";
 
@@ -39,6 +40,44 @@ export function SettingsForm({ settings, wompiReady }: { settings: SettingsRow; 
               placeholder="Vacío para ocultarla"
               defaultValue={settings.announcement ?? ""}
             />
+          </div>
+        </div>
+      </Panel>
+
+      <Panel title="Portada">
+        <div className="grid gap-5 px-4 py-4">
+          <MediaField
+            name="hero_video_url"
+            label="Video de portada"
+            defaultValue={settings.hero_video_url}
+            kind="video"
+            folder="portada"
+            hint="MP4 sin sonido, en primera persona, menos de 3 MB. Se reproduce en bucle."
+          />
+          <MediaField
+            name="hero_poster_url"
+            label="Imagen de portada (se ve mientras carga el video, o sola si no hay video)"
+            defaultValue={settings.hero_poster_url}
+            kind="image"
+            folder="portada"
+            hint="Vacío = la toma de Medellín que viene con la tienda."
+          />
+        </div>
+      </Panel>
+
+      <Panel title="Redes">
+        <div className="grid gap-4 px-4 py-4 sm:grid-cols-3">
+          <div>
+            <Label htmlFor="instagram_handle">Instagram</Label>
+            <Input id="instagram_handle" name="instagram_handle" placeholder="gafaslatam" defaultValue={settings.instagram_handle ?? ""} />
+          </div>
+          <div>
+            <Label htmlFor="tiktok_handle">TikTok</Label>
+            <Input id="tiktok_handle" name="tiktok_handle" placeholder="gafaslatam" defaultValue={settings.tiktok_handle ?? ""} />
+          </div>
+          <div>
+            <Label htmlFor="facebook_url">Facebook (enlace)</Label>
+            <Input id="facebook_url" name="facebook_url" placeholder="https://facebook.com/gafaslatam" defaultValue={settings.facebook_url ?? ""} />
           </div>
         </div>
       </Panel>

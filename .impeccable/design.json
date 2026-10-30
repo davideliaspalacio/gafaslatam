@@ -1,313 +1,293 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-18T20:16:36Z",
-  "title": "Design System: gafasLatam",
+  "generatedAt": "2026-10-30T03:01:29Z",
+  "title": "Design System: Gafas Latam",
   "extensions": {
     "colorMeta": {
-      "carton": {
+      "night": {
         "role": "primary",
-        "displayName": "Cartón de cámara",
-        "canonical": "#0c7038",
-        "oklch": "oklch(47.9% 0.122 151.7)",
-        "cssVar": "--carton",
+        "displayName": "Azul noche",
+        "canonical": "#101e40",
+        "oklch": "oklch(24.4% 0.067 265.0)",
         "tonalRamp": [
-          "#001004",
-          "#002e12",
-          "#005025",
-          "#14743c",
-          "#40975c",
-          "#65bb7e",
-          "#8ae0a1",
-          "#c6ffd4"
+          "oklch(15% 0.067 265.0)",
+          "oklch(26% 0.067 265.0)",
+          "oklch(38% 0.067 265.0)",
+          "oklch(49% 0.067 265.0)",
+          "oklch(61% 0.067 265.0)",
+          "oklch(72% 0.067 265.0)",
+          "oklch(84% 0.067 265.0)",
+          "oklch(95% 0.067 265.0)"
         ]
       },
-      "carton-deep": {
+      "deep": {
         "role": "primary",
-        "displayName": "Cartón profundo",
-        "canonical": "#08532a",
-        "oklch": "oklch(38.9% 0.097 152.6)",
-        "cssVar": "--carton-deep",
+        "displayName": "Azul hondo",
+        "canonical": "#0a1430",
+        "oklch": "oklch(20.1% 0.058 266.5)",
         "tonalRamp": [
-          "#001004",
-          "#002e14",
-          "#035027",
-          "#2f7146",
-          "#529366",
-          "#74b788",
-          "#98dcab",
-          "#c6ffd5"
+          "oklch(15% 0.058 266.5)",
+          "oklch(26% 0.058 266.5)",
+          "oklch(38% 0.058 266.5)",
+          "oklch(49% 0.058 266.5)",
+          "oklch(61% 0.058 266.5)",
+          "oklch(72% 0.058 266.5)",
+          "oklch(84% 0.058 266.5)",
+          "oklch(95% 0.058 266.5)"
         ]
       },
-      "carton-night": {
+      "mid": {
         "role": "primary",
-        "displayName": "Cartón noche",
-        "canonical": "#05321a",
-        "oklch": "oklch(28.1% 0.065 154.7)",
-        "cssVar": "--carton-night",
+        "displayName": "Azul medio",
+        "canonical": "#23365f",
+        "oklch": "oklch(33.9% 0.076 264.0)",
         "tonalRamp": [
-          "#001005",
-          "#012e16",
-          "#224c32",
-          "#426c51",
-          "#638e71",
-          "#85b293",
-          "#a9d6b7",
-          "#cdfcdc"
+          "oklch(15% 0.076 264.0)",
+          "oklch(26% 0.076 264.0)",
+          "oklch(38% 0.076 264.0)",
+          "oklch(49% 0.076 264.0)",
+          "oklch(61% 0.076 264.0)",
+          "oklch(72% 0.076 264.0)",
+          "oklch(84% 0.076 264.0)",
+          "oklch(95% 0.076 264.0)"
         ]
       },
-      "carton-soft": {
-        "role": "primary",
-        "displayName": "Cartón claro",
-        "canonical": "#cfe6d6",
-        "oklch": "oklch(90.3% 0.033 155.3)",
-        "cssVar": "--carton-soft",
-        "tonalRamp": [
-          "#010f06",
-          "#182a1e",
-          "#34473b",
-          "#536759",
-          "#73887a",
-          "#96ab9c",
-          "#b9d0c0",
-          "#def5e5"
-        ]
-      },
-      "flash": {
+      "amber": {
         "role": "secondary",
-        "displayName": "Amarillo flash",
-        "canonical": "#f5c518",
-        "oklch": "oklch(84.2% 0.168 90.4)",
-        "cssVar": "--flash",
+        "displayName": "Ámbar",
+        "canonical": "#ffb547",
+        "oklch": "oklch(82.4% 0.149 73.3)",
         "tonalRamp": [
-          "#100a00",
-          "#2f2300",
-          "#524000",
-          "#775e00",
-          "#9f7e00",
-          "#c8a000",
-          "#f3c312",
-          "#ffeebe"
+          "oklch(15% 0.149 73.3)",
+          "oklch(26% 0.149 73.3)",
+          "oklch(38% 0.149 73.3)",
+          "oklch(49% 0.149 73.3)",
+          "oklch(61% 0.149 73.3)",
+          "oklch(72% 0.149 73.3)",
+          "oklch(84% 0.149 73.3)",
+          "oklch(95% 0.149 73.3)"
         ]
       },
-      "flash-deep": {
+      "amber-deep": {
         "role": "secondary",
-        "displayName": "Flash apagado",
-        "canonical": "#e2b100",
-        "oklch": "oklch(78.3% 0.160 88.5)",
-        "cssVar": "--flash-deep",
+        "displayName": "Ámbar hondo",
+        "canonical": "#e89a2b",
+        "oklch": "oklch(74.7% 0.149 70.0)",
         "tonalRamp": [
-          "#100a00",
-          "#302300",
-          "#533f00",
-          "#795d00",
-          "#a17d00",
-          "#cb9e00",
-          "#f4c22d",
-          "#ffedc1"
+          "oklch(15% 0.149 70.0)",
+          "oklch(26% 0.149 70.0)",
+          "oklch(38% 0.149 70.0)",
+          "oklch(49% 0.149 70.0)",
+          "oklch(61% 0.149 70.0)",
+          "oklch(72% 0.149 70.0)",
+          "oklch(84% 0.149 70.0)",
+          "oklch(95% 0.149 70.0)"
         ]
       },
-      "stamp": {
+      "alert": {
         "role": "tertiary",
-        "displayName": "Naranja de estampa",
-        "canonical": "#ff6b1a",
-        "oklch": "oklch(70.3% 0.198 43.4)",
-        "cssVar": "--stamp",
+        "displayName": "Rojo aviso",
+        "canonical": "#b42318",
+        "oklch": "oklch(50.0% 0.182 29.5)",
         "tonalRamp": [
-          "#1a0400",
-          "#421400",
-          "#702800",
-          "#a13d00",
-          "#d55400",
-          "#ff7737",
-          "#ffb596",
-          "#ffe9e1"
+          "oklch(15% 0.182 29.5)",
+          "oklch(26% 0.182 29.5)",
+          "oklch(38% 0.182 29.5)",
+          "oklch(49% 0.182 29.5)",
+          "oklch(61% 0.182 29.5)",
+          "oklch(72% 0.182 29.5)",
+          "oklch(84% 0.182 29.5)",
+          "oklch(95% 0.182 29.5)"
+        ]
+      },
+      "cream": {
+        "role": "neutral",
+        "displayName": "Crema",
+        "canonical": "#f5f1e8",
+        "oklch": "oklch(95.9% 0.013 86.8)",
+        "tonalRamp": [
+          "oklch(15% 0.013 86.8)",
+          "oklch(26% 0.013 86.8)",
+          "oklch(38% 0.013 86.8)",
+          "oklch(49% 0.013 86.8)",
+          "oklch(61% 0.013 86.8)",
+          "oklch(72% 0.013 86.8)",
+          "oklch(84% 0.013 86.8)",
+          "oklch(95% 0.013 86.8)"
+        ]
+      },
+      "cream-2": {
+        "role": "neutral",
+        "displayName": "Crema 2",
+        "canonical": "#eae3d4",
+        "oklch": "oklch(91.7% 0.021 85.9)",
+        "tonalRamp": [
+          "oklch(15% 0.021 85.9)",
+          "oklch(26% 0.021 85.9)",
+          "oklch(38% 0.021 85.9)",
+          "oklch(49% 0.021 85.9)",
+          "oklch(61% 0.021 85.9)",
+          "oklch(72% 0.021 85.9)",
+          "oklch(84% 0.021 85.9)",
+          "oklch(95% 0.021 85.9)"
         ]
       },
       "paper": {
         "role": "neutral",
-        "displayName": "Papel fotográfico",
-        "canonical": "#fbfbf7",
-        "oklch": "oklch(98.7% 0.005 106.5)",
-        "cssVar": "--paper",
+        "displayName": "Papel (derivado)",
+        "canonical": "#fffcf6",
+        "oklch": "oklch(99.2% 0.009 84.6)",
         "tonalRamp": [
-          "#0b0b09",
-          "#252522",
-          "#42423f",
-          "#61615e",
-          "#82827f",
-          "#a5a5a1",
-          "#c9c9c5",
-          "#efefeb"
+          "oklch(15% 0.009 84.6)",
+          "oklch(26% 0.009 84.6)",
+          "oklch(38% 0.009 84.6)",
+          "oklch(49% 0.009 84.6)",
+          "oklch(61% 0.009 84.6)",
+          "oklch(72% 0.009 84.6)",
+          "oklch(84% 0.009 84.6)",
+          "oklch(95% 0.009 84.6)"
         ]
       },
-      "paper-shade": {
+      "mist": {
         "role": "neutral",
-        "displayName": "Papel sombreado",
-        "canonical": "#eef1ec",
-        "oklch": "oklch(95.4% 0.007 132.4)",
-        "cssVar": "--paper-shade",
+        "displayName": "Bruma (derivado)",
+        "canonical": "#b9c3dc",
+        "oklch": "oklch(81.7% 0.037 268.2)",
         "tonalRamp": [
-          "#0a0c09",
-          "#242622",
-          "#40433f",
-          "#60625e",
-          "#81837f",
-          "#a3a6a1",
-          "#c7cac5",
-          "#edf0eb"
+          "oklch(15% 0.037 268.2)",
+          "oklch(26% 0.037 268.2)",
+          "oklch(38% 0.037 268.2)",
+          "oklch(49% 0.037 268.2)",
+          "oklch(61% 0.037 268.2)",
+          "oklch(72% 0.037 268.2)",
+          "oklch(84% 0.037 268.2)",
+          "oklch(95% 0.037 268.2)"
         ]
       },
       "ink": {
         "role": "neutral",
         "displayName": "Tinta",
-        "canonical": "#111611",
-        "oklch": "oklch(19.3% 0.013 145.1)",
-        "cssVar": "--ink",
+        "canonical": "#101e40",
+        "oklch": "oklch(24.4% 0.067 265.0)",
         "tonalRamp": [
-          "#080d08",
-          "#212721",
-          "#3e443e",
-          "#5d635d",
-          "#7e847e",
-          "#a0a7a0",
-          "#c4cbc4",
-          "#e9f1e9"
+          "oklch(15% 0.067 265.0)",
+          "oklch(26% 0.067 265.0)",
+          "oklch(38% 0.067 265.0)",
+          "oklch(49% 0.067 265.0)",
+          "oklch(61% 0.067 265.0)",
+          "oklch(72% 0.067 265.0)",
+          "oklch(84% 0.067 265.0)",
+          "oklch(95% 0.067 265.0)"
         ]
       },
       "ink-soft": {
         "role": "neutral",
         "displayName": "Tinta suave",
-        "canonical": "#4a5a4f",
-        "oklch": "oklch(45.0% 0.027 155.2)",
-        "cssVar": "--ink-soft",
+        "canonical": "#4a5470",
+        "oklch": "oklch(44.9% 0.048 269.2)",
         "tonalRamp": [
-          "#030e07",
-          "#1b291f",
-          "#37463c",
-          "#56665b",
-          "#76877b",
-          "#99aa9e",
-          "#bccfc2",
-          "#e1f4e7"
+          "oklch(15% 0.048 269.2)",
+          "oklch(26% 0.048 269.2)",
+          "oklch(38% 0.048 269.2)",
+          "oklch(49% 0.048 269.2)",
+          "oklch(61% 0.048 269.2)",
+          "oklch(72% 0.048 269.2)",
+          "oklch(84% 0.048 269.2)",
+          "oklch(95% 0.048 269.2)"
         ]
       },
-      "rule": {
+      "line": {
         "role": "neutral",
-        "displayName": "Filete",
-        "canonical": "#d6ded8",
-        "oklch": "oklch(89.3% 0.012 153.7)",
-        "cssVar": "--rule",
+        "displayName": "Línea",
+        "canonical": "#dcd4c3",
+        "oklch": "oklch(87.2% 0.025 85.8)",
         "tonalRamp": [
-          "#080d09",
-          "#212722",
-          "#3d443f",
-          "#5c635e",
-          "#7d847f",
-          "#a0a7a2",
-          "#c4cbc6",
-          "#e9f1eb"
-        ]
-      },
-      "alert": {
-        "role": "neutral",
-        "displayName": "Alerta",
-        "canonical": "#c8261d",
-        "oklch": "oklch(54.0% 0.198 29.0)",
-        "cssVar": "--alert",
-        "tonalRamp": [
-          "#1f0000",
-          "#4d0000",
-          "#810001",
-          "#b70907",
-          "#e04134",
-          "#ff7463",
-          "#ffb3a7",
-          "#ffe9e5"
+          "oklch(15% 0.025 85.8)",
+          "oklch(26% 0.025 85.8)",
+          "oklch(38% 0.025 85.8)",
+          "oklch(49% 0.025 85.8)",
+          "oklch(61% 0.025 85.8)",
+          "oklch(72% 0.025 85.8)",
+          "oklch(84% 0.025 85.8)",
+          "oklch(95% 0.025 85.8)"
         ]
       }
     },
     "typographyMeta": {
       "display": {
-        "displayName": "Rotulación de cartón (display)",
-        "fontStyle": "italic",
+        "displayName": "Título de página",
         "fontStretch": "125%",
-        "purpose": "Titular de la primera pantalla; 2.15rem en celular, 3.75rem desde 640px, 4.1rem desde 768px. Segunda línea en amarillo flash. Clase .type-carton."
+        "purpose": "H1 de cada página: 2.5rem en celular, 3rem desde 640px, 4rem en la portada desde 1024px; líneas equilibradas."
       },
       "headline": {
-        "displayName": "Rotulación de cartón (banda)",
-        "fontStyle": "italic",
+        "displayName": "Título de sección",
         "fontStretch": "125%",
-        "purpose": "Títulos de banda; 2rem en celular, 3rem desde 640px. Clase .type-carton."
+        "purpose": "H2 de banda: 1.75rem, 2.25rem desde 640px. Subtítulos de caja/ficha 1.5rem (1.875rem) y de políticas 1.4rem (1.5rem)."
       },
-      "numeral": {
-        "displayName": "Numeral de cartón",
-        "fontStyle": "normal",
+      "price": {
+        "displayName": "Precio",
         "fontStretch": "125%",
-        "purpose": "Precios y totales: rotulación de cartón en redonda con cifras tabulares (.type-carton + .tabular, font-style normal)."
+        "purpose": "Precio del modelo (2.25rem), ficha destacada (1.75rem), total del pedido (1.6rem) y números de paso (2rem). Siempre recto y con cifras tabulares."
       },
       "title": {
-        "displayName": "Título",
-        "purpose": "Nombre de cada función y pasos de compra; 1.25rem, 1.5rem desde 640px."
+        "displayName": "Título corto",
+        "purpose": "Títulos de paso, rasgos y leyendas del formulario, de 1.15rem a 1.25rem."
       },
       "body": {
-        "displayName": "Cuerpo",
-        "purpose": "Párrafos en Archivo de ancho normal, medida máxima 65ch; cartón claro sobre cartón, tinta suave sobre papel."
+        "displayName": "Texto",
+        "purpose": "Todo el texto a 17px; párrafos largos a 36rem con interlineado 1.625."
       },
-      "label": {
-        "displayName": "Rótulo de especificaciones",
-        "textTransform": "uppercase",
-        "fontStretch": "75%",
-        "purpose": "Rótulos condensados en mayúsculas (0.62–0.82rem): casillas del sobre, leyendas, resumen, pie, \"Foto de referencia\". Clase .type-spec."
+      "body-sm": {
+        "displayName": "Texto secundario",
+        "purpose": "Navegación, rótulos de campo, detalles de opción, pie y resúmenes."
       },
       "button": {
-        "displayName": "Rótulo de botón",
+        "displayName": "Botón",
+        "purpose": "Texto de todas las píldoras de acción."
+      },
+      "label": {
+        "displayName": "Etiqueta",
         "textTransform": "uppercase",
-        "fontStretch": "75%",
-        "purpose": "Texto de los botones amarillos de pedir (.type-spec a 1.05rem)."
+        "fontStretch": "125%",
+        "purpose": "Nombra un dato, una columna o un estado (REC, Envío/Pago/Garantía, columnas del pie, insignia, rótulo de foto). Nunca antetítulo. Usos compactos hoy a 0.6–0.65rem."
+      },
+      "hand": {
+        "displayName": "Nota a mano",
+        "purpose": "Una o dos por página como máximo (hoy una), azul noche al 80 %, giro de -1° (-2° en la portada), 1.45–1.7rem."
       }
     },
     "shadows": [
       {
-        "name": "shadow-print",
-        "value": "0 1px 1px rgb(8 49 26 / 0.18), 0 10px 24px -6px rgb(8 49 26 / 0.45), 0 28px 48px -18px rgb(8 49 26 / 0.5)",
-        "purpose": "Sombra de copia: copias, sobre de pedido, copia del pedido y tarjeta de ingreso al panel."
-      },
-      {
-        "name": "shadow-lift",
-        "value": "0 2px 2px rgb(8 49 26 / 0.12), 0 14px 30px -12px rgb(8 49 26 / 0.35)",
-        "purpose": "Sombra de realce: botones amarillos principales y sello de ahorro."
-      },
-      {
-        "name": "stamp-glow",
-        "value": "drop-shadow(0 0 1.5px rgb(255 107 26 / 0.85)) drop-shadow(0 0 5px rgb(255 120 40 / 0.45))",
-        "purpose": "Halo LED de la fecha de siete segmentos (filter, no box-shadow)."
+        "name": "shadow-soft",
+        "value": "0 1px 2px rgb(16 30 64 / 0.06), 0 8px 24px -12px rgb(16 30 64 / 0.25)",
+        "purpose": "Solo lo que flota: WhatsApp flotante, menú desplegable del celular y tarjeta de entrada del panel. Teñida de azul noche."
       }
     ],
     "motion": [
       {
         "name": "ease-out-expo",
         "value": "cubic-bezier(0.16, 1, 0.3, 1)",
-        "purpose": "Curva del destello de flash y de la barra fija de compra."
+        "purpose": "Entrada y salida de la barra de compra fija (300ms)."
       },
       {
-        "name": "develop",
-        "value": "animation: develop linear both; animation-timeline: view(); animation-range: entry 0% cover 35%; from { filter: brightness(0.55) saturate(0.2) sepia(0.35) contrast(0.9) } to { filter: none }",
-        "purpose": "Revelado de las copias al entrar en pantalla (solo con soporte de view() y sin prefers-reduced-motion)."
+        "name": "rec-blink",
+        "value": "animation: rec 1.6s steps(1, end) infinite; @keyframes rec { 50% { opacity: 0.2 } }",
+        "purpose": "Parpadeo seco del punto REC. Se detiene con prefers-reduced-motion."
       },
       {
-        "name": "flash-burst",
-        "value": "700ms var(--ease-out-expo); opacity 0 → 1 (8%) → 0; radial-gradient(circle at 50% 40%, #fff 0%, #fffbe6 45%, rgb(255 251 230 / 0.85) 100%)",
-        "purpose": "Destello único a pantalla completa al confirmar el pedido; 1ms con prefers-reduced-motion."
+        "name": "timecode-tick",
+        "value": "1s",
+        "purpose": "El contador 00:MM:SS de la toma avanza cada segundo; no arranca con prefers-reduced-motion."
       },
       {
-        "name": "sticky-bar",
-        "value": "translate + opacity 300ms var(--ease-out-expo)",
-        "purpose": "Entrada y salida de la barra fija de compra en celular."
+        "name": "state",
+        "value": "200ms",
+        "purpose": "Cambios de fondo y borde de las píldoras; la de compra baja 1px al presionar."
       },
       {
-        "name": "button-press",
-        "value": "background-color, translate 200ms; active translate-y 1px",
-        "purpose": "Hover a flash apagado y pulsación de 1px del botón de pedir."
+        "name": "float",
+        "value": "300ms",
+        "purpose": "WhatsApp flotante: aparece o se esconde con opacidad y 12px de desplazamiento; crece 3 % en hover."
       }
     ],
     "breakpoints": [
@@ -322,173 +302,175 @@
       {
         "name": "lg",
         "value": "1024px"
-      },
+      }
+    ],
+    "platformColors": [
       {
-        "name": "container",
-        "value": "72rem"
-      },
-      {
-        "name": "envelope",
-        "value": "36rem"
+        "name": "whatsapp",
+        "value": "#25D366",
+        "textColor": "#062b16",
+        "purpose": "Verde oficial de WhatsApp, valor literal fuera de los tokens; solo acciones de WhatsApp (flotante y confirmación del pedido)."
       }
     ]
   },
   "components": [
     {
-      "name": "Botón de pedir",
+      "name": "Píldora de compra",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "Acción primaria de la tienda: relleno amarillo flash, tinta negra, rótulo condensado, 56px de alto.",
-      "html": "<a class=\"ds-btn-primary\" href=\"#pedido\">Pedir ahora · pagas al recibir</a>",
-      "css": ".ds-btn-primary { display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 56px; padding: 0 24px; max-width: 28rem; background: var(--flash, #f5c518); color: var(--ink, #111611); border-radius: 3px; box-shadow: 0 2px 2px rgb(8 49 26 / 0.12), 0 14px 30px -12px rgb(8 49 26 / 0.35); text-decoration: none; font-size: 1.05rem; font-family: var(--font-archivo, Archivo), ui-sans-serif, system-ui, sans-serif; font-weight: 600; font-stretch: 75%; font-variation-settings: 'wdth' 75; letter-spacing: 0.04em; text-transform: uppercase; transition: background-color 200ms, translate 200ms; } .ds-btn-primary:hover { background: var(--flash-deep, #e2b100); } .ds-btn-primary:active { translate: 0 1px; } .ds-btn-primary:focus-visible { outline: 3px solid var(--flash, #f5c518); outline-offset: 3px; }"
+      "description": "La acción principal de la pantalla: ámbar con texto azul noche, 52px. Una por pantalla.",
+      "html": "<a class=\"ds-btn-buy\" href=\"#pedido\">Pedir · pagas al recibir</a>",
+      "css": ".ds-btn-buy { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 28px; border-radius: 9999px; font-family: var(--font-instrument, \"Instrument Sans\"), ui-sans-serif, system-ui, sans-serif; font-size: 1.0625rem; font-weight: 600; text-decoration: none; cursor: pointer; background: var(--amber, #ffb547); color: var(--night, #101e40); border: none; transition: background-color 200ms, translate 200ms; } .ds-btn-buy:hover { background: var(--amber-deep, #e89a2b); } .ds-btn-buy:active { translate: 0 1px; } .ds-btn-buy:focus-visible { outline: 3px solid var(--night, #101e40); outline-offset: 3px; }"
     },
     {
-      "name": "Botón primario del panel",
+      "name": "Botón secundario sobre azul",
       "kind": "button",
-      "refersTo": "admin-button-primary",
-      "description": "Acción principal en el panel de operación: cartón con texto papel, 40px, esquina de 3px.",
-      "html": "<button class=\"ds-admin-btn\" type=\"button\">Guardar cambios</button>",
-      "css": ".ds-admin-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; padding: 0 16px; border: 0; border-radius: 3px; background: var(--carton, #0c7038); color: var(--paper, #fbfbf7); font-family: var(--font-archivo, Archivo), ui-sans-serif, system-ui, sans-serif; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: background-color 150ms; } .ds-admin-btn:hover { background: var(--carton-deep, #08532a); } .ds-admin-btn:focus-visible { outline: 3px solid var(--carton, #0c7038); outline-offset: 3px; } .ds-admin-btn:disabled { opacity: 0.6; cursor: not-allowed; }"
+      "refersTo": "button-on-dark",
+      "description": "Sin relleno, borde de bruma al 45 % y texto crema; lleva los enlaces a WhatsApp dentro de las bandas azules.",
+      "html": "<div class=\"ds-band-night\"><a class=\"ds-btn-dark\" href=\"#whatsapp\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12.04 2a9.9 9.9 0 0 0-8.48 15.02L2.2 22l5.1-1.33A9.92 9.92 0 1 0 12.04 2Zm0 18.1a8.2 8.2 0 0 1-4.18-1.14l-.3-.18-3.03.79.81-2.95-.2-.31a8.22 8.22 0 1 1 6.9 3.79Zm4.5-6.15c-.25-.12-1.46-.72-1.69-.8-.23-.09-.39-.13-.55.12-.17.25-.64.8-.78.96-.14.17-.29.19-.53.06-.25-.12-1.04-.38-1.98-1.22a7.4 7.4 0 0 1-1.37-1.7c-.14-.25-.02-.38.11-.5.11-.12.25-.29.37-.43.13-.15.17-.25.25-.42.09-.16.05-.31-.02-.43-.06-.12-.55-1.33-.76-1.82-.2-.48-.4-.41-.55-.42h-.47a.9.9 0 0 0-.65.31c-.23.25-.86.84-.86 2.05s.88 2.38 1 2.54c.13.17 1.73 2.64 4.2 3.7.58.25 1.04.4 1.4.52.59.19 1.12.16 1.54.1.47-.07 1.46-.6 1.66-1.18.21-.58.21-1.07.15-1.18-.06-.1-.23-.16-.47-.29Z\"/></svg>Pedir por WhatsApp</a></div>",
+      "css": ".ds-band-night { background: var(--night, #101e40); padding: 24px; } .ds-btn-dark { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 28px; border-radius: 9999px; font-family: var(--font-instrument, \"Instrument Sans\"), ui-sans-serif, system-ui, sans-serif; font-size: 1.0625rem; font-weight: 600; text-decoration: none; cursor: pointer; background: transparent; color: var(--cream, #f5f1e8); border: 1px solid rgb(185 195 220 / 0.45); transition: border-color 200ms, background-color 200ms; } .ds-btn-dark:hover { border-color: var(--cream, #f5f1e8); background: rgb(245 241 232 / 0.05); } .ds-btn-dark:focus-visible { outline: 3px solid var(--amber, #ffb547); outline-offset: 3px; }"
     },
     {
-      "name": "Botón secundario del panel",
+      "name": "Botón secundario sobre crema",
       "kind": "button",
-      "refersTo": "admin-button-secondary",
-      "description": "Acción secundaria del panel (p. ej. Exportar CSV): papel con borde de tinta al 20 %.",
-      "html": "<button class=\"ds-admin-btn-2\" type=\"button\">Exportar CSV</button>",
-      "css": ".ds-admin-btn-2 { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; padding: 0 16px; border: 1px solid rgb(17 22 17 / 0.2); border-radius: 3px; background: var(--paper, #fbfbf7); color: var(--ink, #111611); font-family: var(--font-archivo, Archivo), ui-sans-serif, system-ui, sans-serif; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: border-color 150ms; } .ds-admin-btn-2:hover { border-color: rgb(17 22 17 / 0.4); } .ds-admin-btn-2:focus-visible { outline: 3px solid var(--carton, #0c7038); outline-offset: 3px; }"
+      "refersTo": "button-on-light",
+      "description": "Sin relleno, borde azul noche al 25 % y texto azul noche; acción secundaria sobre crema (\"Ver el modelo\").",
+      "html": "<a class=\"ds-btn-light\" href=\"#modelo\">Ver el modelo</a>",
+      "css": ".ds-btn-light { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 28px; border-radius: 9999px; font-family: var(--font-instrument, \"Instrument Sans\"), ui-sans-serif, system-ui, sans-serif; font-size: 1.0625rem; font-weight: 600; text-decoration: none; cursor: pointer; background: transparent; color: var(--night, #101e40); border: 1px solid rgb(16 30 64 / 0.25); transition: border-color 200ms, background-color 200ms; } .ds-btn-light:hover { border-color: var(--night, #101e40); background: rgb(16 30 64 / 0.03); } .ds-btn-light:focus-visible { outline: 3px solid var(--night, #101e40); outline-offset: 3px; }"
     },
     {
-      "name": "Casilla del sobre",
-      "kind": "input",
-      "refersTo": "envelope-field",
-      "description": "Campo del sobre de pedido: casilla impresa cuadrada con el rótulo condensado dentro del recuadro.",
-      "html": "<div class=\"ds-env-field\"><label for=\"ds-phone\">Celular (WhatsApp)</label><input id=\"ds-phone\" inputmode=\"tel\" placeholder=\"300 123 4567\"></div>",
-      "css": ".ds-env-field { border: 1px solid rgb(17 22 17 / 0.3); background: var(--paper, #fbfbf7); padding: 8px 12px 0; transition: border-color 150ms, box-shadow 150ms; max-width: 36rem; } .ds-env-field:focus-within { border-color: var(--carton, #0c7038); box-shadow: 0 0 0 2px rgb(12 112 56 / 0.15); } .ds-env-field label { display: block; font-size: 0.68rem; color: var(--ink-soft, #4a5a4f); font-family: var(--font-archivo, Archivo), ui-sans-serif, system-ui, sans-serif; font-weight: 600; font-stretch: 75%; font-variation-settings: 'wdth' 75; letter-spacing: 0.04em; text-transform: uppercase; } .ds-env-field input { display: block; width: 100%; border: 0; background: transparent; padding: 2px 0 4px; font-family: var(--font-archivo, Archivo), ui-sans-serif, system-ui, sans-serif; font-size: 1.06rem; color: var(--ink, #111611); caret-color: var(--carton, #0c7038); outline: none; } .ds-env-field input::placeholder { color: rgb(74 90 79 / 0.85); }"
+      "name": "WhatsApp flotante",
+      "kind": "button",
+      "refersTo": "whatsapp-float",
+      "description": "Abajo a la derecha, verde oficial con el ícono y la palabra WhatsApp; se esconde mientras hay un botón de compra o de WhatsApp a la vista.",
+      "html": "<a class=\"ds-wa-float\" href=\"#whatsapp\" aria-label=\"Escribir por WhatsApp\"><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12.04 2a9.9 9.9 0 0 0-8.48 15.02L2.2 22l5.1-1.33A9.92 9.92 0 1 0 12.04 2Zm0 18.1a8.2 8.2 0 0 1-4.18-1.14l-.3-.18-3.03.79.81-2.95-.2-.31a8.22 8.22 0 1 1 6.9 3.79Zm4.5-6.15c-.25-.12-1.46-.72-1.69-.8-.23-.09-.39-.13-.55.12-.17.25-.64.8-.78.96-.14.17-.29.19-.53.06-.25-.12-1.04-.38-1.98-1.22a7.4 7.4 0 0 1-1.37-1.7c-.14-.25-.02-.38.11-.5.11-.12.25-.29.37-.43.13-.15.17-.25.25-.42.09-.16.05-.31-.02-.43-.06-.12-.55-1.33-.76-1.82-.2-.48-.4-.41-.55-.42h-.47a.9.9 0 0 0-.65.31c-.23.25-.86.84-.86 2.05s.88 2.38 1 2.54c.13.17 1.73 2.64 4.2 3.7.58.25 1.04.4 1.4.52.59.19 1.12.16 1.54.1.47-.07 1.46-.6 1.66-1.18.21-.58.21-1.07.15-1.18-.06-.1-.23-.16-.47-.29Z\"/></svg>WhatsApp</a>",
+      "css": ".ds-wa-float { display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 10px 16px 10px 12px; border-radius: 9999px; background: #25D366; color: #062b16; font-family: var(--font-instrument, \"Instrument Sans\"), ui-sans-serif, system-ui, sans-serif; font-size: 0.95rem; font-weight: 600; text-decoration: none; box-shadow: 0 1px 2px rgb(16 30 64 / 0.06), 0 8px 24px -12px rgb(16 30 64 / 0.25); transition: opacity 300ms, translate 300ms, scale 300ms; } .ds-wa-float:hover { scale: 1.03; } .ds-wa-float:focus-visible { outline: 3px solid var(--night, #101e40); outline-offset: 3px; }"
     },
     {
-      "name": "Campo del panel",
-      "kind": "input",
-      "refersTo": "admin-input",
-      "description": "Input del panel: esquina de 3px, borde de tinta al 20 %, foco cartón.",
-      "html": "<label class=\"ds-admin-label\" for=\"ds-q\">Buscar pedidos</label><input class=\"ds-admin-input\" id=\"ds-q\" placeholder=\"Nombre, celular, ciudad o #\">",
-      "css": ".ds-admin-label { display: block; margin-bottom: 6px; font-family: var(--font-archivo, Archivo), ui-sans-serif, system-ui, sans-serif; font-size: 0.8rem; font-weight: 600; color: var(--ink-soft, #4a5a4f); } .ds-admin-input { display: block; width: 100%; max-width: 18rem; border: 1px solid rgb(17 22 17 / 0.2); border-radius: 3px; background: var(--paper, #fbfbf7); padding: 8px 12px; font-family: var(--font-archivo, Archivo), ui-sans-serif, system-ui, sans-serif; font-size: 0.95rem; color: var(--ink, #111611); transition: border-color 150ms, box-shadow 150ms; } .ds-admin-input::placeholder { color: rgb(74 90 79 / 0.85); } .ds-admin-input:focus { outline: none; border-color: var(--carton, #0c7038); box-shadow: 0 0 0 2px rgb(12 112 56 / 0.2); }"
-    },
-    {
-      "name": "Cabecera de tienda",
-      "kind": "nav",
-      "refersTo": "announcement-strip",
-      "description": "Franja de anuncio amarilla, marca en rotulación de cartón sobre cartón y botón circular de WhatsApp.",
-      "html": "<div class=\"ds-store-top\"><p class=\"ds-announce\">Envío gratis a toda Colombia · Pagas al recibir</p><header class=\"ds-store-head\"><a class=\"ds-brand\" href=\"#\">gafasLatam</a><nav class=\"ds-store-nav\"><a class=\"ds-nav-link\" href=\"#pedido\">Hacer pedido</a><a class=\"ds-wa\" href=\"#\" aria-label=\"Escribir por WhatsApp\"><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12.04 2a9.9 9.9 0 0 0-8.48 15.02L2.2 22l5.1-1.33A9.92 9.92 0 1 0 12.04 2Zm0 18.1a8.2 8.2 0 0 1-4.18-1.14l-.3-.18-3.03.79.81-2.95-.2-.31a8.22 8.22 0 1 1 6.9 3.79Zm4.5-6.15c-.25-.12-1.46-.72-1.69-.8-.23-.09-.39-.13-.55.12-.17.25-.64.8-.78.96-.14.17-.29.19-.53.06-.25-.12-1.04-.38-1.98-1.22a7.4 7.4 0 0 1-1.37-1.7c-.14-.25-.02-.38.11-.5.11-.12.25-.29.37-.43.13-.15.17-.25.25-.42.09-.16.05-.31-.02-.43-.06-.12-.55-1.33-.76-1.82-.2-.48-.4-.41-.55-.42h-.47a.9.9 0 0 0-.65.31c-.23.25-.86.84-.86 2.05s.88 2.38 1 2.54c.13.17 1.73 2.64 4.2 3.7.58.25 1.04.4 1.4.52.59.19 1.12.16 1.54.1.47-.07 1.46-.6 1.66-1.18.21-.58.21-1.07.15-1.18-.06-.1-.23-.16-.47-.29Z\"/></svg></a></nav></header></div>",
-      "css": ".ds-store-top { background: var(--carton, #0c7038); color: var(--paper, #fbfbf7); } .ds-announce { margin: 0; background: var(--flash, #f5c518); color: var(--ink, #111611); padding: 8px 16px; text-align: center; font-size: 0.8rem; line-height: 1.25; font-family: var(--font-archivo, Archivo), ui-sans-serif, system-ui, sans-serif; font-weight: 600; font-stretch: 75%; font-variation-settings: 'wdth' 75; letter-spacing: 0.04em; text-transform: uppercase; } .ds-store-head { display: flex; align-items: center; justify-content: space-between; padding: 16px 16px 8px; } .ds-brand { color: var(--paper, #fbfbf7); text-decoration: none; font-size: 1.9rem; font-family: var(--font-archivo, Archivo), ui-sans-serif, system-ui, sans-serif; font-style: italic; font-weight: 850; font-stretch: 125%; font-variation-settings: 'wdth' 125; letter-spacing: -0.02em; line-height: 0.95; } .ds-store-nav { display: flex; align-items: center; gap: 4px; } .ds-nav-link { color: var(--carton-soft, #cfe6d6); text-decoration: none; padding: 8px 12px; font-size: 0.875rem; border-radius: 4px; font-family: var(--font-archivo, Archivo), ui-sans-serif, system-ui, sans-serif; font-weight: 600; font-stretch: 75%; font-variation-settings: 'wdth' 75; letter-spacing: 0.04em; text-transform: uppercase; } .ds-nav-link:hover { color: var(--paper, #fbfbf7); } .ds-wa { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 9999px; color: var(--paper, #fbfbf7); } .ds-wa:hover { background: var(--carton-deep, #08532a); } .ds-store-top a:focus-visible { outline: 3px solid var(--flash, #f5c518); outline-offset: 3px; }"
-    },
-    {
-      "name": "Pestañas del panel",
-      "kind": "nav",
-      "refersTo": "admin-header",
-      "description": "Navegación del panel sobre cabecera cartón: activa en papel con línea amarilla de 3px.",
-      "html": "<header class=\"ds-admin-head\"><a class=\"ds-admin-brand\" href=\"#\">Panel</a><nav class=\"ds-admin-tabs\" aria-label=\"Panel\"><a href=\"#\">Resumen</a><a href=\"#\" aria-current=\"page\">Pedidos</a><a href=\"#\">Producto</a><a href=\"#\">Reseñas</a><a href=\"#\">Ajustes</a></nav></header>",
-      "css": ".ds-admin-head { background: var(--carton, #0c7038); color: var(--paper, #fbfbf7); padding: 12px 16px 0; } .ds-admin-brand { color: var(--paper, #fbfbf7); text-decoration: none; font-size: 1.5rem; font-family: var(--font-archivo, Archivo), ui-sans-serif, system-ui, sans-serif; font-style: italic; font-weight: 850; font-stretch: 125%; font-variation-settings: 'wdth' 125; letter-spacing: -0.02em; line-height: 0.95; } .ds-admin-tabs { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; margin-top: 4px; } .ds-admin-tabs a { padding: 12px; border-bottom: 3px solid transparent; color: var(--carton-soft, #cfe6d6); text-decoration: none; white-space: nowrap; font-family: var(--font-archivo, Archivo), ui-sans-serif, system-ui, sans-serif; font-size: 0.875rem; font-weight: 600; transition: color 150ms; } .ds-admin-tabs a:hover { color: var(--paper, #fbfbf7); } .ds-admin-tabs a[aria-current=page] { border-bottom-color: var(--flash, #f5c518); color: var(--paper, #fbfbf7); } .ds-admin-tabs a:focus-visible { outline: 3px solid var(--flash, #f5c518); outline-offset: -3px; }"
-    },
-    {
-      "name": "Opción de cantidad con sello de ahorro",
-      "kind": "chip",
-      "refersTo": "option-tile",
-      "description": "Baldosa seleccionable del sobre (\"¿Cuántos pares?\"); la opción Doble copia lleva el sello amarillo de ahorro girado -2°.",
-      "html": "<div class=\"ds-tiles\"><label class=\"ds-tile\"><input type=\"radio\" name=\"ds-qty\" checked><span class=\"ds-tile-txt\"><b>1 par</b></span><span class=\"ds-tile-price\">$189.900</span></label><label class=\"ds-tile\"><span class=\"ds-save\">Ahorras $39.900</span><input type=\"radio\" name=\"ds-qty\"><span class=\"ds-tile-txt\"><b>Doble copia · 2 pares</b><small>Para ti y alguien más</small></span><span class=\"ds-tile-price\">$339.900</span></label></div>",
-      "css": ".ds-tiles { display: grid; gap: 10px; max-width: 32rem; padding-top: 12px; background: var(--paper, #fbfbf7); } .ds-tile { position: relative; display: flex; align-items: center; gap: 12px; padding: 14px 16px; border: 2px solid var(--rule, #d6ded8); background: var(--paper, #fbfbf7); color: var(--ink, #111611); cursor: pointer; font-family: var(--font-archivo, Archivo), ui-sans-serif, system-ui, sans-serif; transition: border-color 150ms, background-color 150ms; } .ds-tile:hover { border-color: var(--ink-soft, #4a5a4f); } .ds-tile:has(input:checked) { border-color: var(--carton, #0c7038); background: rgb(12 112 56 / 0.06); } .ds-tile input { width: 20px; height: 20px; margin: 0; flex-shrink: 0; accent-color: var(--carton, #0c7038); } .ds-tile input:focus-visible { outline: 3px solid var(--carton, #0c7038); outline-offset: 3px; } .ds-tile-txt { flex: 1; } .ds-tile-txt b, .ds-tile-txt small { display: block; } .ds-tile-txt small { font-size: 0.875rem; color: var(--ink-soft, #4a5a4f); } .ds-tile-price { font-size: 1.125rem; font-weight: 700; font-variant-numeric: tabular-nums lining-nums; } .ds-save { position: absolute; top: -12px; right: 12px; rotate: -2deg; background: var(--flash, #f5c518); color: var(--ink, #111611); padding: 2px 8px; font-size: 0.72rem; box-shadow: 0 2px 2px rgb(8 49 26 / 0.12), 0 14px 30px -12px rgb(8 49 26 / 0.35); font-family: var(--font-archivo, Archivo), ui-sans-serif, system-ui, sans-serif; font-weight: 600; font-stretch: 75%; font-variation-settings: 'wdth' 75; letter-spacing: 0.04em; text-transform: uppercase; font-weight: 700; }"
-    },
-    {
-      "name": "Copia fotográfica",
-      "kind": "card",
-      "refersTo": "print",
-      "description": "Reemplaza a la tarjeta: marco de papel de 0.55rem, sombra verde, giro leve, fecha de siete segmentos y pie \"Foto de referencia\" en fotos de muestra.",
-      "html": "<div class=\"ds-print-floor\"><figure class=\"ds-print\"><div class=\"ds-print-photo\"><svg class=\"ds-stamp\" viewBox=\"-2 -1 102.6 22\" role=\"img\" aria-label=\"Fecha 2026 10 18\"><g transform=\"skewX(-8) translate(2 0)\"><polygon points=\"2,1.6 3.1,2.7 3.1,4.9 2,6 0.9,4.9 0.9,2.7\"/><polygon points=\"6.8,1.2 7.9,0.1 13.7,0.1 14.8,1.2 13.7,2.3 7.9,2.3\"/><polygon points=\"15.4,1.8 16.5,2.9 16.5,8.3 15.4,9.4 14.3,8.3 14.3,2.9\"/><polygon points=\"6.8,10 7.9,8.9 13.7,8.9 14.8,10 13.7,11.1 7.9,11.1\"/><polygon points=\"6.2,10.6 7.3,11.7 7.3,17.1 6.2,18.2 5.1,17.1 5.1,11.7\"/><polygon points=\"6.8,18.8 7.9,17.7 13.7,17.7 14.8,18.8 13.7,19.9 7.9,19.9\"/><polygon points=\"20.4,1.2 21.5,0.1 27.3,0.1 28.4,1.2 27.3,2.3 21.5,2.3\"/><polygon points=\"19.8,1.8 20.9,2.9 20.9,8.3 19.8,9.4 18.7,8.3 18.7,2.9\"/><polygon points=\"20.4,10 21.5,8.9 27.3,8.9 28.4,10 27.3,11.1 21.5,11.1\"/><polygon points=\"19.8,10.6 20.9,11.7 20.9,17.1 19.8,18.2 18.7,17.1 18.7,11.7\"/><polygon points=\"20.4,18.8 21.5,17.7 27.3,17.7 28.4,18.8 27.3,19.9 21.5,19.9\"/><polygon points=\"29,10.6 30.1,11.7 30.1,17.1 29,18.2 27.9,17.1 27.9,11.7\"/><polygon points=\"48.6,1.8 49.7,2.9 49.7,8.3 48.6,9.4 47.5,8.3 47.5,2.9\"/><polygon points=\"48.6,10.6 49.7,11.7 49.7,17.1 48.6,18.2 47.5,17.1 47.5,11.7\"/><polygon points=\"53.6,1.2 54.7,0.1 60.5,0.1 61.6,1.2 60.5,2.3 54.7,2.3\"/><polygon points=\"62.2,1.8 63.3,2.9 63.3,8.3 62.2,9.4 61.1,8.3 61.1,2.9\"/><polygon points=\"62.2,10.6 63.3,11.7 63.3,17.1 62.2,18.2 61.1,17.1 61.1,11.7\"/><polygon points=\"53.6,18.8 54.7,17.7 60.5,17.7 61.6,18.8 60.5,19.9 54.7,19.9\"/><polygon points=\"53,10.6 54.1,11.7 54.1,17.1 53,18.2 51.9,17.1 51.9,11.7\"/><polygon points=\"53,1.8 54.1,2.9 54.1,8.3 53,9.4 51.9,8.3 51.9,2.9\"/><polygon points=\"81.8,1.8 82.9,2.9 82.9,8.3 81.8,9.4 80.7,8.3 80.7,2.9\"/><polygon points=\"81.8,10.6 82.9,11.7 82.9,17.1 81.8,18.2 80.7,17.1 80.7,11.7\"/><polygon points=\"86.8,1.2 87.9,0.1 93.7,0.1 94.8,1.2 93.7,2.3 87.9,2.3\"/><polygon points=\"95.4,1.8 96.5,2.9 96.5,8.3 95.4,9.4 94.3,8.3 94.3,2.9\"/><polygon points=\"95.4,10.6 96.5,11.7 96.5,17.1 95.4,18.2 94.3,17.1 94.3,11.7\"/><polygon points=\"86.8,18.8 87.9,17.7 93.7,17.7 94.8,18.8 93.7,19.9 87.9,19.9\"/><polygon points=\"86.2,10.6 87.3,11.7 87.3,17.1 86.2,18.2 85.1,17.1 85.1,11.7\"/><polygon points=\"86.2,1.8 87.3,2.9 87.3,8.3 86.2,9.4 85.1,8.3 85.1,2.9\"/><polygon points=\"86.8,10 87.9,8.9 93.7,8.9 94.8,10 93.7,11.1 87.9,11.1\"/></g></svg></div><figcaption>Foto de referencia</figcaption></figure></div>",
-      "css": ".ds-print-floor { background: var(--carton, #0c7038); padding: 32px; } .ds-print { margin: 0 auto; width: 260px; background: var(--paper, #fbfbf7); padding: 0.55rem; box-shadow: 0 1px 1px rgb(8 49 26 / 0.18), 0 10px 24px -6px rgb(8 49 26 / 0.45), 0 28px 48px -18px rgb(8 49 26 / 0.5); rotate: -3deg; transition: rotate 300ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-print:hover { rotate: -1deg; } .ds-print-photo { position: relative; aspect-ratio: 5 / 4; overflow: hidden; background: linear-gradient(160deg, var(--carton-deep, #08532a), var(--carton-night, #05321a)); } .ds-stamp { position: absolute; right: 6%; bottom: 6%; height: 7%; min-height: 12px; fill: var(--stamp, #ff6b1a); filter: drop-shadow(0 0 1.5px rgb(255 107 26 / 0.85)) drop-shadow(0 0 5px rgb(255 120 40 / 0.45)); } .ds-print figcaption { margin-bottom: -4px; padding-top: 6px; font-size: 0.62rem; line-height: 1; color: var(--ink-soft, #4a5a4f); font-family: var(--font-archivo, Archivo), ui-sans-serif, system-ui, sans-serif; font-weight: 600; font-stretch: 75%; font-variation-settings: 'wdth' 75; letter-spacing: 0.04em; text-transform: uppercase; }"
-    },
-    {
-      "name": "Sobre de pedido",
+      "name": "Toma REC",
       "kind": "custom",
-      "refersTo": "envelope-band",
-      "description": "Cabecera del formulario de compra: solapa triangular en papel sombreado sobre banda amarilla, marca en cartón y rótulo \"Sobre de pedido\"; talón separado por línea punteada.",
-      "html": "<div class=\"ds-env-floor\"><div class=\"ds-env\"><div class=\"ds-env-flap\" aria-hidden=\"true\"></div><div class=\"ds-env-band\"><p class=\"ds-env-brand\">gafasLatam</p><p class=\"ds-env-label\">Sobre de pedido</p></div><div class=\"ds-env-body\"><p class=\"ds-env-legend\">¿Cuántos pares?</p></div><div class=\"ds-env-stub\"><p class=\"ds-env-legend\">Talón del pedido</p><p class=\"ds-env-total\"><span>Total</span><strong>$189.900</strong></p></div></div></div>",
-      "css": ".ds-env-floor { background: var(--carton, #0c7038); padding: 24px 12px; } .ds-env { max-width: 36rem; margin: 0 auto; background: var(--paper, #fbfbf7); color: var(--ink, #111611); box-shadow: 0 1px 1px rgb(8 49 26 / 0.18), 0 10px 24px -6px rgb(8 49 26 / 0.45), 0 28px 48px -18px rgb(8 49 26 / 0.5); font-family: var(--font-archivo, Archivo), ui-sans-serif, system-ui, sans-serif; } .ds-env-flap { position: relative; height: 28px; background: var(--flash, #f5c518); } .ds-env-flap::before { content: ''; position: absolute; inset: 0; background: var(--paper-shade, #eef1ec); clip-path: polygon(0 0, 100% 0, 50% 100%); } .ds-env-band { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; background: var(--flash, #f5c518); padding: 4px 20px 12px; } .ds-env-band p { margin: 0; } .ds-env-brand { font-size: 1.25rem; font-family: var(--font-archivo, Archivo), ui-sans-serif, system-ui, sans-serif; font-style: italic; font-weight: 850; font-stretch: 125%; font-variation-settings: 'wdth' 125; letter-spacing: -0.02em; line-height: 0.95; } .ds-env-label { font-size: 0.72rem; color: var(--carton-deep, #08532a); font-family: var(--font-archivo, Archivo), ui-sans-serif, system-ui, sans-serif; font-weight: 600; font-stretch: 75%; font-variation-settings: 'wdth' 75; letter-spacing: 0.04em; text-transform: uppercase; } .ds-env-body { padding: 24px 20px 20px; } .ds-env-legend { margin: 0 0 12px; font-size: 0.75rem; color: var(--ink-soft, #4a5a4f); font-family: var(--font-archivo, Archivo), ui-sans-serif, system-ui, sans-serif; font-weight: 600; font-stretch: 75%; font-variation-settings: 'wdth' 75; letter-spacing: 0.04em; text-transform: uppercase; } .ds-env-stub { border-top: 2px dashed var(--rule, #d6ded8); padding: 24px 20px; } .ds-env-total { display: flex; align-items: baseline; justify-content: space-between; margin: 0; border-top: 1px solid var(--rule, #d6ded8); padding-top: 12px; } .ds-env-total strong { font-size: 1.5rem; font-family: var(--font-archivo, Archivo), ui-sans-serif, system-ui, sans-serif; font-style: italic; font-weight: 850; font-stretch: 125%; font-variation-settings: 'wdth' 125; letter-spacing: -0.02em; line-height: 0.95; font-style: normal; font-variant-numeric: tabular-nums lining-nums; }"
+      "refersTo": "rec-frame",
+      "description": "La firma: cuadro 16:9 de 14px sobre azul hondo con la toma en primera persona, pastilla REC con punto ámbar que parpadea y contador que corre.",
+      "html": "<div class=\"ds-rec\" role=\"img\" aria-label=\"Toma en primera persona\"><div class=\"ds-rec-bar\"><span class=\"ds-rec-chip\"><span class=\"ds-rec-dot\"></span>REC</span><span class=\"ds-rec-time\">00:00:08</span></div></div>",
+      "css": ".ds-rec { position: relative; width: 100%; max-width: 520px; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 14px; background: var(--deep, #0a1430); } .ds-rec-bar { position: absolute; top: 12px; left: 12px; right: 12px; display: flex; align-items: center; justify-content: space-between; } .ds-rec-chip { display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px; border-radius: 9999px; background: rgb(10 20 48 / 0.7); color: var(--cream, #f5f1e8); font-family: var(--font-archivo, \"Archivo\"), ui-sans-serif, system-ui, sans-serif; font-weight: 700; font-stretch: 125%; font-variation-settings: \"wdth\" 125; letter-spacing: 0.16em; text-transform: uppercase; line-height: 1.3; font-size: 0.62rem; } .ds-rec-dot { width: 8px; height: 8px; border-radius: 9999px; background: var(--amber, #ffb547); animation: ds-rec 1.6s steps(1, end) infinite; } @keyframes ds-rec { 50% { opacity: 0.2; } } .ds-rec-time { padding: 4px 10px; border-radius: 9999px; background: rgb(10 20 48 / 0.7); color: var(--cream, #f5f1e8); font-family: var(--font-instrument, \"Instrument Sans\"), ui-sans-serif, system-ui, sans-serif; font-size: 0.72rem; font-weight: 600; font-variant-numeric: tabular-nums lining-nums; } @media (prefers-reduced-motion: reduce) { .ds-rec-dot { animation: none; } }"
+    },
+    {
+      "name": "Foto (espacio sobrio)",
+      "kind": "card",
+      "refersTo": "photo",
+      "description": "Foto recta con esquinas de 14px sobre crema 2; sin foto real, las gafas en línea y \"Foto real muy pronto\".",
+      "html": "<div class=\"ds-photo\"><div class=\"ds-photo-empty\"><svg viewBox=\"0 0 24 24\" width=\"36\" height=\"36\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.25\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"6\" cy=\"15\" r=\"4\"/><circle cx=\"18\" cy=\"15\" r=\"4\"/><path d=\"M14 15a2 2 0 0 0-2-2 2 2 0 0 0-2 2\"/><path d=\"M2.5 13 5 7c.7-1.3 1.4-2 3-2\"/><path d=\"M21.5 13 19 7c-.7-1.3-1.5-2-3-2\"/></svg><span class=\"ds-photo-label\">Foto real muy pronto</span></div></div>",
+      "css": ".ds-photo { position: relative; width: 100%; max-width: 280px; aspect-ratio: 1 / 1; overflow: hidden; border-radius: 14px; background: var(--cream-2, #eae3d4); } .ds-photo-empty { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 24px; color: var(--ink-soft, #4a5470); text-align: center; } .ds-photo-label { font-family: var(--font-archivo, \"Archivo\"), ui-sans-serif, system-ui, sans-serif; font-weight: 700; font-stretch: 125%; font-variation-settings: \"wdth\" 125; letter-spacing: 0.16em; text-transform: uppercase; line-height: 1.3; font-size: 0.65rem; }"
+    },
+    {
+      "name": "Campo del pedido",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Rótulo encima, campo de 52px en papel con esquinas de 12px; foco con borde y anillo azul noche.",
+      "html": "<div class=\"ds-field\"><label class=\"ds-field-label\" for=\"ds-phone\">Celular con WhatsApp</label><input id=\"ds-phone\" class=\"ds-field-input\" inputmode=\"tel\" placeholder=\"300 123 4567\"></div>",
+      "css": ".ds-field { max-width: 420px; } .ds-field-label { display: block; font-family: var(--font-instrument, \"Instrument Sans\"), ui-sans-serif, system-ui, sans-serif; font-size: 0.95rem; font-weight: 600; color: var(--ink, #101e40); } .ds-field-input { display: block; width: 100%; margin-top: 6px; min-height: 52px; padding: 0 16px; border: 1px solid var(--line, #dcd4c3); border-radius: 12px; background: var(--paper, #fffcf6); color: var(--ink, #101e40); font-family: var(--font-instrument, \"Instrument Sans\"), ui-sans-serif, system-ui, sans-serif; font-size: 1.0625rem; caret-color: var(--night, #101e40); transition: border-color 150ms, box-shadow 150ms; } .ds-field-input::placeholder { color: var(--ink-soft, #4a5470); } .ds-field-input:focus { outline: none; border-color: var(--night, #101e40); box-shadow: 0 0 0 2px rgb(16 30 64 / 0.15); } .ds-field-input[aria-invalid=\"true\"] { border-color: var(--alert, #b42318); }"
+    },
+    {
+      "name": "Opción de cantidad",
+      "kind": "custom",
+      "refersTo": "option-card",
+      "description": "Opción elegible en papel con borde de 2px (línea; azul noche al elegirla), esquinas de 14px y al menos 64px de alto.",
+      "html": "<div class=\"ds-options\"><label class=\"ds-option\"><input type=\"radio\" name=\"ds-qty\" checked><span class=\"ds-option-text\"><span class=\"ds-option-title\">1 par</span></span><span class=\"ds-option-price\">$189.900</span></label><label class=\"ds-option\"><input type=\"radio\" name=\"ds-qty\"><span class=\"ds-option-text\"><span class=\"ds-option-title\">2 pares</span><span class=\"ds-option-detail\">Para ti y alguien más · <b>ahorras $39.900</b></span></span><span class=\"ds-option-price\">$339.900</span></label></div>",
+      "css": ".ds-options { display: grid; gap: 12px; max-width: 520px; font-family: var(--font-instrument, \"Instrument Sans\"), ui-sans-serif, system-ui, sans-serif; color: var(--ink, #101e40); } .ds-option { display: flex; align-items: center; gap: 16px; min-height: 64px; padding: 14px 16px; border: 2px solid var(--line, #dcd4c3); border-radius: 14px; background: var(--paper, #fffcf6); cursor: pointer; transition: border-color 150ms; } .ds-option:hover { border-color: var(--ink-soft, #4a5470); } .ds-option:has(input:checked) { border-color: var(--night, #101e40); } .ds-option input { width: 20px; height: 20px; flex-shrink: 0; accent-color: var(--night, #101e40); } .ds-option-text { flex: 1; } .ds-option-title { display: block; font-weight: 600; } .ds-option-detail { display: block; font-size: 0.95rem; color: var(--ink-soft, #4a5470); } .ds-option-detail b { color: var(--ink, #101e40); font-weight: 600; } .ds-option-price { font-weight: 600; font-variant-numeric: tabular-nums lining-nums; }"
+    },
+    {
+      "name": "Filtro de modelos",
+      "kind": "chip",
+      "refersTo": "filter-chip",
+      "description": "Píldoras de 44px con borde azul noche al 20 %; la activa se rellena de azul noche. Solo con tres modelos o más.",
+      "html": "<div class=\"ds-chips\" role=\"group\" aria-label=\"Filtrar modelos\"><button type=\"button\" class=\"ds-chip\" aria-pressed=\"true\">Todas</button><button type=\"button\" class=\"ds-chip\" aria-pressed=\"false\">Con cámara</button><button type=\"button\" class=\"ds-chip\" aria-pressed=\"false\">Con audio</button><button type=\"button\" class=\"ds-chip\" aria-pressed=\"false\">De sol</button></div>",
+      "css": ".ds-chips { display: flex; flex-wrap: wrap; gap: 8px; } .ds-chip { min-height: 44px; padding: 0 16px; border-radius: 9999px; border: 1px solid rgb(16 30 64 / 0.2); background: transparent; color: var(--night, #101e40); font-family: var(--font-instrument, \"Instrument Sans\"), ui-sans-serif, system-ui, sans-serif; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: border-color 150ms, background-color 150ms, color 150ms; } .ds-chip:hover { border-color: rgb(16 30 64 / 0.5); } .ds-chip[aria-pressed=\"true\"] { border-color: var(--night, #101e40); background: var(--night, #101e40); color: var(--cream, #f5f1e8); } .ds-chip:focus-visible { outline: 3px solid var(--night, #101e40); outline-offset: 3px; }"
+    },
+    {
+      "name": "Encabezado de la tienda",
+      "kind": "nav",
+      "refersTo": "site-header",
+      "description": "Banda azul noche de 64px con el logo horizontal crema (archivo aprobado, no se recrea aquí) y enlaces en bruma que pasan a crema.",
+      "html": "<header class=\"ds-header\"><nav class=\"ds-nav\" aria-label=\"Principal\"><a href=\"#tienda\">Tienda</a><a href=\"#envios\">Envíos y garantía</a><a href=\"#nosotros\">Nosotros</a></nav></header>",
+      "css": ".ds-header { display: flex; align-items: center; justify-content: flex-end; height: 64px; padding: 0 20px; background: var(--night, #101e40); } .ds-nav { display: flex; gap: 4px; } .ds-nav a { padding: 8px 16px; border-radius: 9999px; color: var(--mist, #b9c3dc); font-family: var(--font-instrument, \"Instrument Sans\"), ui-sans-serif, system-ui, sans-serif; font-size: 0.95rem; font-weight: 600; text-decoration: none; transition: color 150ms; } .ds-nav a:hover { color: var(--cream, #f5f1e8); } .ds-nav a:focus-visible { outline: 3px solid var(--amber, #ffb547); outline-offset: 3px; }"
     }
   ],
   "narrative": {
-    "northStar": "Rollo de revelado",
-    "overview": "La tienda es el sobre que recoges en el laboratorio de fotos. El suelo es el cartón verde de una cámara desechable; encima descansan copias fotográficas en papel blanco con borde, un poco giradas y con la fecha estampada en naranja; la acción es el amarillo del flash. El cliente no recorre una plantilla de tienda: mira copias de lo que se ve con las gafas, llena el sobre de pedido y recibe la copia de su pedido fechada hoy. Todo lo que aparece en pantalla es un objeto de ese mundo: cartón, copia, sobre, talón, sello de fecha.\n\nLa densidad es de empaque, no de catálogo: bandas de color a sangre completa que se alternan (cartón, cartón profundo, papel, cartón noche), una sola columna en el celular y dos en escritorio. La rotulación es una grotesca ancha, pesada e itálica, como el logo impreso en una caja; el cuerpo es la misma familia en ancho normal y los rótulos pequeños la condensan como la letra menuda del costado del cartón. El movimiento también pertenece al mundo: las copias se revelan al entrar en pantalla y un único destello de flash confirma el pedido.\n\nEl panel de administración (superficie de operación) toma prestados solo la tipografía, la paleta y la densidad: cabecera de cartón, suelo papel sombreado, paneles de papel con filete, sin copias giradas ni sobres. Rechazos confirmados: nada de landing tecnológica oscura con render brillante, nada de plantilla blanca de dropshipping con insignias y contadores.",
+    "northStar": "Lo que ves, grabado",
+    "overview": "La tienda abre como la pantalla de una cámara puesta a la altura de los ojos: una toma real en primera persona, con el punto REC que parpadea y el contador que corre. Todo lo demás es una tienda clara sobre crema, en la paleta Océano: azul noche para la marca, el texto y las bandas que enmarcan (encabezado, portada, cierres, barra de compra), azul hondo para el pie y ámbar solo donde se compra.\n\nLa densidad es baja y pensada para el celular dentro del navegador de TikTok, Instagram o Facebook: una columna, bloques grandes, texto de 17px y objetivos táctiles de 44 a 52px. Las fotos son rectas, con esquinas de 14px; mientras no existan fotos de estudio, un espacio sobrio dice \"Foto real muy pronto\" en lugar de una imagen de relleno. El movimiento se reduce al REC, al contador y a transiciones de estado cortas; con reducir movimiento todo se detiene. La hoja global define además una aparición suave al entrar en pantalla que hoy ninguna superficie usa.\n\nRechazos confirmados: el render brillante de gafas sobre negro de las tiendas de tecnología y la plantilla de dropshipping con insignias, contadores y temporizadores; las fotos de banco y las imágenes generadas; los degradados; las itálicas gruesas; cualquier logo que no sea uno de los cuatro archivos aprobados.",
     "keyCharacteristics": [
-      "Cartón verde como suelo dominante; papel blanco solo como objeto (copia, sobre) o como el panel blanco del costado de la caja.",
-      "Copias fotográficas en lugar de tarjetas: marco de papel, sombra verde, inclinación de pocos grados.",
-      "Amarillo flash reservado a la acción y a muy pocos rellenos con nombre.",
-      "Naranja de estampa solo en fechas de siete segmentos.",
-      "Una sola familia (Archivo variable) con tres voces sacadas de sus ejes.",
-      "Honestidad visible: toda foto de muestra lleva impreso \"Foto de referencia\"; sin reseñas, contadores ni urgencia inventados."
+      "Toma en primera persona a 16:9 con REC ámbar y contador como firma de la marca.",
+      "Crema de suelo, bandas azul noche a todo el ancho, ámbar como único acento cálido.",
+      "Títulos en Archivo expandida 800 recta; texto y botones en Instrument Sans a 17px.",
+      "Una píldora ámbar de compra por pantalla; WhatsApp siempre a mano en su verde oficial.",
+      "Fotos rectas con esquinas de 14px; espacios sobrios mientras no hay fotos reales.",
+      "Plano: la profundidad sale de las bandas de color y de líneas finas, no de sombras."
     ],
     "rules": [
       {
-        "name": "The Flash Is Action Rule",
-        "body": "El relleno amarillo solo aparece en la acción primaria, el sello de ahorro de \"Doble copia\", la franja de anuncio y la banda del sobre. Nunca es fondo de sección ni bloque decorativo grande.",
+        "name": "The Amber Buys Rule",
+        "body": "El ámbar solo aparece en la píldora de compra, el precio sobre azul, el punto REC, el subrayado a mano alzada y la selección de texto. Nunca es texto sobre crema (1,56:1) y nunca es fondo de sección ni de tarjeta.",
         "section": "colors"
       },
       {
-        "name": "The Flash-On-Carton Rule",
-        "body": "Como tinta, el amarillo vive sobre cartón y en tamaño display, trazos o iconos (3,8:1 sobre cartón medio). Sobre papel no se usa como tinta (1,6:1). Los rótulos pequeños en amarillo solo van sobre cartón profundo o noche (5,6:1 o más).",
+        "name": "The Ocean Proportion Rule",
+        "body": "Proporción guía del brief: crema 60 %, azul 30 %, acento 10 %. El azul llega en bandas a todo el ancho (encabezado, portada, cierres, pie), no en tarjetas sueltas sobre crema.",
         "section": "colors"
       },
       {
-        "name": "The Dates Only Rule",
-        "body": "El naranja de estampa es una fecha o no es nada: solo dentro del sello de siete segmentos, en formato de cámara (`'AA M D`), en hora de Bogotá.",
+        "name": "The Platform Green Rule",
+        "body": "El verde de WhatsApp (#25D366 con texto #062b16, 7,8:1) es el color oficial de la plataforma y vive como valor literal, fuera de los tokens. Solo pinta el botón flotante y la confirmación del pedido recibido; los demás enlaces a WhatsApp usan los botones secundarios o los enlaces de texto de la paleta.",
         "section": "colors"
       },
       {
-        "name": "The One Family Rule",
-        "body": "No se agrega otra familia. Las tres voces salen de los ejes de Archivo (ancho 75 / normal / 125, redonda e itálica).",
+        "name": "The Upright Rule",
+        "body": "Títulos y precios van en Archivo expandida 800 recta, y los montos con cifras tabulares. El sistema no tiene itálicas gruesas.",
         "section": "typography"
       },
       {
-        "name": "The Upright Numerals Rule",
-        "body": "Los precios y totales usan la rotulación de cartón pero en redonda, con cifras tabulares. La itálica ancha es para palabras, no para montos.",
+        "name": "The One or Two Notes Rule",
+        "body": "Yellowtail aparece como máximo una o dos veces por página (hoy, una), en azul noche al 80 % y con un giro de 1° a 2°. Nunca para datos, precios ni botones.",
         "section": "typography"
       },
       {
-        "name": "The Carton Is Not Prose Rule",
-        "body": "La rotulación de cartón nunca compone párrafos ni textos de más de dos líneas cortas; el cuerpo siempre es Archivo de ancho normal.",
+        "name": "The Label Names Data Rule",
+        "body": "La etiqueta en mayúsculas nombra un dato, una columna o un estado. No se usa como antetítulo encima de un título.",
         "section": "typography"
       },
       {
-        "name": "The Print Shadow Rule",
-        "body": "Solo proyecta sombra lo que es papel o lo que es la acción amarilla. Todo lo demás es plano sobre su banda.",
+        "name": "The Flat Bands Rule",
+        "body": "Lo que está en la página es plano y se separa con bandas o líneas finas. La sombra suave es solo para lo que flota.",
         "section": "elevation"
       },
       {
-        "name": "The Small Tilt Rule",
-        "body": "La inclinación es de pocos grados (copias de -4° a 6°; serie de momentos -2°, 1.5°, -1°, 2°, -1.5°, 1°; copia del pedido -1°; sello de ahorro -2°). Nada se gira por encima de 6°.",
-        "section": "elevation"
+        "name": "The 14px Rule",
+        "body": "Toda foto es recta, sin marco ni giro, con esquinas de 14px sobre crema 2. Sin foto real, el mismo espacio muestra las gafas en línea y \"Foto real muy pronto\".",
+        "section": "shapes"
       }
     ],
     "dos": [
-      "Do: Usa el cartón (#0c7038) como suelo dominante y separa capítulos con bandas a sangre completa de cartón profundo, papel o cartón noche.",
-      "Do: Presenta toda fotografía como copia: marco de papel de 0.55rem, sombra de copia verde, giro entre -4° y 6°.",
-      "Do: Imprime \"Foto de referencia\" en el margen de toda foto de muestra o de banco (prop `reference` de `Print`) hasta que existan fotos reales.",
-      "Do: Pon tinta negra (#111611) sobre todo relleno amarillo, nunca blanco.",
-      "Do: Fecha las copias con el sello de siete segmentos en formato de cámara (`'AA M D`), en hora de Bogotá.",
-      "Do: Marca con `.on-paper` toda superficie de papel para que el contorno de foco pase de amarillo a cartón.",
-      "Do: Compón precios y totales en rotulación de cartón redonda con cifras tabulares.",
-      "Do: Mantén los objetivos táctiles en 44px o más y el botón de pedir en 56px."
+      "Do: Usa crema (#f5f1e8) como suelo y bandas azul noche (#101e40) a todo el ancho para encabezado, portada, cierres y barra de compra; el pie va en azul hondo (#0a1430).",
+      "Do: Pon una sola píldora ámbar de compra por pantalla: 52px, texto azul noche, Instrument Sans 600 a 17px.",
+      "Do: Pon el precio en ámbar solo sobre azul; sobre crema va en tinta y con cifras tabulares.",
+      "Do: Muestra toda foto recta con esquinas de 14px sobre crema 2; sin foto real, deja el espacio sobrio \"Foto real muy pronto\".",
+      "Do: Usa la toma REC (16:9, punto ámbar, contador) para la prueba en primera persona, con la toma real o un video real.",
+      "Do: Usa el logo de `public/brand/`: la versión crema sobre azul y la azul sobre crema, a su proporción.",
+      "Do: Mantén Instrument Sans como voz de texto y botones, y el fondo crema, aunque un detector mecánico los marque como \"sobreusada\" o \"fondo crema\": los fija el brief de marca.",
+      "Do: Mantén los objetivos táctiles en 44px o más; campos del pedido y píldoras de compra en 52px.",
+      "Do: Usa bruma (#b9c3dc) para el texto secundario sobre azul y tinta suave (#4a5470) sobre crema.",
+      "Do: Detén el REC, el contador y el desplazamiento suave cuando el sistema pide reducir movimiento."
     ],
     "donts": [
-      "Don't: Uses el amarillo flash como campo decorativo grande: nada de fondos de sección, bloques ni tarjetas amarillas.",
-      "Don't: Uses el naranja de estampa fuera del sello de fecha: ni texto, ni precios, ni descuentos, ni avisos.",
-      "Don't: Pongas tinta amarilla sobre papel ni rótulos pequeños amarillos sobre cartón medio.",
-      "Don't: Inventes prueba social: nada de reseñas falsas, contadores de ventas, \"personas viendo esto\", cuentas regresivas ni stock inventado.",
-      "Don't: Muestres la ficha técnica mientras `specs_confirmed` sea falso.",
-      "Don't: Uses tarjetas redondeadas con sombra genérica en la tienda: el papel es cuadrado y solo los botones llevan 3px.",
-      "Don't: Uses sombras negras neutras; la sombra del sistema es verde cartón.",
-      "Don't: Agregues otra familia tipográfica ni compongas párrafos en la rotulación de cartón.",
-      "Don't: Introduzcas colores fuera de los tokens (por ejemplo, la paleta por defecto de Tailwind).",
-      "Don't: Conviertas la tienda en una landing tecnológica oscura con render brillante ni en una plantilla blanca de dropshipping con insignias y contadores."
+      "Don't: Pongas ámbar como texto sobre crema ni como fondo de sección o de tarjeta.",
+      "Don't: Uses el verde de WhatsApp fuera de las acciones de WhatsApp.",
+      "Don't: Redibujes, estires, recolores ni compongas el logo en texto.",
+      "Don't: Uses fotos de banco, imágenes generadas ni renders brillantes sobre negro.",
+      "Don't: Agregues degradados ni itálicas gruesas.",
+      "Don't: Pongas más de una o dos notas en Yellowtail por página, ni la uses para datos, precios o botones.",
+      "Don't: Uses la etiqueta en mayúsculas como antetítulo encima de un título.",
+      "Don't: Pongas sombra a fotos, tarjetas, opciones o paneles; la sombra suave es solo para lo que flota.",
+      "Don't: Conviertas la tienda en una plantilla de dropshipping con insignias, contadores de ventas, temporizadores o \"personas viendo esto\".",
+      "Don't: Introduzcas colores fuera de los tokens (por ejemplo, la paleta por defecto de Tailwind)."
     ]
   }
 }

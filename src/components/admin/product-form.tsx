@@ -4,8 +4,10 @@ import { useActionState, useState } from "react";
 import { updateProduct } from "@/app/admin/actions";
 import { ImageListEditor } from "@/components/admin/image-list-editor";
 import { ListEditor } from "@/components/admin/list-editor";
+import { MediaField } from "@/components/admin/media-field";
 import { Button, Checkbox, FormMessage, Input, Label, Panel, Textarea } from "@/components/admin/ui";
 import { formatCOP } from "@/lib/format";
+import { TAGS, type Tag } from "@/lib/site";
 import type { Bundle, Faq, Feature, Moment, Product, ProductImage, Spec, Variant } from "@/lib/types";
 
 export function ProductForm({ product }: { product: Product }) {
@@ -18,6 +20,7 @@ export function ProductForm({ product }: { product: Product }) {
   const [specs, setSpecs] = useState<Spec[]>(product.specs);
   const [faq, setFaq] = useState<Faq[]>(product.faq);
   const [box, setBox] = useState<{ item: string }[]>(product.in_the_box.map((item) => ({ item })));
+  const [tags, setTags] = useState<string[]>(product.tags);
 
   const cleanBundles = bundles.map((b) => ({ ...b, badge: b.badge ? b.badge : null }));
 
@@ -32,6 +35,7 @@ export function ProductForm({ product }: { product: Product }) {
       <input type="hidden" name="specs" value={JSON.stringify(specs)} />
       <input type="hidden" name="faq" value={JSON.stringify(faq)} />
       <input type="hidden" name="in_the_box" value={JSON.stringify(box.map((b) => b.item).filter(Boolean))} />
+      <input type="hidden" name="tags" value={JSON.stringify(tags)} />
 
       <Panel title="Lo básico">
         <div className="grid gap-4 px-4 py-4 sm:grid-cols-2">
@@ -44,9 +48,8 @@ export function ProductForm({ product }: { product: Product }) {
             <Input id="slug" name="slug" defaultValue={product.slug} required />
           </div>
           <div className="sm:col-span-2">
-            <Label htmlFor="headline">Titular de la primera pantalla</Label>
-            <Input id="headline" name="headline" defaultValue={product.headline ?? ""} />
-            <p className="mt-1 text-xs text-ink-soft">Si tiene dos frases, la segunda sale en amarillo.</p>
+            <Label htmlFor="headline">Frase bajo el nombre</Label>
+            <Input id="headline" name="headline" defaultValue={product.headline ?? ""} placeholder="Graba lo que vives, sin sacar el celular." />
           </div>
           <div className="sm:col-span-2">
             <Label htmlFor="short_description">Descripción corta</Label>
@@ -55,6 +58,24 @@ export function ProductForm({ product }: { product: Product }) {
           <div className="sm:col-span-2">
             <Label htmlFor="description">Descripción larga</Label>
             <Textarea id="description" name="description" defaultValue={product.description ?? ""} className="min-h-32" />
+          </div>
+          <fieldset className="sm:col-span-2">
+            <legend className="mb-2 text-[0.8rem] font-semibold text-ink-soft">Filtros de la tienda</legend>
+            <div className="flex flex-wrap gap-5">
+              {(Object.keys(TAGS) as Tag[]).map((t) => (
+                <Checkbox
+                  key={t}
+                  label={TAGS[t]}
+                  checked={tags.includes(t)}
+                  onChange={(e) => setTags(e.target.checked ? [...tags, t] : tags.filter((x) => x !== t))}
+                />
+              ))}
+            </div>
+          </fieldset>
+          <div>
+            <Label htmlFor="badge">Etiqueta en la tarjeta (opcional)</Label>
+            <Input id="badge" name="badge" defaultValue={product.badge ?? ""} placeholder="Más pedido" maxLength={30} />
+            <p className="mt-1 text-xs text-ink-soft">Solo si es cierto: &quot;Más pedido&quot;, &quot;Nuevo&quot;…</p>
           </div>
           <div className="sm:col-span-2">
             <Checkbox name="active" defaultChecked={product.active} label="Visible en la tienda" />
@@ -137,8 +158,16 @@ export function ProductForm({ product }: { product: Product }) {
         </div>
       </Panel>
 
-      <Panel title="Tomas en primera persona (lo que graban las gafas)">
-        <div className="px-4 py-4">
+      <Panel title="Lo que graban (video y tomas en primera persona)">
+        <div className="space-y-5 px-4 py-4">
+          <MediaField
+            name="video_url"
+            label="Video grabado con las gafas"
+            defaultValue={product.video_url}
+            kind="video"
+            folder="videos"
+            hint="MP4 corto (ideal menos de 3 MB). Se muestra en la página del modelo."
+          />
           <p className="mb-3 text-xs text-ink-soft">
             Sube capturas reales hechas con las gafas y desmarca &quot;de referencia&quot;. Fecha en formato &apos;26 10 18.
           </p>

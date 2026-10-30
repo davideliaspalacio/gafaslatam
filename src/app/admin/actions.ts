@@ -107,6 +107,9 @@ const ProductUpdate = z.object({
     z.array(z.object({ url: z.url(), alt: z.string().max(200), sample: z.boolean().optional() })),
   ),
   specs_confirmed: z.string().optional().transform((v) => v === "on"),
+  tags: json<string[]>(z.array(z.enum(["camara", "audio", "sol"]))),
+  badge: z.string().trim().max(30),
+  video_url: z.union([z.literal(""), z.url()]),
   moments: json<Moment[]>(
     z.array(
       z.object({
@@ -159,6 +162,8 @@ export async function updateProduct(_: ActionState, formData: FormData): Promise
       description: rest.description || null,
       seo_title: rest.seo_title || null,
       seo_description: rest.seo_description || null,
+      badge: rest.badge || null,
+      video_url: rest.video_url || null,
     })
     .eq("id", id);
   if (error) {
@@ -167,6 +172,31 @@ export async function updateProduct(_: ActionState, formData: FormData): Promise
   updateTag(CATALOG_TAG);
   revalidatePath("/admin/productos");
   return { ok: true, message: "Producto guardado. La tienda ya muestra los cambios." };
+}
+
+/** Crea un modelo nuevo (oculto) copiando las preguntas frecuentes del primero, y abre su edición. */
+export async function createProduct() {
+  const { supabase } = await requireAdmin();
+  const { data: existing } = await supabase.from("products").select("slug, faq, sort").order("sort");
+  const slugs = new Set((existing ?? []).map((p) => p.slug));
+  let n = (existing?.length ?? 0) + 1;
+  while (slugs.has(`modelo-${n}`)) n++;
+  const { data, error } = await supabase
+    .from("products")
+    .insert({
+      slug: `modelo-${n}`,
+      name: `Modelo ${n}`,
+      price: 0,
+      active: false,
+      sort: (existing?.reduce((m, p) => Math.max(m, p.sort), 0) ?? 0) + 1,
+      faq: existing?.[0]?.faq ?? [],
+      bundles: [],
+    })
+    .select("id")
+    .single();
+  if (error || !data) throw new Error("No se pudo crear el modelo.");
+  updateTag(CATALOG_TAG);
+  redirect(`/admin/productos/${data.id}`);
 }
 
 // ---------------------------------------------------------------------------
@@ -191,6 +221,11 @@ const SettingsUpdate = z.object({
   legal_name: z.string().trim().max(120),
   tax_id: z.string().trim().max(30),
   legal_address: z.string().trim().max(200),
+  instagram_handle: z.string().trim().max(40).transform((v) => v.replace(/^@/, "")),
+  tiktok_handle: z.string().trim().max(40).transform((v) => v.replace(/^@/, "")),
+  facebook_url: z.union([z.literal(""), z.url()]),
+  hero_video_url: z.union([z.literal(""), z.url()]),
+  hero_poster_url: z.union([z.literal(""), z.url()]),
 });
 
 export async function updateSettings(_: ActionState, formData: FormData): Promise<ActionState> {
@@ -216,6 +251,11 @@ export async function updateSettings(_: ActionState, formData: FormData): Promis
       legal_name: s.legal_name || null,
       tax_id: s.tax_id || null,
       legal_address: s.legal_address || null,
+      instagram_handle: s.instagram_handle || null,
+      tiktok_handle: s.tiktok_handle || null,
+      facebook_url: s.facebook_url || null,
+      hero_video_url: s.hero_video_url || null,
+      hero_poster_url: s.hero_poster_url || null,
     })
     .eq("id", 1);
   if (error) return { ok: false, message: "No se pudo guardar." };

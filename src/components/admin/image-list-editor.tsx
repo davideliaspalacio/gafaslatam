@@ -69,7 +69,7 @@ export function ImageListEditor<T extends Img>({
   return (
     <div className="space-y-3">
       {items.map((item, i) => (
-        <div key={item.url + i} className="flex gap-3 border border-ink/10 bg-paper-shade/50 p-3">
+        <div key={item.url + i} className="flex gap-3 border border-ink/10 bg-cream/50 p-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={item.url} alt="" className="size-20 shrink-0 bg-ink/5 object-cover" />
           <div className="flex min-w-0 flex-1 flex-col gap-2">

@@ -1,11 +1,12 @@
 "use client";
 
-// Eventos de píxel en el navegador (TikTok y, si está configurado, Meta).
-// Los mismos event_id se envían desde el servidor para deduplicar.
+// Eventos de píxel en el navegador (TikTok y Meta, si están configurados).
+// Brief: ver producto, tocar "Pedir", enviar pedido y tocar WhatsApp.
+// Los pedidos usan el mismo event_id que el servidor para no contar doble.
 
 type Contents = { content_id: string; content_name: string; quantity: number; price: number }[];
 
-type Ttq = { track: (event: string, props?: Record<string, unknown>, opts?: { event_id?: string }) => void; identify?: (data: Record<string, string>) => void };
+type Ttq = { track: (event: string, props?: Record<string, unknown>, opts?: { event_id?: string }) => void };
 type Fbq = (...args: unknown[]) => void;
 
 declare global {
@@ -15,19 +16,18 @@ declare global {
   }
 }
 
-const META_EVENT: Record<string, string> = {
+type StoreEvent = "ViewContent" | "AddToCart" | "InitiateCheckout" | "AddPaymentInfo" | "PlaceAnOrder";
+
+// TikTok usa PlaceAnOrder para el pedido; Meta lo llama Purchase.
+const META_EVENT: Record<StoreEvent, string> = {
   ViewContent: "ViewContent",
   AddToCart: "AddToCart",
   InitiateCheckout: "InitiateCheckout",
   AddPaymentInfo: "AddPaymentInfo",
-  CompletePayment: "Purchase",
+  PlaceAnOrder: "Purchase",
 };
 
-export function track(
-  event: "ViewContent" | "AddToCart" | "InitiateCheckout" | "AddPaymentInfo" | "CompletePayment",
-  data: { value: number; contents: Contents },
-  eventId?: string,
-) {
+export function track(event: StoreEvent, data: { value: number; contents: Contents }, eventId?: string) {
   const props = { currency: "COP", value: data.value, content_type: "product", contents: data.contents };
   try {
     window.ttq?.track(event, props, eventId ? { event_id: eventId } : undefined);
@@ -48,7 +48,17 @@ export function track(
   } catch {}
 }
 
-const ATTR_KEY = "vst_attr";
+/** Tocar WhatsApp. */
+export function trackContact() {
+  try {
+    window.ttq?.track("Contact");
+  } catch {}
+  try {
+    window.fbq?.("track", "Contact");
+  } catch {}
+}
+
+const ATTR_KEY = "gl_attr";
 const ATTR_FIELDS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "ttclid", "fbclid"] as const;
 
 export type Attribution = Partial<Record<(typeof ATTR_FIELDS)[number] | "landing_page" | "referrer", string>>;

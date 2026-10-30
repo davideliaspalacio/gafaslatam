@@ -9,7 +9,6 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
     qualities: [60, 75],
     remotePatterns: [
-      { protocol: "https", hostname: "images.unsplash.com" },
       {
         protocol: supabaseUrl.protocol.replace(":", "") as "http" | "https",
         hostname: supabaseUrl.hostname,
@@ -19,6 +18,21 @@ const nextConfig: NextConfig = {
     ],
     // Supabase local corre en 127.0.0.1; en producción el host es público.
     dangerouslyAllowLocalIP: process.env.NODE_ENV !== "production",
+  },
+  async redirects() {
+    return [
+      // Dominio principal: www.gafaslatam.com
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "gafaslatam.vercel.app" }],
+        destination: "https://www.gafaslatam.com/:path*",
+        permanent: true,
+      },
+      // Rutas del diseño anterior
+      { source: "/producto/:slug*", destination: "/tienda", permanent: true },
+      { source: "/politicas/envios", destination: "/envios-y-garantia", permanent: true },
+      { source: "/politicas/cambios-y-garantia", destination: "/envios-y-garantia", permanent: true },
+    ];
   },
   turbopack: {
     rules: {

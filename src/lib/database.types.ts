@@ -172,6 +172,7 @@ export type Database = {
       products: {
         Row: {
           active: boolean
+          badge: string | null
           bundles: Json
           compare_at_price: number | null
           created_at: string
@@ -194,11 +195,14 @@ export type Database = {
           specs: Json
           specs_confirmed: boolean
           stock: number | null
+          tags: string[]
           updated_at: string
           variants: Json
+          video_url: string | null
         }
         Insert: {
           active?: boolean
+          badge?: string | null
           bundles?: Json
           compare_at_price?: number | null
           created_at?: string
@@ -221,11 +225,14 @@ export type Database = {
           specs?: Json
           specs_confirmed?: boolean
           stock?: number | null
+          tags?: string[]
           updated_at?: string
           variants?: Json
+          video_url?: string | null
         }
         Update: {
           active?: boolean
+          badge?: string | null
           bundles?: Json
           compare_at_price?: number | null
           created_at?: string
@@ -248,8 +255,10 @@ export type Database = {
           specs?: Json
           specs_confirmed?: boolean
           stock?: number | null
+          tags?: string[]
           updated_at?: string
           variants?: Json
+          video_url?: string | null
         }
         Relationships: []
       }
@@ -302,8 +311,12 @@ export type Database = {
           announcement: string | null
           cod_enabled: boolean
           delivery_estimate: string
+          facebook_url: string | null
           free_shipping: boolean
+          hero_poster_url: string | null
+          hero_video_url: string | null
           id: number
+          instagram_handle: string | null
           legal_address: string | null
           legal_name: string | null
           meta_pixel_id: string | null
@@ -312,6 +325,7 @@ export type Database = {
           store_name: string
           support_email: string | null
           tax_id: string | null
+          tiktok_handle: string | null
           tiktok_pixel_id: string | null
           updated_at: string
           whatsapp_number: string | null
@@ -320,8 +334,12 @@ export type Database = {
           announcement?: string | null
           cod_enabled?: boolean
           delivery_estimate?: string
+          facebook_url?: string | null
           free_shipping?: boolean
+          hero_poster_url?: string | null
+          hero_video_url?: string | null
           id?: number
+          instagram_handle?: string | null
           legal_address?: string | null
           legal_name?: string | null
           meta_pixel_id?: string | null
@@ -330,6 +348,7 @@ export type Database = {
           store_name: string
           support_email?: string | null
           tax_id?: string | null
+          tiktok_handle?: string | null
           tiktok_pixel_id?: string | null
           updated_at?: string
           whatsapp_number?: string | null
@@ -338,8 +357,12 @@ export type Database = {
           announcement?: string | null
           cod_enabled?: boolean
           delivery_estimate?: string
+          facebook_url?: string | null
           free_shipping?: boolean
+          hero_poster_url?: string | null
+          hero_video_url?: string | null
           id?: number
+          instagram_handle?: string | null
           legal_address?: string | null
           legal_name?: string | null
           meta_pixel_id?: string | null
@@ -348,6 +371,7 @@ export type Database = {
           store_name?: string
           support_email?: string | null
           tax_id?: string | null
+          tiktok_handle?: string | null
           tiktok_pixel_id?: string | null
           updated_at?: string
           whatsapp_number?: string | null

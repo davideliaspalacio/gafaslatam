@@ -1,9 +1,9 @@
 import "server-only";
 import { createHash } from "node:crypto";
 
-// Nombre del evento de compra que TikTok usa para optimizar campañas.
-// Se dispara al crear un pedido contraentrega y al aprobarse un pago online.
-export const PURCHASE_EVENT = "CompletePayment";
+// Evento de pedido para TikTok (en Meta equivale a Purchase).
+// Se envía al crear un pedido contraentrega y al aprobarse un pago online.
+export const PURCHASE_EVENT = "PlaceAnOrder";
 
 const sha256 = (value: string) => createHash("sha256").update(value.trim().toLowerCase()).digest("hex");
 

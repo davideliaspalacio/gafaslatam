@@ -1,48 +1,40 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { formatCOP } from "@/lib/format";
 
-/** Barra fija en el celular: aparece al pasar el botón principal y se oculta en el sobre de pedido. */
-export function StickyBuyBar({ price, cod }: { price: number; cod: boolean }) {
-  const [heroVisible, setHeroVisible] = useState(true);
-  const [formVisible, setFormVisible] = useState(false);
+/** Barra de compra fija en el celular: visible siempre que el botón principal no esté en pantalla. */
+export function StickyBuyBar({ price, href, cod }: { price: number; href: string; cod: boolean }) {
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
-    const hero = document.getElementById("hero-cta");
-    const form = document.getElementById("pedido");
-    const observer = new IntersectionObserver((entries) => {
-      for (const e of entries) {
-        if (e.target === hero) setHeroVisible(e.isIntersecting || e.boundingClientRect.top > 0);
-        if (e.target === form) setFormVisible(e.isIntersecting);
-      }
-    });
-    if (hero) observer.observe(hero);
-    if (form) observer.observe(form);
+    const cta = document.getElementById("buy-cta");
+    if (!cta) return;
+    const observer = new IntersectionObserver(([e]) => setShow(!e.isIntersecting));
+    observer.observe(cta);
     return () => observer.disconnect();
   }, []);
 
-  const show = !heroVisible && !formVisible;
-
   return (
     <div
-      className={`fixed inset-x-0 bottom-0 z-40 border-t border-carton-soft/15 bg-carton-night/95 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-sm transition-[translate,opacity] duration-300 ease-[var(--ease-out-expo)] md:hidden ${
+      className={`on-dark fixed inset-x-0 bottom-0 z-30 border-t border-mid bg-night px-5 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] transition-[translate,opacity] duration-300 ease-[var(--ease-out-expo)] md:hidden ${
         show ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-full opacity-0"
       }`}
       aria-hidden={!show}
     >
       <div className="flex items-center gap-4">
         <div className="leading-tight">
-          <p className="tabular text-lg font-bold text-paper">{formatCOP(price)}</p>
-          <p className="text-xs text-carton-soft">{cod ? "Pagas al recibir" : "Pago seguro"}</p>
+          <p className="tabular text-lg font-semibold text-amber">{formatCOP(price)}</p>
+          <p className="text-xs text-mist">{cod ? "Pagas al recibir" : "Envío a toda Colombia"}</p>
         </div>
-        <a
-          href="#pedido"
+        <Link
+          href={href}
           tabIndex={show ? 0 : -1}
-          className="type-spec flex min-h-12 flex-1 items-center justify-center rounded-[3px] bg-flash px-4 text-[0.95rem] text-ink"
+          className="inline-flex min-h-[52px] flex-1 items-center justify-center rounded-full bg-amber px-5 font-semibold text-night hover:bg-amber-deep"
         >
-          Pedir ahora
-        </a>
+          Pedir
+        </Link>
       </div>
     </div>
   );

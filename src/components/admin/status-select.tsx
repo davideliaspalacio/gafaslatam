@@ -5,10 +5,10 @@ import { setOrderStatus } from "@/app/admin/actions";
 import { ORDER_STATUS_LABEL, type OrderStatus } from "@/lib/types";
 
 const TONE: Record<OrderStatus, string> = {
-  nuevo: "bg-flash border-flash-deep",
-  confirmado: "bg-carton/10 border-carton/30 text-carton-deep",
-  enviado: "bg-paper border-carton/40 text-carton-deep",
-  entregado: "bg-carton border-carton text-paper",
+  nuevo: "bg-amber border-amber-deep",
+  confirmado: "bg-night/10 border-night/30 text-deep",
+  enviado: "bg-paper border-night/40 text-deep",
+  entregado: "bg-night border-night text-paper",
   cancelado: "bg-ink/5 border-ink/15 text-ink-soft",
   devuelto: "bg-alert/10 border-alert/30 text-alert",
 };
@@ -29,7 +29,7 @@ export function StatusSelect({ id, status }: { id: string; status: OrderStatus }
           await setOrderStatus(id, next);
         });
       }}
-      className={`rounded-[3px] border px-2 py-1 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-carton/30 disabled:opacity-70 ${TONE[optimistic]}`}
+      className={`rounded-[3px] border px-2 py-1 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-night/30 disabled:opacity-70 ${TONE[optimistic]}`}
     >
       {(Object.keys(ORDER_STATUS_LABEL) as OrderStatus[]).map((s) => (
         <option key={s} value={s}>

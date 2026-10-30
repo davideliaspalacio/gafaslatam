@@ -3,14 +3,12 @@ import type { Product, SettingsRow } from "@/lib/types";
 // Catálogo de ejemplo para el modo demo (sin Supabase). Es el mismo contenido de
 // supabase/seed.sql: al conectar la base de datos, la tienda lee de allí.
 
-const U = "https://images.unsplash.com/photo-";
-const Q = "?w=1600&q=80&auto=format&fit=crop";
 
 export const DEMO_SETTINGS: SettingsRow = {
   id: 1,
-  store_name: "gafasLatam",
-  whatsapp_number: null,
-  support_email: null,
+  store_name: "Gafas Latam",
+  whatsapp_number: "573007568489",
+  support_email: "gafaslatam@gmail.com",
   announcement: "Envío gratis a toda Colombia · Pagas al recibir",
   shipping_cost: 0,
   free_shipping: true,
@@ -22,41 +20,34 @@ export const DEMO_SETTINGS: SettingsRow = {
   legal_name: null,
   tax_id: null,
   legal_address: null,
+  instagram_handle: "gafaslatam",
+  tiktok_handle: "gafaslatam",
+  facebook_url: "https://facebook.com/gafaslatam",
+  hero_video_url: null,
+  hero_poster_url: null,
   updated_at: "2026-10-18T19:00:00.000Z",
 };
 
 export const DEMO_PRODUCT: Product = {
   id: "00000000-0000-4000-8000-000000000001",
-  slug: "gafas-inteligentes-con-camara",
-  name: "gafasLatam Uno",
-  headline: "Graba lo que ves. Escucha sin audífonos.",
+  slug: "modelo-1",
+  name: "Modelo 1",
+  headline: "Graba lo que vives, sin sacar el celular.",
   short_description:
     "Gafas inteligentes con cámara, parlantes abiertos y micrófono. Foto y video en primera persona, música y llamadas, sin sacar el celular.",
   description:
     "Las gafasLatam Uno parecen unas gafas de sol normales, pero en la montura llevan una cámara, dos parlantes que apuntan al oído y micrófonos para hablar. Tocas la patilla y graban lo que tienes al frente; las fotos y videos pasan a tu celular por la app. Mientras tanto escuchas música o contestas llamadas sin nada en los oídos, así que sigues oyendo la calle.",
   price: 189900,
   compare_at_price: null,
-  images: [
-    { url: `${U}1728405034490-0d55d9b59af1${Q}`, alt: "Gafas negras de montura gruesa sobre una sábana blanca", sample: true },
-    { url: `${U}1624372462825-73d8bda469e1${Q}`, alt: "Hombre con gafas negras de montura gruesa bajo el cielo azul", sample: true },
-    { url: `${U}1653038282411-7e9b41753018${Q}`, alt: "Gafas negras sobre un muro blanco con plantas detrás", sample: true },
-    { url: `${U}1734416044304-37d2c57c5c9d${Q}`, alt: "Mujer con gafas oscuras en una calle con una casa amarilla", sample: true },
-  ],
-  moments: [
-    { url: `${U}1602699191434-4d6358b26afe${Q}`, caption: "En la moto, sin soltar el manubrio", stamp: "'26 9 14", sample: true },
-    { url: `${U}1540039155733-5bb30b53aa14${Q}`, caption: "El concierto, sin levantar el celular", stamp: "'26 9 20", sample: true },
-    { url: `${U}1511657304136-7d9f56e0d574${Q}`, caption: "Paseando al perro", stamp: "'26 9 27", sample: true },
-    { url: `${U}1771980589828-18f0a689be34${Q}`, caption: "El puesto de frutas de la esquina", stamp: "'26 10 3", sample: true },
-    { url: `${U}1475666675596-cca2035b3d79${Q}`, caption: "Bajando en cicla al atardecer", stamp: "'26 10 5", sample: true },
-    { url: `${U}1534035265253-afe22046ba98${Q}`, caption: "Caminando por Cartagena", stamp: "'26 10 11", sample: true },
-  ],
+  images: [],
+  moments: [],
   variants: [
     { id: "negro-mate", name: "Negro mate", swatch: "#1b1b1b" },
     { id: "carey", name: "Carey", swatch: "#6b3f1f" },
   ],
   bundles: [
     { qty: 1, price: 189900, label: "1 par", badge: null },
-    { qty: 2, price: 339900, label: "Doble copia · 2 pares", badge: "Para ti y alguien más" },
+    { qty: 2, price: 339900, label: "2 pares", badge: "Para ti y alguien más" },
   ],
   features: [
     {
@@ -98,13 +89,16 @@ export const DEMO_PRODUCT: Product = {
       a: "Sí. Si llegan con un defecto de fábrica te las cambiamos. Escríbenos por WhatsApp con tu número de pedido.",
     },
   ],
-  in_the_box: ["Gafas gafasLatam Uno", "Estuche", "Cable de carga USB", "Paño de limpieza", "Manual en español"],
+  in_the_box: ["Gafas Modelo 1", "Estuche", "Cable de carga USB", "Paño de limpieza", "Manual en español"],
   specs_confirmed: false,
+  tags: ["camara", "audio", "sol"],
+  badge: null,
+  video_url: null,
   stock: null,
   active: true,
   featured: true,
   sort: 0,
-  seo_title: "gafasLatam Uno · Gafas inteligentes con cámara | Pago contraentrega en Colombia",
+  seo_title: "Modelo 1 · Gafas con cámara y audio | Gafas Latam",
   seo_description:
     "Gafas inteligentes con cámara, parlantes abiertos y micrófono. Graba en primera persona, escucha música y contesta llamadas. Envío a toda Colombia y pago contraentrega.",
   created_at: "2026-10-18T19:00:00.000Z",

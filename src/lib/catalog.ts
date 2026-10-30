@@ -25,6 +25,11 @@ const FALLBACK_SETTINGS: SettingsRow = {
   legal_name: null,
   tax_id: null,
   legal_address: null,
+  instagram_handle: null,
+  tiktok_handle: null,
+  facebook_url: null,
+  hero_video_url: null,
+  hero_poster_url: null,
   updated_at: new Date(0).toISOString(),
 };
 

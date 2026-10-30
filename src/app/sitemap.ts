@@ -1,20 +1,22 @@
 import type { MetadataRoute } from "next";
 import { getActiveProducts } from "@/lib/catalog";
-
-const site = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+import { SITE_URL } from "@/lib/site";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const products = await getActiveProducts();
   return [
-    { url: site, changeFrequency: "weekly", priority: 1 },
+    { url: SITE_URL, changeFrequency: "weekly", priority: 1 },
+    { url: `${SITE_URL}/tienda`, changeFrequency: "weekly", priority: 0.9 },
     ...products.map((p) => ({
-      url: `${site}/producto/${p.slug}`,
+      url: `${SITE_URL}/gafas/${p.slug}`,
       lastModified: p.updated_at,
       changeFrequency: "weekly" as const,
       priority: 0.9,
     })),
-    ...["envios", "cambios-y-garantia", "privacidad", "terminos"].map((slug) => ({
-      url: `${site}/politicas/${slug}`,
+    { url: `${SITE_URL}/envios-y-garantia`, changeFrequency: "monthly", priority: 0.5 },
+    { url: `${SITE_URL}/nosotros`, changeFrequency: "monthly", priority: 0.4 },
+    ...["terminos", "privacidad", "retracto"].map((slug) => ({
+      url: `${SITE_URL}/politicas/${slug}`,
       changeFrequency: "yearly" as const,
       priority: 0.2,
     })),

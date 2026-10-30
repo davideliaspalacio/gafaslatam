@@ -45,7 +45,7 @@ async function Reviews() {
                       {[1, 2, 3, 4, 5].map((n) => (
                         <Star
                           key={n}
-                          className={`size-3.5 ${n <= r.rating ? "fill-flash-deep text-flash-deep" : "text-ink/20"}`}
+                          className={`size-3.5 ${n <= r.rating ? "fill-amber-deep text-amber-deep" : "text-ink/20"}`}
                           aria-hidden
                         />
                       ))}

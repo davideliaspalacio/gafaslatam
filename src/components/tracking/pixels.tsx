@@ -9,9 +9,9 @@ export function Pixels({ tiktokPixelId, metaPixelId }: { tiktokPixelId: string |
   useEffect(() => {
     const attr = captureAttribution();
     try {
-      if (sessionStorage.getItem("vst_visit")) return;
+      if (sessionStorage.getItem("gl_visit")) return;
       const sessionId = newEventId();
-      sessionStorage.setItem("vst_visit", sessionId);
+      sessionStorage.setItem("gl_visit", sessionId);
       const body = JSON.stringify({
         session_id: sessionId,
         utm_source: attr.utm_source,

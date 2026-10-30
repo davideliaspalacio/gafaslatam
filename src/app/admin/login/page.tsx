@@ -6,12 +6,12 @@ export const metadata = { title: "Entrar" };
 
 export default function LoginPage({ searchParams }: PageProps<"/admin/login">) {
   return (
-    <main className="grid min-h-dvh place-items-center bg-carton px-4 py-12">
+    <main className="grid min-h-dvh place-items-center bg-night px-4 py-12">
       <div className="w-full max-w-sm">
-        <p className="type-carton mb-6 text-center text-4xl text-paper">Panel</p>
-        <div className="on-paper bg-paper shadow-[var(--shadow-print)]">
-          <div className="bg-flash px-5 py-3">
-            <p className="type-spec text-[0.75rem] text-carton-deep">Solo para el equipo de la tienda</p>
+        <p className="type-display mb-6 text-center text-4xl text-paper">Panel</p>
+        <div className="bg-paper shadow-[var(--shadow-soft)]">
+          <div className="bg-amber px-5 py-3">
+            <p className="type-label text-[0.75rem] text-deep">Solo para el equipo de la tienda</p>
           </div>
           <Suspense fallback={<div className="h-72" />}>
             <LoginNotice searchParams={searchParams} />

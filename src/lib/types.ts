@@ -52,6 +52,10 @@ export function toProduct(row: ProductRow): Product {
     specs: asArray<Spec>(row.specs),
     faq: asArray<Faq>(row.faq),
     in_the_box: asArray<string>(row.in_the_box),
+    // Tolerante a bases sin la migración de catálogo todavía.
+    tags: asArray<string>(row.tags),
+    badge: row.badge ?? null,
+    video_url: row.video_url ?? null,
   };
 }
 

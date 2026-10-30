@@ -26,8 +26,8 @@ async function EditProduct({ params }: { params: PageProps<"/admin/productos/[id
   return (
     <>
       <PageHeader title={product.name}>
-        <a href="/" target="_blank" className="text-sm font-semibold text-carton hover:underline">
-          Ver en la tienda →
+        <a href={`/gafas/${product.slug}`} target="_blank" className="text-sm font-semibold text-night hover:underline">
+          Ver en la tienda
         </a>
       </PageHeader>
       <ProductForm product={product} />
