@@ -27,6 +27,6 @@ Pedidos de prueba ya hechos: #1001 (Dropi 95008373) y #1002, ambos cancelados.
 
 ## Pendientes conocidos (a octubre de 2026)
 
-- IDs de los píxeles de Meta y TikTok y sus tokens de servidor.
+- Píxel de Meta y Conversions API: listos (30/10/2026). Etiqueta de verificación del dominio publicada (NEXT_PUBLIC_META_DOMAIN_VERIFICATION); falta que Jeronimo toque "Verificar dominio" en Meta. TikTok: cuando exista la cuenta de TikTok Ads.
 - Ficha técnica confirmada de las gafas con IA y fotos propias de los dos modelos.
 - Datos de facturación en Dropi.
