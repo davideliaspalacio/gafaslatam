@@ -1,11 +1,13 @@
+import { whatsappLocal } from "@/lib/site";
 import type { Faq as FaqItem, SettingsRow } from "@/lib/types";
 
 /** Franja de confianza: tres datos, sin íconos de plantilla. */
 export function TrustStrip({ settings, tone = "dark" }: { settings: SettingsRow; tone?: "dark" | "light" }) {
+  const dias = settings.delivery_estimate.toLowerCase();
   const items = [
-    { k: "Envío", v: settings.free_shipping ? "Gratis a toda Colombia" : `A toda Colombia` },
-    { k: "Pago", v: settings.cod_enabled ? "Al recibir, en efectivo" : "Seguro en línea" },
-    { k: "Garantía", v: "De fábrica" },
+    { k: "Envío", v: settings.free_shipping ? `Gratis, en ${dias}` : `En ${dias}` },
+    { k: "Pago", v: settings.cod_enabled ? "En efectivo al recibir" : "Seguro en línea" },
+    { k: "Garantía", v: "Si llegan con falla, te las cambiamos" },
   ];
   const dark = tone === "dark";
   return (
@@ -25,14 +27,19 @@ export function TrustStrip({ settings, tone = "dark" }: { settings: SettingsRow;
 }
 
 export function HowToBuy({ settings }: { settings: SettingsRow }) {
+  const entrega = settings.delivery_estimate.toLowerCase();
+  const numero = whatsappLocal(settings.whatsapp_number);
   const steps = [
-    { t: "Haces el pedido", d: "Escoges el modelo y llenas tus datos. No pagas nada todavía y no tienes que crear cuenta." },
-    { t: "Lo confirmas por WhatsApp", d: "Nos respondes \"SÍ CONFIRMO\" y revisamos tus datos antes de despachar. Sin tu confirmación no sale nada." },
+    { t: "Pides aquí, sin pagar", d: "Escoges el modelo y llenas tus datos. Hoy no pagas nada y no tienes que crear cuenta." },
+    {
+      t: "Confirmas por WhatsApp",
+      d: `Nos mandas por WhatsApp el mensaje que te dejamos listo, con "SÍ CONFIRMO". Si no lo mandas, te escribimos${numero ? ` desde el ${numero}` : ""}. Sin tu confirmación no despachamos nada.`,
+    },
     {
       t: settings.cod_enabled ? "Pagas cuando te llegan" : "Te llegan a la puerta",
       d: settings.cod_enabled
-        ? `La transportadora te las entrega en ${settings.delivery_estimate.toLowerCase()} y ahí le pagas.`
-        : `Te llegan en ${settings.delivery_estimate.toLowerCase()}.`,
+        ? `La transportadora te las lleva${settings.free_shipping ? " gratis" : ""} en ${entrega} y ahí le pagas en efectivo.`
+        : `Te llegan${settings.free_shipping ? " gratis" : ""} en ${entrega}.`,
     },
   ];
   return (

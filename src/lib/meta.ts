@@ -3,7 +3,8 @@ import { createHash } from "node:crypto";
 
 // Meta Conversions API (CAPI). Manda la compra desde el servidor con el mismo event_id que el
 // píxel del navegador, así Meta la cuenta una sola vez. No hace nada si falta el token o el píxel.
-// Variables: META_CAPI_TOKEN (Administrador de eventos > Configuración > API de conversiones).
+// Variables: META_CAPI_TOKEN (Administrador de eventos → el píxel → Configuración → Generar token de acceso)
+// y NEXT_PUBLIC_META_PIXEL_ID (si no está, usa el ID guardado en /admin/ajustes).
 
 const GRAPH_VERSION = process.env.META_GRAPH_VERSION || "v23.0";
 
@@ -38,7 +39,8 @@ export type MetaPurchase = {
 
 export async function sendMetaPurchase(e: MetaPurchase) {
   const token = process.env.META_CAPI_TOKEN;
-  if (!token || !e.pixelId || !/^\d+$/.test(e.pixelId)) return;
+  const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID?.trim() || e.pixelId;
+  if (!token || !pixelId || !/^\d+$/.test(pixelId)) return;
 
   const now = Math.floor(Date.now() / 1000);
   const fbc = e.fbc || (e.fbclid ? `fb.1.${now * 1000}.${e.fbclid}` : null);
@@ -57,7 +59,7 @@ export async function sendMetaPurchase(e: MetaPurchase) {
   if (fbc) user_data.fbc = fbc;
 
   try {
-    const res = await fetch(`https://graph.facebook.com/${GRAPH_VERSION}/${e.pixelId}/events?access_token=${encodeURIComponent(token)}`, {
+    const res = await fetch(`https://graph.facebook.com/${GRAPH_VERSION}/${pixelId}/events?access_token=${encodeURIComponent(token)}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

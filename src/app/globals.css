@@ -63,14 +63,17 @@ body {
   color: var(--night);
 }
 
-:focus-visible {
-  outline: 3px solid var(--night);
-  outline-offset: 3px;
-  border-radius: 4px;
-}
+/* En la capa base: así focus:outline-none (con su propio anillo) y rounded-* de Tailwind le ganan. */
+@layer base {
+  :focus-visible {
+    outline: 3px solid var(--night);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
 
-.on-dark :focus-visible {
-  outline-color: var(--amber);
+  .on-dark :focus-visible {
+    outline-color: var(--amber);
+  }
 }
 
 input,
@@ -148,6 +151,14 @@ a {
   to {
     opacity: 1;
     translate: 0 0;
+  }
+}
+
+/* En el celular la barra de compra fija (~82 px) tapaba la última línea del pie ("© Gafas Latam · …"):
+   espacio abajo solo en las páginas que la tienen (las de cada modelo). */
+@media (max-width: 767px) {
+  body:has([data-barra-compra]) footer[data-pie] {
+    padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
   }
 }
 

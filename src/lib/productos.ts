@@ -14,6 +14,8 @@ export type Modelo = {
   /** Nombre corto para botones y la tabla comparativa. */
   corto: string;
   titular: string;
+  /** Tres viñetas cortas con check, en el primer pantallazo de la página del modelo. */
+  puntos: string[];
   resumen: string;
   descripcion: string;
   coleccion: Coleccion;
@@ -67,6 +69,30 @@ const GARANTIA = {
   q: "¿Y si llegan con un problema?",
   a: "Si tienen un defecto de fábrica, te las cambiamos. Escríbenos por WhatsApp con tu número de pedido.",
 };
+const RETRACTO = {
+  q: "¿Y si me arrepiento?",
+  a: "Tienes 5 días hábiles desde que las recibes para devolverlas (es el derecho de retracto de la Ley 1480). Tienen que volver como llegaron, con la caja y todo lo que traían, y el envío de la devolución lo pagas tú. Escríbenos por WhatsApp y lo coordinamos.",
+};
+const CONFIABLE = {
+  q: "¿Esto es confiable?",
+  a: "No pagas nada hasta tenerlas en la mano: le pagas a la transportadora cuando te las entrega. Antes de despachar te escribimos por WhatsApp desde el 300 756 8489 para confirmar tus datos, y sin tu confirmación no sale nada.",
+};
+
+/** Las tres dudas que se resuelven junto al botón de pedir, en la página de cada modelo. */
+export const DUDAS_COMPRA = [
+  {
+    q: "¿Cómo pago?",
+    a: "En efectivo, cuando la transportadora te las entrega. Hoy no pagas nada y no tienes que crear cuenta.",
+  },
+  {
+    q: "¿Cuánto se demoran en llegar?",
+    a: "Entre 2 y 5 días hábiles después de que confirmas por WhatsApp, según tu ciudad. Te mandamos el número de guía para que sigas el paquete.",
+  },
+  {
+    q: "¿Y si llegan con falla o me arrepiento?",
+    a: "Si llegan con un defecto de fábrica, te las cambiamos. Si te arrepientes, tienes 5 días hábiles desde que las recibes para devolverlas como llegaron; el envío de la devolución lo pagas tú.",
+  },
+];
 
 export const MODELOS: Modelo[] = [
   {
@@ -74,6 +100,11 @@ export const MODELOS: Modelo[] = [
     nombre: "Gafas Biker con cámara",
     corto: "Biker",
     titular: "Graba tu ruta sin soltar el manubrio.",
+    puntos: [
+      "Graba en 1080p a la altura de tus ojos",
+      "Arrancas el video desde las gafas, sin soltar el manubrio",
+      "Pasas los videos al celular por Wi-Fi",
+    ],
     resumen: "Gafas deportivas con cámara para bici, moto y trote. Video en 1080p que pasas al celular por Wi-Fi.",
     descripcion:
       "Son unas gafas deportivas con una cámara en la montura. Empiezas a grabar desde las mismas gafas y queda lo que tienes al frente mientras pedaleas, manejas o trotas. Después pasas los videos al celular por Wi-Fi con la app. No tienen audio: son para grabar.",
@@ -82,8 +113,7 @@ export const MODELOS: Modelo[] = [
     fotosDeShopify: false,
     fotos: [
       { src: "/productos/biker-1.jpg", alt: "Gafas Biker de frente y de lado, con la cámara en el puente", ancho: 1000, alto: 1000 },
-      { src: "/productos/biker-2.jpg", alt: "Ciclista en la vía con las gafas Biker puestas", ancho: 500, alto: 500 },
-      { src: "/productos/biker-3.jpg", alt: "La cámara de las Biker y el video pasado al celular", ancho: 800, alto: 800 },
+      { src: "/productos/biker-2.jpg", alt: "Ciclista en la vía con las gafas Biker puestas", ancho: 284, alto: 500 },
     ],
     shopifyProductId: "gid://shopify/Product/15459905929367",
     dropiId: 1875412,
@@ -130,8 +160,10 @@ export const MODELOS: Modelo[] = [
         a: "Por Wi-Fi: conectas el celular a las gafas desde la app y bajas los videos.",
       },
       PAGO_AL_RECIBIR,
+      CONFIABLE,
       DEMORA,
       GARANTIA,
+      RETRACTO,
     ],
     seo: {
       titulo: "Gafas Biker con cámara · Para bici, moto y trote",
@@ -144,6 +176,11 @@ export const MODELOS: Modelo[] = [
     nombre: "Gafas con cámara e IA",
     corto: "Con IA",
     titular: "Tu música, tus llamadas y un asistente, sin sacar el celular.",
+    puntos: [
+      "Música y llamadas sin audífonos",
+      "Le hablas al asistente con el celular en el bolsillo",
+      "Graban lo que ves, con las manos libres",
+    ],
     resumen:
       "Gafas con cámara e IA para el día a día: la calle, los viajes y el trabajo. Música, llamadas y asistente de voz con las manos libres.",
     descripcion:
@@ -182,12 +219,14 @@ export const MODELOS: Modelo[] = [
         a: "Las Biker son para grabar mientras haces ejercicio y no tienen audio. Estas son para el día a día: además de la cámara traen IA, música, llamadas y asistente de voz.",
       },
       {
-        q: "¿Dónde veo la ficha técnica?",
-        a: "La estamos confirmando con el proveedor para no publicar datos que no hayamos comprobado. Si necesitas un dato puntual antes de pedir, pregúntanos por WhatsApp.",
+        q: "¿Cuánto dura la batería? ¿Funcionan con iPhone?",
+        a: "Esos datos los estamos confirmando con el proveedor y no te queremos decir algo que no hayamos comprobado. Escríbenos por WhatsApp al 300 756 8489 y te contamos lo que ya tenemos confirmado antes de que pidas.",
       },
       PAGO_AL_RECIBIR,
+      CONFIABLE,
       DEMORA,
       GARANTIA,
+      RETRACTO,
     ],
     seo: {
       titulo: "Gafas con cámara e IA · Música, llamadas y asistente",
@@ -203,16 +242,5 @@ export function modeloPorSlug(slug: string): Modelo | null {
   return MODELOS.find((m) => m.slug === slug) ?? null;
 }
 
-/** Cantidad máxima por pedido en el formulario. */
-export const MAX_CANTIDAD = 2;
-
-/**
- * Promoción real "Lleva 2 y ahorra": llevando 2 o más pares se descuenta `ahorro` del total.
- * Sale del envío que se ahorra (va un solo paquete). Cambiar aquí cambia la web y el pedido.
- */
-export const OFERTA = { desde: 2, ahorro: 20000 } as const;
-
-/** Total del pedido con la promoción aplicada. */
-export function totalPedido(precio: number, cantidad: number) {
-  return precio * cantidad - (cantidad >= OFERTA.desde ? OFERTA.ahorro : 0);
-}
+// La promoción y la cantidad máxima viven en src/lib/oferta.ts (archivo liviano, sin textos).
+export { MAX_CANTIDAD, COMBO_DOS, ahorroCombo, precioCombo, totalPedido } from "@/lib/oferta";

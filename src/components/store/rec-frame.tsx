@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /**
  * Lo que ves, grabado: la toma en primera persona con el punto REC y el contador
@@ -12,26 +12,44 @@ export function RecFrame({
   videoUrl,
   posterUrl,
   alt,
+  preload = false,
   className = "",
 }: {
   videoUrl?: string | null;
   posterUrl: string;
   alt: string;
+  /** Solo cuando la toma está arriba de todo (portada, nosotros). En el modelo va más abajo y no compite con la foto. */
+  preload?: boolean;
   className?: string;
 }) {
   const [seconds, setSeconds] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
 
+  // El contador solo corre mientras la toma está en pantalla.
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const t = window.setInterval(() => setSeconds((s) => (s + 1) % 3600), 1000);
-    return () => window.clearInterval(t);
+    const el = ref.current;
+    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let t: number | undefined;
+    const parar = () => {
+      window.clearInterval(t);
+      t = undefined;
+    };
+    const observer = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) parar();
+      else t ??= window.setInterval(() => setSeconds((s) => (s + 1) % 3600), 1000);
+    });
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      parar();
+    };
   }, []);
 
   const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
   const ss = String(seconds % 60).padStart(2, "0");
 
   return (
-    <div className={`relative aspect-video overflow-hidden rounded-[14px] bg-deep ${className}`}>
+    <div ref={ref} className={`relative aspect-video overflow-hidden rounded-[14px] bg-deep ${className}`}>
       {videoUrl ? (
         <video
           className="absolute inset-0 size-full object-cover"
@@ -45,7 +63,7 @@ export function RecFrame({
           aria-label={alt}
         />
       ) : (
-        <Image src={posterUrl} alt={alt} fill preload sizes="(min-width: 1024px) 56vw, 100vw" className="object-cover" />
+        <Image src={posterUrl} alt={alt} fill preload={preload} sizes="(min-width: 1024px) 56vw, 100vw" className="object-cover" />
       )}
 
       <div className="pointer-events-none absolute inset-x-3 top-3 flex items-center justify-between" aria-hidden>

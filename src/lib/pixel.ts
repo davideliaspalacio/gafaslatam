@@ -15,7 +15,10 @@ import {
 
 export type Contents = { content_id: string; content_name: string; quantity: number; price: number }[];
 
-type Ttq = { track: (event: string, props?: Record<string, unknown>, opts?: { event_id?: string }) => void };
+type Ttq = {
+  track: (event: string, props?: Record<string, unknown>, opts?: { event_id?: string }) => void;
+  page?: () => void;
+};
 type Fbq = (...args: unknown[]) => void;
 
 declare global {

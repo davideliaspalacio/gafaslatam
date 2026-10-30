@@ -1,6 +1,9 @@
 import { Menu } from "lucide-react";
 import Link from "next/link";
+import { Fragment } from "react";
 import { Logo } from "@/components/store/logo";
+import { formatCOP } from "@/lib/format";
+import { COMBO_DOS } from "@/lib/oferta";
 
 const NAV = [
   { href: "/tienda", label: "Tienda" },
@@ -8,12 +11,29 @@ const NAV = [
   { href: "/nosotros", label: "Nosotros" },
 ];
 
-export function SiteHeader({ announcement }: { announcement: string | null }) {
+// Franja de anuncio: el combo real (COMBO_DOS en oferta.ts) y las dos garantías de la compra.
+// La letra se achica un poco en pantallas angostas para que quepa en una línea desde 320 px;
+// si no cabe (letra grande del sistema), pasa a dos líneas sin partir ninguna frase.
+const PROMO = COMBO_DOS.biker ? `2 Biker por ${formatCOP(COMBO_DOS.biker)}` : "Envío a toda Colombia";
+const GARANTIAS = ["Envío gratis", "Pagas al recibir"];
+
+export function SiteHeader() {
   return (
     <header className="on-dark bg-night text-cream">
-      {announcement ? (
-        <p className="border-b border-mid px-5 py-2 text-center text-[0.8rem] font-semibold text-mist">{announcement}</p>
-      ) : null}
+      <p className="border-b border-mid px-3 py-2 text-center text-[clamp(0.7rem,3.45vw,0.8rem)] leading-snug font-semibold text-balance text-mist">
+        <span className="whitespace-nowrap text-cream">{PROMO}</span>
+        {GARANTIAS.map((g) => (
+          <Fragment key={g}>
+            <span className="sr-only">, </span>{" "}
+            <span className="whitespace-nowrap">
+              <span aria-hidden className="px-1 text-mist/60">
+                ·
+              </span>{" "}
+              {g}
+            </span>
+          </Fragment>
+        ))}
+      </p>
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5">
         <Link href="/" aria-label="Gafas Latam, inicio" className="-ml-1 rounded p-1">
           <Logo variant="horizontal-crema" height={30} priority />

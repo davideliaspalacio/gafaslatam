@@ -28,7 +28,8 @@ type ServerEvent = {
 /** TikTok Events API v1.3. No hace nada si falta el token o el píxel. */
 export async function sendTikTokEvent(e: ServerEvent) {
   const token = process.env.TIKTOK_EVENTS_ACCESS_TOKEN;
-  if (!token || !e.pixelId) return;
+  const pixelId = process.env.NEXT_PUBLIC_TIKTOK_PIXEL_ID?.trim() || e.pixelId;
+  if (!token || !pixelId) return;
 
   const user: Record<string, string> = {};
   if (e.ttclid) user.ttclid = e.ttclid;
@@ -45,7 +46,7 @@ export async function sendTikTokEvent(e: ServerEvent) {
       headers: { "Access-Token": token, "Content-Type": "application/json" },
       body: JSON.stringify({
         event_source: "web",
-        event_source_id: e.pixelId,
+        event_source_id: pixelId,
         data: [
           {
             event: e.event,

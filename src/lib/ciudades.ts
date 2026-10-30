@@ -42,3 +42,111 @@ export const DEPARTAMENTOS: Departamento[] = [
 export function departamento(nombre: string): Departamento | null {
   return DEPARTAMENTOS.find((d) => d.nombre === nombre) ?? null;
 }
+
+// ---------- Búsqueda para el campo de ciudad del pedido ----------
+
+export type CiudadOpcion = { ciudad: string; departamento: string; codigo: string };
+
+/** Minúsculas, sin tildes ni signos: "Bogotá D.C." → "bogota dc". "D.C.", "d.c" y "DC" quedan iguales. */
+export function normalizar(texto: string) {
+  return texto
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\bd c\b/g, "dc")
+    .trim();
+}
+
+/** Cómo la gente escribe algunas ciudades → el nombre del DANE. */
+const ALIAS: Record<string, string> = {
+  bta: "bogota",
+  "bogota dc": "bogota",
+  cartagena: "cartagena de indias",
+  "cartagena bolivar": "cartagena de indias",
+  "san jose de cucuta": "cucuta",
+  "santa fe de bogota": "bogota",
+};
+
+/**
+ * Ciudades grandes: ganan los empates de la búsqueda (p. ej. "Armenia" muestra primero la del Quindío).
+ * Las seis primeras son los botones rápidos del formulario (`corto` es lo que dice el botón).
+ */
+export const PRINCIPALES: { ciudad: string; codigo: string; corto?: string }[] = [
+  { ciudad: "Bogotá", codigo: "DC", corto: "Bogotá" },
+  { ciudad: "Medellín", codigo: "ANT", corto: "Medellín" },
+  { ciudad: "Cali", codigo: "VAC", corto: "Cali" },
+  { ciudad: "Barranquilla", codigo: "ATL", corto: "Barranquilla" },
+  { ciudad: "Cartagena de Indias", codigo: "BOL", corto: "Cartagena" },
+  { ciudad: "Bucaramanga", codigo: "SAN", corto: "Bucaramanga" },
+  ...(
+    [
+      ["Cúcuta", "NSA"], ["Soacha", "CUN"], ["Soledad", "ATL"], ["Bello", "ANT"], ["Villavicencio", "MET"],
+      ["Ibagué", "TOL"], ["Santa Marta", "MAG"], ["Valledupar", "CES"], ["Montería", "COR"], ["Pereira", "RIS"],
+      ["Manizales", "CAL"], ["Pasto", "NAR"], ["Neiva", "HUI"], ["Palmira", "VAC"], ["Popayán", "CAU"],
+      ["Buenaventura", "VAC"], ["Armenia", "QUI"], ["Sincelejo", "SUC"], ["Itagüí", "ANT"], ["Floridablanca", "SAN"],
+      ["Riohacha", "LAG"], ["Envigado", "ANT"], ["Tuluá", "VAC"], ["Dosquebradas", "RIS"], ["Tunja", "BOY"],
+      ["Girón", "SAN"], ["Piedecuesta", "SAN"], ["Florencia", "CAQ"], ["Yopal", "CAS"], ["Quibdó", "CHO"],
+      ["Rionegro", "ANT"], ["Barrancabermeja", "SAN"], ["Cartago", "VAC"], ["Buga", "VAC"], ["Jamundí", "VAC"],
+      ["Girardot", "CUN"], ["Zipaquirá", "CUN"], ["Chía", "CUN"], ["Fusagasugá", "CUN"], ["Facatativá", "CUN"],
+      ["Sogamoso", "BOY"], ["Duitama", "BOY"], ["Apartadó", "ANT"], ["Ipiales", "NAR"], ["Tumaco", "NAR"],
+      ["Maicao", "LAG"], ["Malambo", "ATL"], ["Arauca", "ARA"], ["San Andrés", "SAP"], ["Leticia", "AMA"],
+      ["Mocoa", "PUT"], ["San José del Guaviare", "GUV"], ["Inírida", "GUA"], ["Mitú", "VAU"], ["Puerto Carreño", "VID"],
+    ] as const
+  ).map(([ciudad, codigo]) => ({ ciudad, codigo })),
+];
+
+/** "Medellín · Antioquia"; Bogotá va sola como "Bogotá D.C.". */
+export function etiquetaCiudad(o: Pick<CiudadOpcion, "ciudad" | "departamento">) {
+  return o.departamento === "Bogotá D.C." ? o.departamento : `${o.ciudad} · ${o.departamento}`;
+}
+
+type Entrada = { o: CiudadOpcion; n: string; completo: string; nd: string; rango: number };
+let indice: Entrada[] | null = null;
+
+function entradas(): Entrada[] {
+  if (indice) return indice;
+  const rango = new Map(PRINCIPALES.map((p, i) => [`${p.ciudad}|${p.codigo}`, i]));
+  indice = DEPARTAMENTOS.flatMap((d) =>
+    d.ciudades.map((c) => {
+      const n = normalizar(c);
+      const nd = normalizar(d.nombre);
+      return { o: { ciudad: c, departamento: d.nombre, codigo: d.codigo }, n, nd, completo: `${n} ${nd}`, rango: rango.get(`${c}|${d.codigo}`) ?? 999 };
+    }),
+  );
+  return indice;
+}
+
+/** Busca municipios sin importar tildes ni mayúsculas. Primero los que empiezan igual y las ciudades grandes. */
+export function buscarCiudades(consulta: string, max = 8): CiudadOpcion[] {
+  const n = normalizar(consulta);
+  const q = ALIAS[n] ?? n;
+  if (!q) return [];
+  const encontrados: [number, Entrada][] = [];
+  for (const e of entradas()) {
+    let puntos: number;
+    if (e.n === q || e.completo === q) puntos = 0;
+    else if (e.n.startsWith(q)) puntos = 1;
+    else if (e.completo.startsWith(q)) puntos = 1.5; // "medellin ant"
+    else if (e.n.includes(` ${q}`)) puntos = 2;
+    else if (e.n.includes(q)) puntos = 3;
+    else if (e.nd.startsWith(q)) puntos = 4; // escribió el departamento
+    else continue;
+    encontrados.push([puntos, e]);
+  }
+  encontrados.sort((a, b) => a[0] - b[0] || a[1].rango - b[1].rango || a[1].n.length - b[1].n.length || a[1].n.localeCompare(b[1].n));
+  return encontrados.slice(0, max).map(([, e]) => e.o);
+}
+
+/** Si lo escrito es el nombre exacto de un municipio (o de una ciudad grande con ese nombre), lo devuelve. */
+export function ciudadExacta(consulta: string): CiudadOpcion | null {
+  const n = normalizar(consulta);
+  const q = ALIAS[n] ?? n;
+  if (!q) return null;
+  const corto = PRINCIPALES.find((p) => p.corto && normalizar(p.corto) === q);
+  if (corto) return entradas().find((e) => e.o.ciudad === corto.ciudad && e.o.codigo === corto.codigo)?.o ?? null;
+  const iguales = entradas().filter((e) => e.n === q || e.completo === q || normalizar(etiquetaCiudad(e.o)) === q);
+  if (iguales.length === 1) return iguales[0].o;
+  const grande = iguales.filter((e) => e.rango < 999).sort((a, b) => a.rango - b.rango)[0];
+  return grande?.o ?? null;
+}

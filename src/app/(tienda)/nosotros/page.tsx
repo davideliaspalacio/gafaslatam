@@ -22,6 +22,7 @@ export default async function AboutPage() {
       <section className="on-dark bg-night text-cream">
         <div className="mx-auto max-w-3xl px-5 py-14 md:py-20">
           <RecFrame
+            preload
             videoUrl={settings.hero_video_url}
             posterUrl={settings.hero_poster_url || DEFAULT_HERO_POSTER}
             alt="Una calle de Medellín vista en primera persona"

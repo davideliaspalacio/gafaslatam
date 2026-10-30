@@ -21,9 +21,25 @@ export function socialLinks(s: SettingsRow) {
   ].filter((x): x is { name: string; handle: string; url: string } => Boolean(x));
 }
 
-/** Mensaje de WhatsApp: con el modelo cuando lo hay. La referencia de campaña se agrega en el navegador. */
-export function whatsappText(model?: string | null) {
-  return model ? `Hola, quiero info de las gafas ${model}` : "Hola, quiero info de las gafas";
+/**
+ * Mensaje de WhatsApp ya escrito, con el modelo cuando lo hay. La referencia de campaña se agrega en el navegador.
+ * - "dudas" (por defecto): "Hola, quiero info de las gafas Biker con cámara"
+ * - "pedir": "Hola, quiero pedir las gafas Biker con cámara" / sin modelo: "Hola, quiero pedir unas gafas. ¿Me ayudas?"
+ * Acepta el nombre completo del modelo ("Gafas Biker con cámara") y no repite "gafas".
+ */
+export function whatsappText(model?: string | null, intencion: "dudas" | "pedir" = "dudas") {
+  const nombre = model?.trim().replace(/^gafas\s+/i, "");
+  if (intencion === "pedir") {
+    return nombre ? `Hola, quiero pedir las gafas ${nombre}` : "Hola, quiero pedir unas gafas. ¿Me ayudas?";
+  }
+  return nombre ? `Hola, quiero info de las gafas ${nombre}` : "Hola, quiero info de las gafas";
+}
+
+/** Número de WhatsApp como se lee en Colombia: "573007568489" → "300 756 8489". */
+export function whatsappLocal(number: string | null | undefined) {
+  const digits = number?.replace(/\D/g, "").replace(/^57(?=3\d{9}$)/, "");
+  if (!digits) return null;
+  return digits.length === 10 ? `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6)}` : digits;
 }
 
 export function whatsappHref(number: string | null | undefined, text: string) {

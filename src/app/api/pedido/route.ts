@@ -5,7 +5,8 @@ import { getSettings } from "@/lib/catalog";
 import { departamento } from "@/lib/ciudades";
 import { formatCOP, normalizeColombianMobile } from "@/lib/format";
 import { sendMetaPurchase } from "@/lib/meta";
-import { MAX_CANTIDAD, OFERTA, SLUGS, modeloPorSlug, totalPedido } from "@/lib/productos";
+import { MAX_CANTIDAD, ahorroCombo, totalPedido } from "@/lib/oferta";
+import { SLUGS, modeloPorSlug } from "@/lib/productos";
 import { crearPedido, hasShopify, productosShopify } from "@/lib/shopify";
 import { PURCHASE_EVENT, sendTikTokEvent } from "@/lib/tiktok";
 
@@ -13,24 +14,63 @@ import { PURCHASE_EVENT, sendTikTokEvent } from "@/lib/tiktok";
 // El pedido queda "por-confirmar": nadie lo manda a Dropi hasta que el cliente responda
 // "SÍ CONFIRMO" por WhatsApp.
 
-const texto = (min: number, max: number, mensaje: string) => z.string().trim().min(min, mensaje).max(max, mensaje);
+// Mensajes en español también cuando el campo falta o llega con otro tipo (zod los da en inglés).
+const MENSAJES = {
+  modelo: "Escoge cuáles gafas quieres",
+  cantidad: `Escoge entre 1 y ${MAX_CANTIDAD} pares`,
+  nombre: "Escribe tu nombre y apellido",
+  apellido: "Escribe también tu apellido",
+  celular: "Escribe un celular de 10 dígitos que empiece por 3",
+  departamento: "Escoge tu ciudad o municipio de la lista",
+  ciudad: "Escoge tu ciudad o municipio de la lista",
+  direccion: "Escribe la dirección de entrega",
+  barrio: "Escribe tu barrio",
+  complemento: "El apto, torre o referencia es muy largo: déjalo en 120 letras o menos",
+} as const;
 
-const Pedido = z.object({
-  modelo: z.enum(SLUGS, { error: "Escoge un modelo" }),
-  cantidad: z.coerce.number().int().min(1).max(MAX_CANTIDAD),
-  nombre: texto(3, 80, "Escribe tu nombre y apellido").refine((v) => v.split(/\s+/).length >= 2, "Escribe también tu apellido"),
-  celular: z.string().trim().max(20),
-  departamento: z.string().trim().min(1, "Escoge tu departamento").max(40),
-  ciudad: z.string().trim().min(1, "Escoge tu ciudad o municipio").max(80),
-  direccion: texto(5, 120, "Escribe la dirección de entrega"),
-  barrio: texto(3, 120, "Escribe el barrio o una indicación para llegar"),
-  eventId: z.string().trim().max(80).optional(),
-  website: z.string().max(0).optional(), // trampa para bots: llega vacío
-});
+const texto = (min: number, max: number, mensaje: string) =>
+  z.string({ error: mensaje }).trim().min(min, mensaje).max(max, mensaje);
+
+const Pedido = z.object(
+  {
+    modelo: z.enum(SLUGS, { error: MENSAJES.modelo }),
+    cantidad: z.coerce.number({ error: MENSAJES.cantidad }).int(MENSAJES.cantidad).min(1, MENSAJES.cantidad).max(MAX_CANTIDAD, MENSAJES.cantidad),
+    nombre: texto(3, 80, MENSAJES.nombre).refine((v) => v.split(/\s+/).length >= 2, MENSAJES.apellido),
+    celular: texto(1, 20, MENSAJES.celular),
+    departamento: texto(1, 40, MENSAJES.departamento),
+    ciudad: texto(1, 80, MENSAJES.ciudad),
+    direccion: texto(5, 120, MENSAJES.direccion),
+    barrio: texto(3, 120, MENSAJES.barrio),
+    /** Apto, torre o punto de referencia: opcional. */
+    complemento: z.string({ error: MENSAJES.complemento }).trim().max(120, MENSAJES.complemento).optional(),
+    eventId: z.string().trim().max(80).optional().catch(undefined),
+    website: z.unknown().optional(), // trampa para bots: llega vacío
+  },
+  { error: "Revisa los datos marcados." },
+);
 
 export type PedidoRespuesta =
-  | { ok: true; numero: string; total: number; eventId: string }
+  | {
+      ok: true;
+      numero: string;
+      /** Lo que cobra el mensajero (el total del pedido en Shopify). */
+      total: number;
+      eventId: string;
+      /** Precio de un par en Shopify al momento del pedido. */
+      precio: number;
+      /** Descuento del combo de 2 ya aplicado al total (0 si no aplica). */
+      ahorro: number;
+    }
   | { ok: false; message: string; fieldErrors?: Record<string, string> };
+
+// Reintentos seguros: si la misma solicitud (mismo eventId del navegador) vuelve a llegar porque se cayó
+// la señal, se responde el pedido ya creado en vez de crear otro. En memoria de cada instancia, 30 minutos.
+const yaCreados = new Map<string, { at: number; respuesta: Extract<PedidoRespuesta, { ok: true }> }>();
+function pedidoYaCreado(id: string) {
+  const ahora = Date.now();
+  for (const [k, v] of yaCreados) if (ahora - v.at > 30 * 60_000) yaCreados.delete(k);
+  return yaCreados.get(id)?.respuesta ?? null;
+}
 
 // Freno básico de abuso por IP (en memoria de cada instancia).
 const recientes = new Map<string, number[]>();
@@ -58,17 +98,17 @@ export async function POST(request: NextRequest) {
   const body = (raw && typeof raw === "object" ? raw : {}) as Record<string, unknown>;
   const celular = normalizeColombianMobile(String(body.celular ?? ""));
   const dep = departamento(String(body.departamento ?? "").trim());
-  if (!celular) fieldErrors.celular ??= "Escribe un celular de 10 dígitos que empiece por 3";
-  if (!dep) fieldErrors.departamento ??= "Escoge tu departamento";
-  else if (!dep.ciudades.includes(String(body.ciudad ?? "").trim())) fieldErrors.ciudad ??= "Escoge tu ciudad o municipio de la lista";
+  if (!celular) fieldErrors.celular = MENSAJES.celular;
+  if (!dep) fieldErrors.departamento ??= MENSAJES.departamento;
+  else if (!dep.ciudades.includes(String(body.ciudad ?? "").trim())) fieldErrors.ciudad ??= MENSAJES.ciudad;
   if (!parsed.success || Object.keys(fieldErrors).length || !celular || !dep) {
     return json({ ok: false, message: "Revisa los datos marcados.", fieldErrors }, 400);
   }
   const d = parsed.data;
   if (d.website) return json({ ok: false, message: FALLA }, 400);
+  const complemento = d.complemento || undefined;
 
   const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || request.headers.get("x-real-ip") || null;
-  if (demasiados(ip)) return json({ ok: false, message: "Recibimos varios pedidos seguidos. Escríbenos por WhatsApp y te ayudamos." }, 429);
 
   if (!hasShopify()) {
     console.error("/api/pedido: faltan las variables de Shopify");
@@ -77,7 +117,11 @@ export async function POST(request: NextRequest) {
 
   const modelo = modeloPorSlug(d.modelo)!;
   const attr = parseAttributionCookie(request.cookies.get(ATTR_COOKIE)?.value);
-  const eventId = d.eventId || crypto.randomUUID();
+  // Identificador de esta solicitud (lo genera el navegador y lo repite si reintenta).
+  const solicitudId = d.eventId || crypto.randomUUID();
+  const repetida = pedidoYaCreado(solicitudId);
+  if (repetida) return json(repetida);
+  if (demasiados(ip)) return json({ ok: false, message: "Recibimos varios pedidos seguidos. Escríbenos por WhatsApp y te ayudamos." }, 429);
   const [nombre, ...resto] = d.nombre.split(/\s+/);
   const apellido = resto.join(" ");
 
@@ -89,7 +133,7 @@ export async function POST(request: NextRequest) {
     }
 
     const atributos = [
-      ["event_id", eventId],
+      ["solicitud_id", solicitudId],
       ["utm_source", attr.utm_source],
       ["utm_medium", attr.utm_medium],
       ["utm_campaign", attr.utm_campaign],
@@ -103,15 +147,23 @@ export async function POST(request: NextRequest) {
       .filter((a): a is [string, string] => Boolean(a[1]))
       .map(([key, value]) => ({ key, value }));
 
-    // "Lleva 2 y ahorra": la última unidad va aparte con el descuento, así el total que cobra Dropi es exacto.
-    const conOferta = d.cantidad >= OFERTA.desde;
-    const total = totalPedido(producto.precio, d.cantidad);
-    const lineas = conOferta
-      ? [
-          { varianteId: producto.varianteId, cantidad: d.cantidad - 1, precioUnitario: producto.precio },
-          { varianteId: producto.varianteId, cantidad: 1, precioUnitario: producto.precio - OFERTA.ahorro },
-        ]
-      : [{ varianteId: producto.varianteId, cantidad: d.cantidad, precioUnitario: producto.precio }];
+    // Combo de 2 (oferta.ts): el total que cobra Dropi tiene que ser exacto. Si se reparte parejo entre
+    // las unidades va en una sola línea; si no, la última unidad lleva la diferencia.
+    const total = totalPedido(modelo.slug, producto.precio, d.cantidad);
+    const ahorro = d.cantidad === 2 ? ahorroCombo(modelo.slug, producto.precio) : 0;
+    const lineas =
+      total % d.cantidad === 0
+        ? [{ varianteId: producto.varianteId, cantidad: d.cantidad, precioUnitario: total / d.cantidad }]
+        : [
+            { varianteId: producto.varianteId, cantidad: d.cantidad - 1, precioUnitario: producto.precio },
+            { varianteId: producto.varianteId, cantidad: 1, precioUnitario: total - producto.precio * (d.cantidad - 1) },
+          ];
+
+    // De qué anuncio vino: en la nota y como etiqueta para filtrar en Shopify.
+    const anuncio = [attr.utm_source, attr.utm_campaign, attr.utm_content].filter(Boolean).join(" · ");
+    const etiquetaFuente = attr.utm_source
+      ? `utm-${attr.utm_source.toLowerCase().normalize("NFD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 30)}`
+      : null;
 
     const pedido = await crearPedido({
       lineas,
@@ -119,24 +171,30 @@ export async function POST(request: NextRequest) {
       apellido,
       celular,
       direccion: d.direccion,
+      complemento,
       barrio: d.barrio,
       ciudad: d.ciudad,
       departamentoCodigo: dep.codigo,
       nota: [
         `Pedido web contraentrega. Confirmar por WhatsApp (+57 ${celular}) antes de enviarlo a Dropi.`,
-        `Barrio / indicaciones: ${d.barrio}`,
-        conOferta ? `Promoción: lleva ${OFERTA.desde} y ahorra ${formatCOP(OFERTA.ahorro)}` : null,
+        `Barrio: ${d.barrio}`,
+        complemento ? `Apto, torre o referencia: ${complemento}` : null,
+        ahorro ? `Promoción: combo de 2 por ${formatCOP(total)} (ahorra ${formatCOP(ahorro)})` : null,
+        anuncio ? `Anuncio: ${anuncio}` : null,
         `Total a cobrar: ${formatCOP(total)}`,
       ]
         .filter(Boolean)
         .join("\n"),
       atributos,
+      etiquetas: etiquetaFuente ? [etiquetaFuente] : [],
     });
+    // La compra se reporta a Meta y TikTok con el número de pedido como event_id (navegador y servidor).
+    const eventId = pedido.numero;
 
     // Eventos del servidor (si hay tokens), después de responder.
     after(async () => {
       const settings = await getSettings();
-      const contents = [{ id: modelo.sku, quantity: d.cantidad, item_price: Math.round(total / d.cantidad) }];
+      const contents = [{ id: String(modelo.dropiId), quantity: d.cantidad, item_price: Math.round(total / d.cantidad) }];
       const userAgent = request.headers.get("user-agent");
       await Promise.all([
         sendMetaPurchase({
@@ -175,7 +233,10 @@ export async function POST(request: NextRequest) {
       ]);
     });
 
-    return json({ ok: true, numero: pedido.numero, total: pedido.total, eventId });
+    if (pedido.repetido) console.info(`/api/pedido: #${pedido.numero} marcado como repetido`);
+    const respuesta = { ok: true as const, numero: pedido.numero, total: pedido.total, eventId, precio: producto.precio, ahorro };
+    yaCreados.set(solicitudId, { at: Date.now(), respuesta });
+    return json(respuesta);
   } catch (error) {
     console.error("/api/pedido", error);
     return json({ ok: false, message: FALLA }, 502);

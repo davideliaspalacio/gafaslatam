@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function ThanksPage({ searchParams }: PageProps<"/pedido/gracias">) {
   return (
-    <main className="mx-auto max-w-3xl px-5 pt-12 pb-24 md:pt-16">
+    <main className="mx-auto max-w-3xl px-5 pt-10 pb-24 md:pt-16">
       <Suspense fallback={<div className="h-80 animate-pulse rounded-[14px] bg-cream-2/60" />}>
         <ThanksContent searchParams={searchParams} />
       </Suspense>
@@ -42,13 +42,13 @@ async function ThanksContent({ searchParams }: { searchParams: PageProps<"/pedid
     <>
       <p className="type-label text-[0.7rem] text-ink-soft">Pedido #{numero}</p>
       <h1 className="type-display mt-2 text-[2.5rem] sm:text-5xl">¡Recibimos tu pedido!</h1>
-      <p className="mt-4 max-w-xl text-[1.0625rem] text-ink-soft">
-        Tu número de pedido es <span className="font-semibold text-ink">#{numero}</span>. No pagas nada hasta que te llegue.
+      <p className="mt-4 max-w-xl text-[1.125rem] leading-snug font-semibold text-ink">
+        Falta un paso: confírmalo por WhatsApp para que lo despachemos.
       </p>
-      <div className="mt-8">
+      <div className="mt-6">
         <Gracias numero={numero} whatsapp={settings.whatsapp_number} />
       </div>
-      <p className="type-hand mt-10 -rotate-1 text-[1.6rem] text-night/80">¡gracias por confiar en nosotros!</p>
+      <p className="type-hand mt-10 -rotate-1 text-[1.6rem] text-night/80">gracias por confiar en nosotros</p>
     </>
   );
 }

@@ -11,7 +11,7 @@ export function SiteFooter({ settings }: { settings: SettingsRow }) {
   const legal = [settings.legal_name, settings.tax_id ? `NIT/RUT ${settings.tax_id}` : null, settings.legal_address].filter(Boolean);
 
   return (
-    <footer className="on-dark bg-deep text-mist">
+    <footer data-pie className="on-dark bg-deep text-mist">
       <div className="mx-auto grid max-w-6xl gap-12 px-5 pt-16 pb-28 md:grid-cols-[1.3fr_1fr_1fr_1fr] md:pb-16">
         <div>
           <Logo variant="lema-crema" height={110} />

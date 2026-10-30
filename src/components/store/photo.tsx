@@ -11,6 +11,7 @@ const RATIO = {
 /**
  * Foto recta con esquinas de 14 px. Sin foto real todavía, un espacio sobrio
  * (el brief prohíbe fotos de banco e imágenes generadas).
+ * `fit="contain"`: foto de producto entera sobre blanco, sin recortar (sirve para las apaisadas).
  */
 export function Photo({
   src,
@@ -19,6 +20,7 @@ export function Photo({
   sizes,
   preload,
   compact,
+  fit = "cover",
   className = "",
 }: {
   src?: string | null;
@@ -28,12 +30,22 @@ export function Photo({
   preload?: boolean;
   /** Miniatura: solo el ícono, sin rótulo. */
   compact?: boolean;
+  fit?: "cover" | "contain";
   className?: string;
 }) {
+  const contain = fit === "contain" && Boolean(src);
   return (
-    <div className={`relative overflow-hidden rounded-[14px] bg-cream-2 ${RATIO[ratio]} ${className}`}>
+    <div className={`relative overflow-hidden rounded-[14px] ${contain ? "bg-white" : "bg-cream-2"} ${RATIO[ratio]} ${className}`}>
       {src ? (
-        <Image src={src} alt={alt} fill sizes={sizes} quality={75} preload={preload} className="object-cover" />
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          sizes={sizes}
+          quality={75}
+          preload={preload}
+          className={contain ? "object-contain" : "object-cover"}
+        />
       ) : (
         <div className="absolute inset-0 grid place-items-center p-6 text-center">
           <div className="flex flex-col items-center gap-3 text-ink-soft">

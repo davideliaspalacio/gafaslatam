@@ -12,7 +12,7 @@ El dueño habla español y no es técnico. Jeronimo es su socio y opera los pedi
 ## El flujo de una venta
 
 1. **El cliente entra** a `/gafas/biker` o `/gafas/ia` (desde el anuncio) o a la home `/`. La cookie `gl_attr` guarda las UTM, `ttclid` y `fbclid` (`src/lib/pixel.ts`, `src/lib/atribucion.ts`).
-2. **Pide en la misma página**: formulario contraentrega (modelo, cantidad, nombre, celular de 10 dígitos que empieza por 3, ciudad/departamento, dirección, barrio). Ver `references/pedido.md`.
+2. **Pide en la misma página**: el botón "Pedir" abre una hoja inferior con el formulario contraentrega (modelo, 1 o 2 pares, celular, nombre, ciudad con búsqueda, dirección, barrio, apto/referencia). Ver `references/pedido.md` (hoja, combo, pop-up, píxeles).
 3. **`POST /api/pedido`** (`src/app/api/pedido/route.ts`) valida, toma el precio EN VIVO de Shopify y crea el pedido con `orderCreate` (`src/lib/shopify.ts`):
    - pago pendiente con pasarela "Contraentrega", envío gratis $0;
    - etiquetas `web` y `por-confirmar`;
@@ -30,6 +30,7 @@ El dueño habla español y no es técnico. Jeronimo es su socio y opera los pedi
 | Ruta | `/gafas/biker` | `/gafas/ia` |
 | Colección | Deporte | Diario · con IA |
 | Precio (vive en Shopify) | $149.900 | $449.900 |
+| Combo de 2 (`src/lib/oferta.ts`) | 2 por $259.900 | No tiene |
 | Costo Dropi | $60.000 (ID 1875412) | $308.000 (ID 2172927) |
 | Shopify | Product 15459905929367 | Product 15459906617495 |
 | Qué es | Bici, moto, trote. Video 1080p 30 fps, pasa videos por Wi-Fi a la app. Sin audio ni Bluetooth. microSD NO incluida | Día a día. IA, música, llamadas y asistente de voz. Ficha técnica SIN confirmar |
@@ -52,8 +53,10 @@ Si una idea de venta choca con estas reglas, propón la versión honesta en vez 
 |---|---|
 | Precio, stock, fotos en Shopify | Shopify → Productos |
 | Textos, características, ficha, preguntas de cada modelo | `src/lib/productos.ts` |
+| Combo de 2 y cantidad máxima | `src/lib/oferta.ts` |
+| ID de los píxeles, token de la API de conversiones, verificación del dominio | Variables de Vercel (ver `references/pedido.md`) |
 | Fotos que se ven en la web | `public/productos/*.jpg` + campo `fotos` del modelo en `productos.ts` |
-| WhatsApp, IDs de píxeles, textos legales, anuncio superior | `/admin/ajustes` (Supabase, tabla `store_settings`) |
+| WhatsApp, textos legales (y el ID de píxel si no está en Vercel) | `/admin/ajustes` (Supabase, tabla `store_settings`) |
 | Lista de ciudades y códigos de departamento de Shopify | `src/lib/ciudades.ts` |
 | Pedidos | Shopify → Pedidos (el `/admin/pedidos` viejo solo tiene los anteriores) |
 | Vinculación producto ↔ Dropi | Dropify → Información sincronizada |

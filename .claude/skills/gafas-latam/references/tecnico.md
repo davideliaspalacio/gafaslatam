@@ -14,7 +14,10 @@
 | `SHOPIFY_STORE_DOMAIN` | `ewmtsc-cb.myshopify.com` |
 | `SHOPIFY_CLIENT_ID` / `SHOPIFY_CLIENT_SECRET` | App "Pedidos web Gafas Latam" del Dev Dashboard. La web pide un token de 24 h con *client credentials* y lo renueva solo |
 | `SHOPIFY_ADMIN_TOKEN` | Opcional. Si existe se usa en vez de pedir token |
+| `NEXT_PUBLIC_META_PIXEL_ID` | Píxel de Meta (2398545494014405) |
 | `META_CAPI_TOKEN` | Conversions API de Meta (apagada si falta) |
+| `NEXT_PUBLIC_META_DOMAIN_VERIFICATION` | Código de la etiqueta de verificación del dominio en Meta |
+| `NEXT_PUBLIC_TIKTOK_PIXEL_ID` | Píxel de TikTok (cuando exista la cuenta) |
 | `TIKTOK_EVENTS_ACCESS_TOKEN` | Events API de TikTok (apagada si falta) |
 | `NEXT_PUBLIC_SUPABASE_*`, `SUPABASE_SECRET_KEY` | Ajustes y panel |
 
@@ -23,17 +26,16 @@ La preview de Vercel tiene las variables de Shopify solo para la rama `shopify-d
 ## Shopify (API 2026-10)
 
 - Alcances de la app: `write_orders`, `read_products`, `write_customers`.
-- `orderCreate` NO crea el cliente sin email: `clienteId()` lo busca por celular (`phone:+57...`) o lo crea con `customerCreate` y luego lo asocia con `toAssociate`.
+- `orderCreate` NO crea el cliente sin email: `cliente()` lo busca con `customerByIdentifier(identifier: { phoneNumber })` (directo, sin depender del índice de búsqueda) o lo crea con `customerCreate`, y lo asocia con `toAssociate`. Si el mismo cliente tiene un pedido sin cancelar de las últimas 24 h, el pedido nuevo lleva la etiqueta `repetido`.
 - Departamentos: `provinceCode` con los códigos de Shopify (ANT, DC, VAC…) que están en `src/lib/ciudades.ts` (fuente: repo Shopify/worldwide `data/regions/CO.yml`).
 - Teléfono en E.164 (`+573001234567`). Barrio en `address2`.
 - Tienda de prueba o en trial: máximo 5 pedidos por minuto.
-- Dropify cambió los SKU de los productos en Shopify al vincularlos (Biker "GAFAS BIKER CON CAMARA", IA "2172927"). No los cambies: Dropify los usa. En los píxeles se usan `GL-BIKER` y `GL-PRO` (campo `sku` de `productos.ts`).
+- Dropify cambió los SKU de los productos en Shopify al vincularlos (Biker "GAFAS BIKER CON CAMARA", IA "2172927"). No los cambies: Dropify los usa. En los píxeles el content_id es el ID de Dropi (`dropiId` de `productos.ts`); `sku` (GL-BIKER, GL-PRO) solo se usa en los datos para Google.
 - Para leer o cambiar pedidos desde un script: pide el token igual que `src/lib/shopify.ts` y usa `node --env-file=.env.local script.mjs`. Nunca imprimas el token.
 
 ## Píxeles
 
-- Navegador: `src/components/tracking/pixels.tsx` carga TikTok y Meta si hay ID en `/admin/ajustes`. Eventos en `src/lib/pixel.ts`: ViewContent (página de modelo), InitiateCheckout (abrir el formulario), AddToCart (cambiar modelo/cantidad), PlaceAnOrder→Purchase (página de gracias, una vez por pedido: `localStorage gl_purchase_<n>`), Contact (cualquier botón de WhatsApp).
-- Servidor: `/api/pedido` manda Purchase a Meta CAPI (`src/lib/meta.ts`) y PlaceAnOrder a TikTok (`src/lib/tiktok.ts`) con el mismo `event_id`, dentro de `after()`. Usan las cookies `_fbp`, `_fbc`, `_ttp` y los datos del cliente con hash.
+Todo el detalle (eventos, IDs de Dropi como content_ids, event_id = número de pedido, CAPI) está en `pedido.md`. Para revisar qué manda el navegador sin acceso al Administrador de eventos: en la consola envuelve `window.fbq` con un registro y recorre la página (los envíos a facebook.com/tr no siempre salen en la lista de red).
 
 ## Verificar cambios
 

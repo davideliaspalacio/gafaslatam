@@ -36,6 +36,7 @@ async function accessToken(): Promise<string> {
   pending ??= (async () => {
     const res = await fetch(`https://${e.domain}/admin/oauth/access_token`, {
       method: "POST",
+      signal: AbortSignal.timeout(15_000),
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({
         grant_type: "client_credentials",
@@ -60,6 +61,7 @@ export async function adminGraphql<T>(query: string, variables?: Record<string, 
   for (let attempt = 0; ; attempt++) {
     const res = await fetch(`https://${domain}/admin/api/${API_VERSION}/graphql.json`, {
       method: "POST",
+      signal: AbortSignal.timeout(15_000),
       headers: { "Content-Type": "application/json", "X-Shopify-Access-Token": await accessToken() },
       body: JSON.stringify({ query, variables }),
     });
@@ -134,21 +136,32 @@ export async function productosShopify(ids: string[]): Promise<Map<string, Shopi
 export type LineaPedido = { varianteId: string; cantidad: number; precioUnitario: number };
 
 export type NuevoPedido = {
-  /** Con la promoción "Lleva 2" la última unidad va en su propia línea con el descuento, para que Dropi cobre el total exacto. */
+  /** Con el combo de 2 el precio se reparte para que Dropi cobre el total exacto (ver /api/pedido). */
   lineas: LineaPedido[];
   nombre: string;
   apellido: string;
   /** 10 dígitos, empieza por 3. */
   celular: string;
   direccion: string;
+  /** Apto, torre o punto de referencia (opcional). Va en address1 después de la dirección. */
+  complemento?: string;
   barrio: string;
   ciudad: string;
   departamentoCodigo: string;
   nota: string;
   atributos: { key: string; value: string }[];
+  /** Etiquetas extra (por ejemplo la fuente del anuncio). */
+  etiquetas?: string[];
 };
 
-export type PedidoCreado = { id: string; nombre: string; numero: string; total: number };
+export type PedidoCreado = {
+  id: string;
+  nombre: string;
+  numero: string;
+  total: number;
+  /** Ya había otro pedido (no cancelado) de este celular en las últimas 24 horas. */
+  repetido: boolean;
+};
 
 type UserError = { field: string[] | null; message: string };
 
@@ -156,21 +169,29 @@ type UserError = { field: string[] | null; message: string };
  * Busca el cliente por celular o lo crea. Shopify no deja crearlo dentro del pedido sin correo,
  * por eso va aparte. Si algo falla, el pedido igual se crea sin cliente.
  */
-async function clienteId(e164: string, nombre: string, apellido: string): Promise<string | null> {
+async function cliente(e164: string, nombre: string, apellido: string): Promise<{ id: string; nuevo: boolean } | null> {
+  // Búsqueda directa (no depende del índice de búsqueda, que tarda unos segundos en actualizarse).
+  const buscar = async () =>
+    (
+      await adminGraphql<{ customerByIdentifier: { id: string } | null }>(
+        `query Cliente($tel: String!) { customerByIdentifier(identifier: { phoneNumber: $tel }) { id } }`,
+        { tel: e164 },
+      )
+    ).customerByIdentifier?.id ?? null;
   try {
-    const found = await adminGraphql<{ customers: { nodes: { id: string }[] } }>(
-      `query Cliente($q: String!) { customers(first: 1, query: $q) { nodes { id } } }`,
-      { q: `phone:${e164}` },
-    );
-    if (found.customers.nodes[0]) return found.customers.nodes[0].id;
+    const existente = await buscar();
+    if (existente) return { id: existente, nuevo: false };
     const created = await adminGraphql<{ customerCreate: { customer: { id: string } | null; userErrors: UserError[] } }>(
       `mutation NuevoCliente($input: CustomerInput!) {
         customerCreate(input: $input) { customer { id } userErrors { field message } }
       }`,
       { input: { phone: e164, firstName: nombre, lastName: apellido, tags: ["web"] } },
     );
-    if (!created.customerCreate.customer) console.warn("customerCreate", created.customerCreate.userErrors);
-    return created.customerCreate.customer?.id ?? null;
+    if (created.customerCreate.customer) return { id: created.customerCreate.customer.id, nuevo: true };
+    // Si otro pedido lo acaba de crear (celular ya usado), se busca otra vez.
+    console.warn("customerCreate", created.customerCreate.userErrors);
+    const otraVez = await buscar();
+    return otraVez ? { id: otraVez, nuevo: false } : null;
   } catch (error) {
     console.warn("Cliente de Shopify", error);
     return null;
@@ -178,8 +199,29 @@ async function clienteId(e164: string, nombre: string, apellido: string): Promis
 }
 
 /**
+ * ¿Este cliente (buscado por celular) ya tiene un pedido sin cancelar en las últimas `horas`?
+ * La búsqueda de pedidos no acepta `phone:`, por eso se filtra por el cliente. Si falla, responde que no.
+ */
+async function pedidoReciente(clienteGid: string, horas = 24): Promise<boolean> {
+  const id = clienteGid.split("/").pop();
+  if (!id) return false;
+  const desde = new Date(Date.now() - horas * 3_600_000).toISOString().replace(/\.\d+Z$/, "Z");
+  try {
+    const data = await adminGraphql<{ orders: { nodes: { id: string; cancelledAt: string | null }[] } }>(
+      `query Recientes($q: String!) { orders(first: 5, query: $q, sortKey: CREATED_AT, reverse: true) { nodes { id cancelledAt } } }`,
+      { q: `customer_id:${id} AND created_at:>='${desde}'` },
+    );
+    return data.orders.nodes.some((o) => !o.cancelledAt);
+  } catch (error) {
+    console.warn("Pedidos recientes de Shopify", error);
+    return false;
+  }
+}
+
+/**
  * Crea el pedido contraentrega: pago pendiente "Contraentrega", envío gratis y etiquetas
- * web + por-confirmar. No se envía a Dropi: eso se hace a mano después del "SÍ CONFIRMO".
+ * web + por-confirmar (+ repetido si el mismo celular pidió en las últimas 24 horas).
+ * No se envía a Dropi: eso se hace a mano después del "SÍ CONFIRMO".
  */
 export async function crearPedido(p: NuevoPedido): Promise<PedidoCreado> {
   const e164 = `+57${p.celular}`;
@@ -189,7 +231,7 @@ export async function crearPedido(p: NuevoPedido): Promise<PedidoCreado> {
   const direccion = {
     firstName: p.nombre,
     lastName: p.apellido,
-    address1: p.direccion,
+    address1: p.complemento ? `${p.direccion}, ${p.complemento}` : p.direccion,
     address2: p.barrio,
     city: p.ciudad,
     provinceCode: p.departamentoCodigo,
@@ -197,7 +239,8 @@ export async function crearPedido(p: NuevoPedido): Promise<PedidoCreado> {
     phone: e164,
   };
 
-  const cliente = await clienteId(e164, p.nombre, p.apellido);
+  const c = await cliente(e164, p.nombre, p.apellido);
+  const repetido = c && !c.nuevo ? await pedidoReciente(c.id) : false;
   const order = {
     currency: "COP",
     lineItems: p.lineas.map((l) => ({
@@ -211,10 +254,10 @@ export async function crearPedido(p: NuevoPedido): Promise<PedidoCreado> {
     shippingAddress: direccion,
     billingAddress: direccion,
     shippingLines: [{ title: "Envío gratis", code: "envio-gratis", priceSet: money(0) }],
-    tags: ["web", "por-confirmar"],
-    note: p.nota,
+    tags: ["web", "por-confirmar", ...(repetido ? ["repetido"] : []), ...(p.etiquetas ?? [])],
+    note: repetido ? `${p.nota}\nOjo: este celular ya tiene otro pedido de las últimas 24 horas.` : p.nota,
     customAttributes: p.atributos,
-    ...(cliente ? { customer: { toAssociate: { id: cliente } } } : {}),
+    ...(c ? { customer: { toAssociate: { id: c.id } } } : {}),
   };
 
   const mutation = `mutation Pedido($order: OrderCreateOrderInput!, $options: OrderCreateOptionsInput) {
@@ -234,5 +277,6 @@ export async function crearPedido(p: NuevoPedido): Promise<PedidoCreado> {
     nombre: creado.name,
     numero: creado.name.replace(/^#/, ""),
     total: Math.round(Number(creado.totalPriceSet.shopMoney.amount)),
+    repetido,
   };
 }
