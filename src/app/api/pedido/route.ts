@@ -50,23 +50,22 @@ const FALLA = "No pudimos registrar el pedido. Intenta de nuevo o escríbenos po
 export async function POST(request: NextRequest) {
   const raw = await request.json().catch(() => null);
   const parsed = Pedido.safeParse(raw);
+  const fieldErrors: Record<string, string> = {};
   if (!parsed.success) {
-    const fieldErrors: Record<string, string> = {};
     for (const issue of parsed.error.issues) fieldErrors[String(issue.path[0] ?? "form")] ??= issue.message;
+  }
+  // Celular, departamento y ciudad se revisan siempre, para devolver todos los errores de una vez.
+  const body = (raw && typeof raw === "object" ? raw : {}) as Record<string, unknown>;
+  const celular = normalizeColombianMobile(String(body.celular ?? ""));
+  const dep = departamento(String(body.departamento ?? "").trim());
+  if (!celular) fieldErrors.celular ??= "Escribe un celular de 10 dígitos que empiece por 3";
+  if (!dep) fieldErrors.departamento ??= "Escoge tu departamento";
+  else if (!dep.ciudades.includes(String(body.ciudad ?? "").trim())) fieldErrors.ciudad ??= "Escoge tu ciudad o municipio de la lista";
+  if (!parsed.success || Object.keys(fieldErrors).length || !celular || !dep) {
     return json({ ok: false, message: "Revisa los datos marcados.", fieldErrors }, 400);
   }
   const d = parsed.data;
   if (d.website) return json({ ok: false, message: FALLA }, 400);
-
-  const celular = normalizeColombianMobile(d.celular);
-  const dep = departamento(d.departamento);
-  const fieldErrors: Record<string, string> = {};
-  if (!celular) fieldErrors.celular = "Escribe un celular de 10 dígitos que empiece por 3";
-  if (!dep) fieldErrors.departamento = "Escoge tu departamento";
-  else if (!dep.ciudades.includes(d.ciudad)) fieldErrors.ciudad = "Escoge tu ciudad o municipio de la lista";
-  if (Object.keys(fieldErrors).length || !celular || !dep) {
-    return json({ ok: false, message: "Revisa los datos marcados.", fieldErrors }, 400);
-  }
 
   const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || request.headers.get("x-real-ip") || null;
   if (demasiados(ip)) return json({ ok: false, message: "Recibimos varios pedidos seguidos. Escríbenos por WhatsApp y te ayudamos." }, 429);

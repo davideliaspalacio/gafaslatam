@@ -30,6 +30,15 @@ export default function PanelLayout({ children }: LayoutProps<"/admin">) {
           </Suspense>
         </div>
       </header>
+      <div className="border-b border-amber-deep/30 bg-amber/15">
+        <p className="mx-auto max-w-6xl px-4 py-3 text-sm sm:px-6">
+          Los pedidos nuevos, los precios y las fotos de los modelos ahora se manejan en{" "}
+          <a href="https://admin.shopify.com/store/ewmtsc-cb/orders" target="_blank" rel="noopener" className="font-semibold underline">
+            Shopify
+          </a>
+          . Aquí quedan los pedidos anteriores, las reseñas y los ajustes de la tienda (WhatsApp, píxeles, textos legales).
+        </p>
+      </div>
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">{children}</main>
     </>
   );
