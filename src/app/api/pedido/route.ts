@@ -5,7 +5,7 @@ import { getSettings } from "@/lib/catalog";
 import { departamento } from "@/lib/ciudades";
 import { formatCOP, normalizeColombianMobile } from "@/lib/format";
 import { sendMetaPurchase } from "@/lib/meta";
-import { MAX_CANTIDAD, SLUGS, modeloPorSlug } from "@/lib/productos";
+import { MAX_CANTIDAD, OFERTA, SLUGS, modeloPorSlug, totalPedido } from "@/lib/productos";
 import { crearPedido, hasShopify, productosShopify } from "@/lib/shopify";
 import { PURCHASE_EVENT, sendTikTokEvent } from "@/lib/tiktok";
 
@@ -103,11 +103,18 @@ export async function POST(request: NextRequest) {
       .filter((a): a is [string, string] => Boolean(a[1]))
       .map(([key, value]) => ({ key, value }));
 
+    // "Lleva 2 y ahorra": la última unidad va aparte con el descuento, así el total que cobra Dropi es exacto.
+    const conOferta = d.cantidad >= OFERTA.desde;
+    const total = totalPedido(producto.precio, d.cantidad);
+    const lineas = conOferta
+      ? [
+          { varianteId: producto.varianteId, cantidad: d.cantidad - 1, precioUnitario: producto.precio },
+          { varianteId: producto.varianteId, cantidad: 1, precioUnitario: producto.precio - OFERTA.ahorro },
+        ]
+      : [{ varianteId: producto.varianteId, cantidad: d.cantidad, precioUnitario: producto.precio }];
+
     const pedido = await crearPedido({
-      varianteId: producto.varianteId,
-      titulo: modelo.nombre,
-      cantidad: d.cantidad,
-      precioUnitario: producto.precio,
+      lineas,
       nombre,
       apellido,
       celular,
@@ -118,15 +125,18 @@ export async function POST(request: NextRequest) {
       nota: [
         `Pedido web contraentrega. Confirmar por WhatsApp (+57 ${celular}) antes de enviarlo a Dropi.`,
         `Barrio / indicaciones: ${d.barrio}`,
-        `Total a cobrar: ${formatCOP(producto.precio * d.cantidad)}`,
-      ].join("\n"),
+        conOferta ? `Promoción: lleva ${OFERTA.desde} y ahorra ${formatCOP(OFERTA.ahorro)}` : null,
+        `Total a cobrar: ${formatCOP(total)}`,
+      ]
+        .filter(Boolean)
+        .join("\n"),
       atributos,
     });
 
     // Eventos del servidor (si hay tokens), después de responder.
     after(async () => {
       const settings = await getSettings();
-      const contents = [{ id: modelo.sku, quantity: d.cantidad, item_price: producto.precio }];
+      const contents = [{ id: modelo.sku, quantity: d.cantidad, item_price: Math.round(total / d.cantidad) }];
       const userAgent = request.headers.get("user-agent");
       await Promise.all([
         sendMetaPurchase({

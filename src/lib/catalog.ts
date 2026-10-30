@@ -64,7 +64,7 @@ export async function getPublishedReviews(): Promise<ReviewRow[]> {
 
 export type ModeloTienda = Modelo & {
   precio: number;
-  imagenes: { url: string; alt: string }[];
+  imagenes: { url: string; alt: string; ancho?: number; alto?: number }[];
   varianteId: string | null;
   disponible: boolean;
 };
@@ -87,7 +87,11 @@ export async function getModelos(): Promise<ModeloTienda[]> {
     return {
       ...m,
       precio: s?.precio ?? m.precioRespaldo,
-      imagenes: m.fotosDeShopify ? (s?.imagenes ?? []).map((i) => ({ url: i.url, alt: i.alt })) : [],
+      // Primero las fotos propias revisadas; las de Shopify solo si el modelo lo permite.
+      imagenes: [
+        ...m.fotos.map((f) => ({ url: f.src, alt: f.alt, ancho: f.ancho, alto: f.alto })),
+        ...(m.fotosDeShopify ? (s?.imagenes ?? []).map((i) => ({ url: i.url, alt: i.alt })) : []),
+      ],
       varianteId: s?.varianteId ?? null,
       disponible: s ? s.activo : true,
     };

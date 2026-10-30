@@ -131,11 +131,11 @@ export async function productosShopify(ids: string[]): Promise<Map<string, Shopi
 
 // ---------- Pedidos ----------
 
+export type LineaPedido = { varianteId: string; cantidad: number; precioUnitario: number };
+
 export type NuevoPedido = {
-  varianteId: string;
-  titulo: string;
-  cantidad: number;
-  precioUnitario: number;
+  /** Con la promoción "Lleva 2" la última unidad va en su propia línea con el descuento, para que Dropi cobre el total exacto. */
+  lineas: LineaPedido[];
   nombre: string;
   apellido: string;
   /** 10 dígitos, empieza por 3. */
@@ -183,7 +183,7 @@ async function clienteId(e164: string, nombre: string, apellido: string): Promis
  */
 export async function crearPedido(p: NuevoPedido): Promise<PedidoCreado> {
   const e164 = `+57${p.celular}`;
-  const total = p.precioUnitario * p.cantidad;
+  const total = p.lineas.reduce((n, l) => n + l.precioUnitario * l.cantidad, 0);
   const money = (amount: number) => ({ shopMoney: { amount: amount.toFixed(2), currencyCode: "COP" } });
 
   const direccion = {
@@ -200,7 +200,12 @@ export async function crearPedido(p: NuevoPedido): Promise<PedidoCreado> {
   const cliente = await clienteId(e164, p.nombre, p.apellido);
   const order = {
     currency: "COP",
-    lineItems: [{ variantId: p.varianteId, quantity: p.cantidad, priceSet: money(p.precioUnitario), requiresShipping: true }],
+    lineItems: p.lineas.map((l) => ({
+      variantId: l.varianteId,
+      quantity: l.cantidad,
+      priceSet: money(l.precioUnitario),
+      requiresShipping: true,
+    })),
     financialStatus: "PENDING",
     transactions: [{ kind: "SALE", status: "PENDING", gateway: "Contraentrega", amountSet: money(total) }],
     shippingAddress: direccion,

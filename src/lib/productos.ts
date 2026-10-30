@@ -25,6 +25,8 @@ export type Modelo = {
    * incluida; textos de la caja en las de IA). Al subir fotos propias a Shopify, se prende.
    */
   fotosDeShopify: boolean;
+  /** Fotos propias en /public/productos (las del proveedor ya revisadas). La primera es la portada. */
+  fotos: { src: string; alt: string; ancho: number; alto: number }[];
   /** Producto en Shopify (vinculado en Dropify con el producto de Dropi). */
   shopifyProductId: string;
   dropiId: number;
@@ -78,6 +80,11 @@ export const MODELOS: Modelo[] = [
     coleccion: COLECCIONES.deporte,
     sku: "GL-BIKER",
     fotosDeShopify: false,
+    fotos: [
+      { src: "/productos/biker-1.jpg", alt: "Gafas Biker de frente y de lado, con la cámara en el puente", ancho: 1000, alto: 1000 },
+      { src: "/productos/biker-2.jpg", alt: "Ciclista en la vía con las gafas Biker puestas", ancho: 500, alto: 500 },
+      { src: "/productos/biker-3.jpg", alt: "La cámara de las Biker y el video pasado al celular", ancho: 800, alto: 800 },
+    ],
     shopifyProductId: "gid://shopify/Product/15459905929367",
     dropiId: 1875412,
     precioRespaldo: 149900,
@@ -144,6 +151,7 @@ export const MODELOS: Modelo[] = [
     coleccion: COLECCIONES.diario,
     sku: "GL-PRO",
     fotosDeShopify: false,
+    fotos: [{ src: "/productos/ia-1.jpg", alt: "Gafas con cámara e IA, lentes oscuros y montura negra", ancho: 760, alto: 370 }],
     shopifyProductId: "gid://shopify/Product/15459906617495",
     dropiId: 2172927,
     precioRespaldo: 449900,
@@ -196,4 +204,15 @@ export function modeloPorSlug(slug: string): Modelo | null {
 }
 
 /** Cantidad máxima por pedido en el formulario. */
-export const MAX_CANTIDAD = 3;
+export const MAX_CANTIDAD = 2;
+
+/**
+ * Promoción real "Lleva 2 y ahorra": llevando 2 o más pares se descuenta `ahorro` del total.
+ * Sale del envío que se ahorra (va un solo paquete). Cambiar aquí cambia la web y el pedido.
+ */
+export const OFERTA = { desde: 2, ahorro: 20000 } as const;
+
+/** Total del pedido con la promoción aplicada. */
+export function totalPedido(precio: number, cantidad: number) {
+  return precio * cantidad - (cantidad >= OFERTA.desde ? OFERTA.ahorro : 0);
+}
