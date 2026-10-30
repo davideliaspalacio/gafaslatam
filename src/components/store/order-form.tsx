@@ -160,7 +160,9 @@ export function OrderForm({ modelos, whatsapp, modelo: modeloInicial, cantidad: 
   // InitiateCheckout: cuando toca el primer campo del formulario, una sola vez por visita (brief de Meta).
   function empezarCompra(e: React.FocusEvent<HTMLFormElement>) {
     const t = e.target as HTMLElement;
-    if (checkoutEnviado.has("visita") || !modelo || (t.tagName !== "INPUT" && t.tagName !== "TEXTAREA")) return;
+    // Solo los campos de texto cuentan (no las tarjetas de 1 o 2 pares, que son radios).
+    const escribe = t instanceof HTMLTextAreaElement || (t instanceof HTMLInputElement && t.type !== "radio" && t.type !== "checkbox");
+    if (checkoutEnviado.has("visita") || !modelo || !escribe) return;
     checkoutEnviado.add("visita");
     track("InitiateCheckout", {
       value: total,
